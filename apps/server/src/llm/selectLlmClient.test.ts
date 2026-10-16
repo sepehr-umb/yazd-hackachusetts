@@ -11,13 +11,15 @@ const routeRequest: LlmRequest = {
 
 function recordingFetch() {
   const urls: string[] = [];
-  const fetchImpl: typeof fetch = async (input) => {
+  const bodies: Array<Record<string, unknown>> = [];
+  const fetchImpl: typeof fetch = async (input, init) => {
     urls.push(String(input));
+    bodies.push(JSON.parse(String(init?.body)) as Record<string, unknown>);
     return new Response(
       JSON.stringify({ choices: [{ message: { content: "from the network" } }] }),
     );
   };
-  return { fetchImpl, urls };
+  return { fetchImpl, urls, bodies };
 }
 
 describe("selectLlmClient", () => {
@@ -35,4 +37,18 @@ describe("selectLlmClient", () => {
       expect(urls).toEqual([]);
     },
   );
+
+  it("uses OpenRouter with the model from LLM_MODEL when the key is set", async () => {
+    const { fetchImpl, urls, bodies } = recordingFetch();
+    const llm = selectLlmClient(
+      { OPENROUTER_API_KEY: "sk-test", LLM_MODEL: "anthropic/test-model" },
+      { fetch: fetchImpl },
+    );
+
+    const response = await llm.complete(routeRequest);
+
+    expect(response.content).toEqual([{ type: "text", text: "from the network" }]);
+    expect(urls).toEqual(["https://openrouter.ai/api/v1/chat/completions"]);
+    expect(bodies[0]?.model).toBe("anthropic/test-model");
+  });
 });
