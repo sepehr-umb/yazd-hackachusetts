@@ -50,4 +50,14 @@ describe("activityPanelSurface", () => {
     expect(entries()[0]).toBe("Request: request 3");
     expect(entries().at(-1)).toBe(`Request: request ${MAX_ENTRIES + 2}`);
   });
+
+  it("stops listening and removes its markup when unmounted", () => {
+    const { context, host, unmount } = mounted();
+
+    unmount();
+    context.emit({ type: "agent", agent: "home" });
+
+    expect(context.listenerCount()).toBe(0);
+    expect(host.children).toHaveLength(0);
+  });
 });
