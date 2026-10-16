@@ -1,4 +1,5 @@
 import type { LlmClient, LlmRequest, LlmResponse } from "../orchestrator";
+import { toChatMessages } from "./toChatMessages";
 import type { LlmTextBlock, LlmToolUseBlock } from "../orchestrator/llmClient";
 
 export type OpenRouterConfig = {
@@ -35,10 +36,7 @@ function fromChatCompletion(completion: ChatCompletion): LlmResponse {
 function toChatRequest(model: string, request: LlmRequest) {
   return {
     model,
-    messages: [
-      { role: "system", content: request.system },
-      ...request.messages.map((message) => ({ role: message.role, content: message.content })),
-    ],
+    messages: toChatMessages(request.system, request.messages),
     tools: request.tools.map((tool) => ({
       type: "function",
       function: { name: tool.name, description: tool.description, parameters: tool.inputSchema },

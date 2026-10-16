@@ -79,6 +79,55 @@ describe("createOpenRouterLlmClient", () => {
     });
   });
 
+  it("replays assistant tool use as tool_calls and tool results as tool messages", async () => {
+    const { client, calls } = clientWith({ body: textCompletion("done") });
+
+    await client.complete({
+      system: "s",
+      tools: [],
+      messages: [
+        { role: "user", content: "call mom" },
+        {
+          role: "assistant",
+          content: [
+            { type: "text", text: "Calling" },
+            { type: "tool_use", id: "call_1", name: "call_contact", input: { contact: "مامان" } },
+          ],
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "tool_result",
+              toolUseId: "call_1",
+              content: '{"contact":"فاطمه"}',
+              isError: false,
+            },
+            { type: "tool_result", toolUseId: "call_2", content: "no network", isError: true },
+          ],
+        },
+      ],
+    });
+
+    expect(calls[0]?.body.messages).toEqual([
+      { role: "system", content: "s" },
+      { role: "user", content: "call mom" },
+      {
+        role: "assistant",
+        content: "Calling",
+        tool_calls: [
+          {
+            id: "call_1",
+            type: "function",
+            function: { name: "call_contact", arguments: '{"contact":"مامان"}' },
+          },
+        ],
+      },
+      { role: "tool", tool_call_id: "call_1", content: '{"contact":"فاطمه"}' },
+      { role: "tool", tool_call_id: "call_2", content: "Error: no network" },
+    ]);
+  });
+
   it("maps a text reply to a text block that ends the turn", async () => {
     const { client } = clientWith({ body: textCompletion("دارم به مامان زنگ می‌زنم") });
 
