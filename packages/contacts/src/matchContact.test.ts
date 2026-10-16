@@ -24,4 +24,9 @@ describe("matchContact", () => {
     const result = matchContact("حسین احمدی", [first, second]);
     expect(result.candidates.map((candidate) => candidate.contact.id)).toEqual(["1", "2"]);
   });
+
+  it("returns no candidates when nothing is similar enough", () => {
+    const result = matchContact("مریم کریمی", [contact("1", "حسین احمدی")]);
+    expect(result.candidates).toEqual([]);
+  });
 });
