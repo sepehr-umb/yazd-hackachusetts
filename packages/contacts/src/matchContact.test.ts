@@ -36,4 +36,10 @@ describe("matchContact", () => {
     const result = matchContact("حسین احمدی", [hasan, hossein], { threshold: 0.95 });
     expect(result.candidates.map((candidate) => candidate.contact.id)).toEqual(["2"]);
   });
+
+  it("flags the result as ambiguous when the top two scores are equal", () => {
+    const first = contact("1", "حسین احمدی");
+    const second = contact("2", "حسین احمدی");
+    expect(matchContact("حسین احمدی", [first, second]).ambiguous).toBe(true);
+  });
 });
