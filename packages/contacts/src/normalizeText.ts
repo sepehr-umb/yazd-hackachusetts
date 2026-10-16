@@ -1,1 +1,2 @@
-export const normalizeText = (text: string): string => text.replaceAll("ي", "ی");
+export const normalizeText = (text: string): string =>
+  text.replaceAll("ي", "ی").replaceAll("ك", "ک");
