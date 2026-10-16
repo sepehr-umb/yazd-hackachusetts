@@ -7,8 +7,10 @@ export function withContactResolution(tools: ToolSet, contacts: Contact[]): Tool
     name: "call_contact",
     async execute(input) {
       const [match] = matchContact(input.contact, contacts).candidates;
-      const result = await tools.call_contact.execute({ contact: match!.contact.name });
-      return result.ok ? { ok: true, output: { ...result.output, contact: match!.contact.name } } : result;
+      if (!match) return { ok: false, error: `No contact matches "${input.contact}"` };
+      const name = match.contact.name;
+      const result = await tools.call_contact.execute({ contact: name });
+      return result.ok ? { ok: true, output: { ...result.output, contact: name } } : result;
     },
   };
   return { ...tools, call_contact: callContact };

@@ -18,4 +18,13 @@ describe("withContactResolution", () => {
     expect(result).toEqual({ ok: true, output: { contact: "فاطمه" } });
     expect(calls).toEqual([{ tool: "call_contact", input: { contact: "فاطمه" } }]);
   });
+
+  it("fails without dialing when nobody in the address book matches", async () => {
+    const { tools, calls } = setup();
+
+    const result = await tools.call_contact.execute({ contact: "Zebediah" });
+
+    expect(result).toEqual({ ok: false, error: 'No contact matches "Zebediah"' });
+    expect(calls).toEqual([]);
+  });
 });
