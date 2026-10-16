@@ -36,8 +36,10 @@ export function createServer({ orchestrator, hub, idleAfterMs }: ServerDeps): Fa
     if (text === undefined) {
       return reply.code(400).send({ error: 'Body must be { "text": a non-empty string }' });
     }
+    clearTimeout(idleTimer);
     hub.emit({ type: "transcript", text });
     const result = await orchestrator.handle(text);
+    clearTimeout(idleTimer);
     if (idleAfterMs !== undefined) {
       idleTimer = setTimeout(() => hub.emit({ type: "state", state: "idle" }), idleAfterMs);
     }

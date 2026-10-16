@@ -95,4 +95,18 @@ describe("settling to idle", () => {
     vi.advanceTimersByTime(1);
     expect(states).toEqual(["thinking", "speaking", "idle"]);
   });
+
+  it("cancels a pending idle when a new request arrives", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const { app, hub } = setup({ idleAfterMs: 3000 });
+    const states: string[] = [];
+    hub.subscribe((event) => event.type === "state" && states.push(event.state));
+
+    await app.inject({ method: "POST", url: "/request", payload: { text: "به مامان زنگ بزن" } });
+    vi.advanceTimersByTime(2000);
+    await app.inject({ method: "POST", url: "/request", payload: { text: "به مامان زنگ بزن" } });
+    vi.advanceTimersByTime(2999);
+
+    expect(states).toEqual(["thinking", "speaking", "thinking", "speaking"]);
+  });
 });
