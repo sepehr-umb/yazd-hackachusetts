@@ -7,12 +7,14 @@ export type TestContext = SurfaceContext & {
   listenerCount(): number;
   submitted: string[];
   replyWith(result: RequestResult | Error): void;
+  holdReply(): (result: RequestResult) => void;
 };
 
 export function createTestContext(): TestContext {
   const listeners = new Set<AssistantEventListener>();
   const submitted: string[] = [];
   let reply: RequestResult | Error = { status: "failed", failure: { reason: "unroutable" } };
+  let held: Promise<RequestResult> | undefined;
   return {
     submitted,
     events: {
@@ -24,6 +26,7 @@ export function createTestContext(): TestContext {
     requests: {
       async submit(text) {
         submitted.push(text);
+        if (held) return held;
         if (reply instanceof Error) throw reply;
         return reply;
       },
@@ -32,6 +35,13 @@ export function createTestContext(): TestContext {
     listenerCount: () => listeners.size,
     replyWith: (next) => {
       reply = next;
+    },
+    holdReply() {
+      let release: (result: RequestResult) => void = () => {};
+      held = new Promise((resolve) => {
+        release = resolve;
+      });
+      return release;
     },
   };
 }

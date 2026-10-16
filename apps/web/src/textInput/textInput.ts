@@ -24,19 +24,29 @@ export const textInputSurface: Surface = {
       status.dataset.tone = tone;
     };
 
+    let busy = false;
+    const setBusy = (value: boolean) => {
+      busy = value;
+      input.disabled = value;
+      button.disabled = value;
+    };
+
     const send = async (text: string) => {
+      setBusy(true);
       try {
         const { text: message, tone } = describeResult(await context.requests.submit(text));
         show(message, tone);
       } catch (error) {
         show(error instanceof Error ? error.message : String(error), "error");
+      } finally {
+        setBusy(false);
       }
     };
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const text = input.value.trim();
-      if (text === "") return;
+      if (busy || text === "") return;
       input.value = "";
       void send(text);
     });

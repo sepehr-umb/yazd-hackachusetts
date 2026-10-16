@@ -72,4 +72,21 @@ describe("textInputSurface", () => {
     expect(status.textContent).toBe("Failed to fetch");
     expect(status.dataset.tone).toBe("error");
   });
+
+  it("disables the box and button while a request is in flight and re-enables them after", async () => {
+    const { context, input, button, submit, settle } = mounted();
+    const release = context.holdReply();
+
+    submit("به مامان زنگ بزن");
+    expect(input.disabled).toBe(true);
+    expect(button.disabled).toBe(true);
+
+    submit("again");
+    expect(context.submitted).toEqual(["به مامان زنگ بزن"]);
+
+    release({ status: "succeeded", agent: "comms", reply: "ok" });
+    await settle();
+    expect(input.disabled).toBe(false);
+    expect(button.disabled).toBe(false);
+  });
 });
