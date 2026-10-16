@@ -25,4 +25,9 @@ describe("composeFace", () => {
     expect(half.mouthWidth).toBeCloseTo(0.5, 5);
     expect(half.mouthRound).toBeCloseTo(0.5, 5);
   });
+
+  it("closes the eyes for whichever is more closed, the expression or the blink", () => {
+    expect(composeFace(base, silent, 0.8).blink).toBeCloseTo(0.8, 5);
+    expect(composeFace({ ...base, blink: 0.9 }, silent, 0.3).blink).toBeCloseTo(0.9, 5);
+  });
 });
