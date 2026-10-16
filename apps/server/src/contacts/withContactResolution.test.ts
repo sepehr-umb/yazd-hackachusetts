@@ -27,4 +27,16 @@ describe("withContactResolution", () => {
     expect(result).toEqual({ ok: false, error: 'No contact matches "Zebediah"' });
     expect(calls).toEqual([]);
   });
+
+  it("fails without dialing and lists the candidates when the name is ambiguous", async () => {
+    const { tools, calls } = setup();
+
+    const result = await tools.call_contact.execute({ contact: "احمدی" });
+
+    expect(result).toEqual({
+      ok: false,
+      error: 'Several contacts match "احمدی": حسین احمدی, حسن احمدی',
+    });
+    expect(calls).toEqual([]);
+  });
 });
