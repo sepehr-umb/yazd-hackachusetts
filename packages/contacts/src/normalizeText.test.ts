@@ -29,4 +29,8 @@ describe("normalizeText", () => {
   it("makes a zero-width non-joiner and a space equivalent", () => {
     expect(normalizeText("علی\u200C رضا")).toBe(normalizeText("علی رضا"));
   });
+
+  it("lowercases Latin text", () => {
+    expect(normalizeText("Sara  JOHNSON")).toBe("sara johnson");
+  });
 });
