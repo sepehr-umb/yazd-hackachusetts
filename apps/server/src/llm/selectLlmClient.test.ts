@@ -51,4 +51,13 @@ describe("selectLlmClient", () => {
     expect(urls).toEqual(["https://openrouter.ai/api/v1/chat/completions"]);
     expect(bodies[0]?.model).toBe("anthropic/test-model");
   });
+
+  it.each([
+    [{ OPENROUTER_API_KEY: "sk-test" }],
+    [{ OPENROUTER_API_KEY: "sk-test", LLM_MODEL: " " }],
+  ])("refuses to start when the key is set but LLM_MODEL is not (%j)", (env) => {
+    expect(() => selectLlmClient(env)).toThrow(
+      "LLM_MODEL must be set when OPENROUTER_API_KEY is set",
+    );
+  });
 });
