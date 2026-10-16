@@ -15,7 +15,7 @@ const routeTool: LlmToolSchema = {
 };
 
 const routerSystem =
-  "You route spoken requests from an elderly Farsi-speaking user to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages. home: lights and other smart home devices. media: the TV, playing, pausing or finding shows and videos. clarifier: the request is ambiguous or missing a detail.";
+  "You route spoken requests from an elderly user, in whatever language they speak, to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages. home: lights and other smart home devices. media: the TV, playing, pausing or finding shows and videos. clarifier: the request is ambiguous or missing a detail.";
 
 export async function routeRequest(
   llm: LlmClient,

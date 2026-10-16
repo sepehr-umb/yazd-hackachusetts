@@ -7,6 +7,9 @@ import { readQuestion } from "./readQuestion";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
 import { toolSchemas } from "./toolSchemas";
+import { validateToolInput } from "./validateToolInput";
+
+export const MAX_TOOL_TURNS = 5;
 
 type SubAgentDeps = { llm: LlmClient; tools: ToolSet; bus: EventBus };
 
@@ -18,6 +21,8 @@ export async function runSubAgent(
   const definition = agentDefinitions[agent];
   const schemas = definition.tools.map((name) => toolSchemas[name]);
   const messages: LlmMessage[] = [{ role: "user", content: transcript }];
+
+  let toolTurns = 0;
 
   for (;;) {
     const response = await deps.llm.complete({
@@ -35,6 +40,11 @@ export async function runSubAgent(
       return { status: "succeeded", agent, reply };
     }
 
+    toolTurns += 1;
+    if (toolTurns > MAX_TOOL_TURNS) {
+      return { status: "failed", agent, failure: { reason: "too_many_steps" } };
+    }
+
     messages.push({ role: "assistant", content: response.content });
     const results: LlmToolResultBlock[] = [];
     for (const toolUse of toolUses) {
@@ -46,6 +56,13 @@ export async function runSubAgent(
         };
       }
       const toolName = toolUse.name;
+      if (!validateToolInput(toolSchemas[toolName].inputSchema, toolUse.input)) {
+        return {
+          status: "failed",
+          agent,
+          failure: { reason: "invalid_tool_call", tool: toolName },
+        };
+      }
       deps.bus.emit({ type: "tool_call", tool: toolName, status: "started" });
       const result = await executeTool(deps.tools, toolName, toolUse.input);
       const fail = (error: string): OrchestratorResult => {

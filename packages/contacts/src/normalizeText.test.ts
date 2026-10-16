@@ -10,6 +10,18 @@ describe("normalizeText", () => {
     expect(normalizeText("كريم")).toBe("کریم");
   });
 
+  it.each([
+    ["أ", "hamza above"],
+    ["إ", "hamza below"],
+    ["آ", "madda"],
+  ])("replaces alef with %s (%s) with a plain alef", (variant) => {
+    expect(normalizeText(`${variant}حمد`)).toBe("احمد");
+  });
+
+  it("replaces teh marbuta with heh", () => {
+    expect(normalizeText("فاطمة")).toBe("فاطمه");
+  });
+
   it("strips Arabic diacritics", () => {
     expect(normalizeText("مُحَمَّد")).toBe("محمد");
   });

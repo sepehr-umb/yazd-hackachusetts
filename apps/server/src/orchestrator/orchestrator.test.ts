@@ -204,6 +204,86 @@ describe("orchestrator", () => {
       },
     );
 
+    describe("tool input validation", () => {
+      function callMomWithInput(toolName: string, input: Record<string, unknown>) {
+        const conversation = structuredClone(callMom) as RecordedConversation;
+        const toolUse = conversation.responses[1]?.content[0];
+        if (toolUse?.type === "tool_use") {
+          toolUse.name = toolName;
+          toolUse.input = input;
+        }
+        return conversation;
+      }
+
+      it.each([
+        ["a required field is missing", "call_contact", {}],
+        ["a field has the wrong type", "call_contact", { contact: 42 }],
+      ])(
+        "fails with invalid_tool_call and never runs the tool when %s",
+        async (_why, name, input) => {
+          const conversation = callMomWithInput(name, input);
+          const { tools, calls } = createStubTools();
+          const bus = createRecordingEventBus();
+          const orchestrator = createOrchestrator({
+            llm: createReplayLlmClient(conversation.responses),
+            tools,
+            bus,
+          });
+
+          const result = await orchestrator.handle(conversation.transcript);
+
+          expect(result).toEqual({
+            status: "failed",
+            agent: "comms",
+            failure: { reason: "invalid_tool_call", tool: name },
+          });
+          expect(calls).toEqual([]);
+          expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
+        },
+      );
+    });
+
+    describe("step cap", () => {
+      function endlessCallConversation(toolTurns: number): LlmResponse[] {
+        const callMomConversation = callMom as RecordedConversation;
+        const [routing, toolTurn] = callMomConversation.responses as [LlmResponse, LlmResponse];
+        const finalReply = callMomConversation.responses.at(-1) as LlmResponse;
+        return [routing, ...Array.from({ length: toolTurns }, () => toolTurn), finalReply];
+      }
+
+      it("fails with too_many_steps on the sixth tool-use turn without running it", async () => {
+        const { tools, calls } = createStubTools();
+        const bus = createRecordingEventBus();
+        const orchestrator = createOrchestrator({
+          llm: createReplayLlmClient(endlessCallConversation(6)),
+          tools,
+          bus,
+        });
+
+        const result = await orchestrator.handle("به مامان زنگ بزن");
+
+        expect(result).toEqual({
+          status: "failed",
+          agent: "comms",
+          failure: { reason: "too_many_steps" },
+        });
+        expect(calls).toHaveLength(5);
+        expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
+      });
+
+      it("still succeeds when the fifth tool-use turn is the last", async () => {
+        const orchestrator = createOrchestrator({
+          llm: createReplayLlmClient(endlessCallConversation(5)),
+          tools: createStubTools().tools,
+          bus: createRecordingEventBus(),
+        });
+
+        const result = await orchestrator.handle("به مامان زنگ بزن");
+
+        expect(result.status).toBe("succeeded");
+      });
+    });
+
     it("treats a throwing tool as a failed tool", async () => {
       const conversation = callMom as RecordedConversation;
       const bus = createRecordingEventBus();

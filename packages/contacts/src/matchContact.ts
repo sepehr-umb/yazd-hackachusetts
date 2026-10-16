@@ -5,6 +5,13 @@ import type { Contact, ContactMatch, MatchOptions } from "./types";
 export const DEFAULT_THRESHOLD = 0.6;
 export const DEFAULT_AMBIGUITY_MARGIN = 0.05;
 
+const scoreContact = (normalizedQuery: string, contact: Contact): number =>
+  Math.max(
+    ...[contact.name, ...(contact.aliases ?? [])].map((label) =>
+      scoreName(normalizedQuery, normalizeText(label)),
+    ),
+  );
+
 export const matchContact = (
   query: string,
   contacts: Contact[],
@@ -14,7 +21,7 @@ export const matchContact = (
   const candidates = contacts
     .map((contact) => ({
       contact,
-      score: scoreName(normalizedQuery, normalizeText(contact.name)),
+      score: scoreContact(normalizedQuery, contact),
     }))
     .filter((candidate) => candidate.score >= threshold)
     .sort((a, b) => b.score - a.score);

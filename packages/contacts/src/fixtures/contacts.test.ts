@@ -58,4 +58,24 @@ describe("matchContact against the fixture contacts", () => {
   it("returns no match for a name that is not in the list", () => {
     expect(matchContact("زهرا", fixtureContacts).candidates).toEqual([]);
   });
+
+  it("resolves a Farsi alias to its contact without ambiguity", () => {
+    const result = matchContact("مامان", fixtureContacts);
+    expect(result.candidates[0]?.contact.name).toBe("فاطمه");
+    expect(result.ambiguous).toBe(false);
+  });
+
+  it("resolves a Latin alias to its contact regardless of case", () => {
+    const result = matchContact("MOM", fixtureContacts);
+    expect(result.candidates[0]?.contact.name).toBe("فاطمه");
+    expect(result.ambiguous).toBe(false);
+  });
+
+  it("resolves an alias saved with a hamza-carrying alef", () => {
+    expect(topName("اقا جون")).toBe("علي كريمي");
+  });
+
+  it("resolves a Latin alias for another contact", () => {
+    expect(topName("dad")).toBe("حسین احمدی");
+  });
 });

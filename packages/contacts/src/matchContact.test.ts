@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { matchContact } from "./matchContact";
 import type { Contact } from "./types";
 
-const contact = (id: string, name: string): Contact => ({ id, name });
+const contact = (id: string, name: string, aliases?: string[]): Contact =>
+  aliases ? { id, name, aliases } : { id, name };
 
 describe("matchContact", () => {
   it("returns an exact name match with a score of 1", () => {
@@ -70,5 +71,39 @@ describe("matchContact", () => {
     expect(result.candidates).toHaveLength(1);
     expect(result.candidates[0]?.score).toBeGreaterThanOrEqual(0.6);
     expect(result.candidates[0]?.score).toBeLessThan(1);
+  });
+
+  describe("aliases", () => {
+    it("matches a contact by an alias with a score of 1", () => {
+      const maryam = contact("1", "مریم کریمی", ["مامان"]);
+      const result = matchContact("مامان", [maryam]);
+      expect(result.candidates).toEqual([{ contact: maryam, score: 1 }]);
+    });
+
+    it("still matches the contact by its name", () => {
+      const maryam = contact("1", "مریم کریمی", ["مامان"]);
+      expect(matchContact("مریم کریمی", [maryam]).candidates).toEqual([
+        { contact: maryam, score: 1 },
+      ]);
+    });
+
+    it("lists a contact once, scored by its best match across name and aliases", () => {
+      const maryam = contact("1", "مریم کریمی", ["مامان", "مامانی"]);
+      const result = matchContact("مامان", [maryam]);
+      expect(result.candidates).toHaveLength(1);
+      expect(result.candidates[0]?.score).toBe(1);
+    });
+
+    it("matches a Latin alias regardless of case", () => {
+      const maryam = contact("1", "مریم کریمی", ["Mom"]);
+      expect(matchContact("mom", [maryam]).candidates[0]?.score).toBe(1);
+    });
+
+    it("ranks an alias match above a weaker name match on another contact", () => {
+      const other = contact("1", "مامانی رضایی");
+      const maryam = contact("2", "مریم کریمی", ["مامان"]);
+      const result = matchContact("مامان", [other, maryam]);
+      expect(result.candidates[0]?.contact.id).toBe("2");
+    });
   });
 });
