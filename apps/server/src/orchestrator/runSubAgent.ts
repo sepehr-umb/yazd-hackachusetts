@@ -3,6 +3,7 @@ import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock } from "./llmClient";
 import { agentDefinitions } from "./agents";
 import { executeTool } from "./executeTool";
+import { readQuestion } from "./readQuestion";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
 import { toolSchemas } from "./toolSchemas";
@@ -47,22 +48,22 @@ export async function runSubAgent(
       const toolName = toolUse.name;
       deps.bus.emit({ type: "tool_call", tool: toolName, status: "started" });
       const result = await executeTool(deps.tools, toolName, toolUse.input);
-      if (!result.ok) {
+      const fail = (error: string): OrchestratorResult => {
         deps.bus.emit({ type: "tool_call", tool: toolName, status: "failed" });
         return {
           status: "failed",
           agent,
-          failure: { reason: "tool_failed", tool: toolName, error: result.error },
+          failure: { reason: "tool_failed", tool: toolName, error },
         };
+      };
+      if (!result.ok) return fail(result.error);
+      if (toolName === "ask_for_clarification") {
+        const question = readQuestion(result.output);
+        if (question === undefined) return fail("No question returned");
+        deps.bus.emit({ type: "tool_call", tool: toolName, status: "succeeded" });
+        return { status: "clarification", agent: "clarifier", question };
       }
       deps.bus.emit({ type: "tool_call", tool: toolName, status: "succeeded" });
-      if (toolUse.name === "ask_for_clarification") {
-        return {
-          status: "clarification",
-          agent: "clarifier",
-          question: String(result.output?.question),
-        };
-      }
       results.push({
         type: "tool_result",
         toolUseId: toolUse.id,

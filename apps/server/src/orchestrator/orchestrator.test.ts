@@ -282,5 +282,33 @@ describe("orchestrator", () => {
       expect(calls).toEqual([]);
       expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
     });
+
+    it("fails instead of speaking an empty clarification", async () => {
+      const conversation = ambiguousTurnOn as RecordedConversation;
+      const tools = {
+        ...createStubTools().tools,
+        ask_for_clarification: {
+          name: "ask_for_clarification" as const,
+          execute: async () => ({ ok: true as const }),
+        },
+      };
+      const orchestrator = createOrchestrator({
+        llm: createReplayLlmClient(conversation.responses),
+        tools,
+        bus: createRecordingEventBus(),
+      });
+
+      const result = await orchestrator.handle(conversation.transcript);
+
+      expect(result).toEqual({
+        status: "failed",
+        agent: "clarifier",
+        failure: {
+          reason: "tool_failed",
+          tool: "ask_for_clarification",
+          error: "No question returned",
+        },
+      });
+    });
   });
 });
