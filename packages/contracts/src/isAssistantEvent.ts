@@ -31,6 +31,10 @@ export function isAssistantEvent(value: unknown): value is AssistantEvent {
       return isOneOf(states, value.state);
     case "agent":
       return isOneOf(agents, value.agent);
+    case "transcript":
+      return typeof value.text === "string";
+    case "speech":
+      return typeof value.audioUrl === "string";
     default:
       return false;
   }

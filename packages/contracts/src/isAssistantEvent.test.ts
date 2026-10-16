@@ -39,4 +39,20 @@ describe("isAssistantEvent", () => {
   it("rejects an agent event with an unknown agent", () => {
     expect(isAssistantEvent({ type: "agent", agent: "banker" })).toBe(false);
   });
+
+  it("accepts a transcript event with Farsi text", () => {
+    expect(isAssistantEvent({ type: "transcript", text: "به مادرم زنگ بزن" })).toBe(true);
+  });
+
+  it("rejects a transcript event whose text is not a string", () => {
+    expect(isAssistantEvent({ type: "transcript", text: 7 })).toBe(false);
+  });
+
+  it("accepts a speech event with an audio url", () => {
+    expect(isAssistantEvent({ type: "speech", audioUrl: "/audio/1.mp3" })).toBe(true);
+  });
+
+  it("rejects a speech event with no audio url", () => {
+    expect(isAssistantEvent({ type: "speech" })).toBe(false);
+  });
 });
