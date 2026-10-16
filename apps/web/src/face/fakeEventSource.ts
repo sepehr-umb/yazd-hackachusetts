@@ -11,6 +11,7 @@ export type FakeEventSource = {
 export function createFakeEventSource({ dwellMs = 3000 }: { dwellMs?: number } = {}): FakeEventSource {
   const listeners = new Set<EventListener>();
   let index = 0;
+  let timer: ReturnType<typeof setInterval> | undefined;
 
   const emit = (event: AssistantEvent) => listeners.forEach((listener) => listener(event));
   const emitCurrentState = () => emit({ type: "state", state: assistantStates[index] ?? "idle" });
@@ -21,12 +22,16 @@ export function createFakeEventSource({ dwellMs = 3000 }: { dwellMs?: number } =
       return () => listeners.delete(listener);
     },
     start() {
+      if (timer !== undefined) return;
       emitCurrentState();
-      setInterval(() => {
+      timer = setInterval(() => {
         index = (index + 1) % assistantStates.length;
         emitCurrentState();
       }, dwellMs);
     },
-    stop() {},
+    stop() {
+      clearInterval(timer);
+      timer = undefined;
+    },
   };
 }

@@ -33,4 +33,36 @@ describe("createFakeEventSource", () => {
       "idle",
     ]);
   });
+
+  it("stops emitting once stopped", () => {
+    const source = createFakeEventSource({ dwellMs: 1000 });
+    const events = collect(source);
+    source.start();
+    source.stop();
+    vi.advanceTimersByTime(5000);
+    expect(events).toHaveLength(1);
+  });
+
+  it("does not double its pace when started twice", () => {
+    const source = createFakeEventSource({ dwellMs: 1000 });
+    const events = collect(source);
+    source.start();
+    source.start();
+    vi.advanceTimersByTime(2000);
+    expect(events.map((event) => event.type === "state" && event.state)).toEqual([
+      "idle",
+      "listening",
+      "thinking",
+    ]);
+  });
+
+  it("stops delivering to a listener that unsubscribed", () => {
+    const source = createFakeEventSource({ dwellMs: 1000 });
+    const heard: AssistantEvent[] = [];
+    const unsubscribe = source.subscribe((event) => heard.push(event));
+    source.start();
+    unsubscribe();
+    vi.advanceTimersByTime(3000);
+    expect(heard).toHaveLength(1);
+  });
 });
