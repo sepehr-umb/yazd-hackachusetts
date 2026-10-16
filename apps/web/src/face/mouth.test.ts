@@ -51,4 +51,11 @@ describe("mouthFromSpectrum", () => {
     const ee = spectrum(1500, 3800, 220);
     expect(mouthFromSpectrum(ee, HZ_PER_BIN).round).toBeLessThan(0.2);
   });
+
+  it("narrows the mouth as it rounds", () => {
+    const oo = mouthFromSpectrum(spectrum(100, 700, 220), HZ_PER_BIN);
+    const ee = mouthFromSpectrum(spectrum(1500, 3800, 220), HZ_PER_BIN);
+    expect(oo.width).toBeLessThan(ee.width);
+    expect(oo.width).toBeGreaterThan(0.3);
+  });
 });

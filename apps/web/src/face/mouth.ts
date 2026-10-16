@@ -6,6 +6,7 @@ const SPEECH_HIGH_HZ = 4000;
 const VOWEL_SPLIT_HZ = 800;
 const NOISE_FLOOR = 0.05;
 const GAIN = 2.5;
+const ROUND_NARROWING = 0.6;
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
@@ -26,5 +27,5 @@ export function mouthFromSpectrum(bins: ArrayLike<number>, hzPerBin: number): Mo
   const low = meanLevel(bins, hzPerBin, SPEECH_LOW_HZ, VOWEL_SPLIT_HZ);
   const high = meanLevel(bins, hzPerBin, VOWEL_SPLIT_HZ, SPEECH_HIGH_HZ);
   const round = low + high === 0 ? 0 : low / (low + high);
-  return { open: clamp01((level - NOISE_FLOOR) * GAIN), width: 1, round };
+  return { open: clamp01((level - NOISE_FLOOR) * GAIN), width: 1 - ROUND_NARROWING * round, round };
 }
