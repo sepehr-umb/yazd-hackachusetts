@@ -55,4 +55,32 @@ describe("createLiveEventSource", () => {
       { type: "agent", agent: "comms" },
     ]);
   });
+
+  it.each(["not json", "42", '{"type":"dance"}', '{"type":"state","state":"asleep"}'])(
+    "ignores the message %s and keeps delivering later events",
+    (garbage) => {
+      const { source, received, socket } = setup();
+      source.start();
+
+      socket().receive(garbage);
+      socket().receive(JSON.stringify({ type: "state", state: "idle" }));
+
+      expect(received).toEqual([{ type: "state", state: "idle" }]);
+    },
+  );
+
+  it("stops delivering to a listener after it unsubscribes", () => {
+    const { source, socket } = setup();
+    const kept: AssistantEvent[] = [];
+    const dropped: AssistantEvent[] = [];
+    source.subscribe((event) => kept.push(event));
+    const unsubscribe = source.subscribe((event) => dropped.push(event));
+    source.start();
+
+    unsubscribe();
+    socket().receive(JSON.stringify({ type: "state", state: "idle" }));
+
+    expect(kept).toHaveLength(1);
+    expect(dropped).toEqual([]);
+  });
 });

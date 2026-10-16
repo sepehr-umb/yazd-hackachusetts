@@ -9,6 +9,15 @@ export type LiveEventSourceConfig = {
   reconnectDelayMs?: number;
 };
 
+function parseEvent(data: unknown) {
+  try {
+    const event: unknown = JSON.parse(String(data));
+    return isAssistantEvent(event) ? event : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function createLiveEventSource({
   url,
   createSocket = (target) => new WebSocket(target),
@@ -20,8 +29,8 @@ export function createLiveEventSource({
   const connect = () => {
     socket = createSocket(url);
     socket.onmessage = (message) => {
-      const event: unknown = JSON.parse(String(message.data));
-      if (isAssistantEvent(event)) listeners.forEach((listener) => listener(event));
+      const event = parseEvent(message.data);
+      if (event) listeners.forEach((listener) => listener(event));
     };
   };
 
