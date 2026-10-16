@@ -208,4 +208,15 @@ describe("createOpenRouterLlmClient", () => {
       "OpenRouter returned invalid arguments for call_contact",
     );
   });
+
+  it.each([[{}], [{ choices: [] }]])(
+    "throws when the response %j holds no completion",
+    async (body) => {
+      const { client } = clientWith({ body });
+
+      await expect(client.complete(weatherRequest)).rejects.toThrow(
+        "OpenRouter returned no completion",
+      );
+    },
+  );
 });

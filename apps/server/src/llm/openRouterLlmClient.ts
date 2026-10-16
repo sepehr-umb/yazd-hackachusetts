@@ -14,7 +14,7 @@ const DEFAULT_BASE_URL = "https://openrouter.ai/api/v1";
 type ChatToolCall = { id: string; function: { name: string; arguments: string } };
 
 type ChatCompletion = {
-  choices: Array<{ message: { content: string | null; tool_calls?: ChatToolCall[] } }>;
+  choices?: Array<{ message: { content: string | null; tool_calls?: ChatToolCall[] } }>;
 };
 
 function parseArguments({ name, arguments: raw }: ChatToolCall["function"]) {
@@ -26,9 +26,10 @@ function parseArguments({ name, arguments: raw }: ChatToolCall["function"]) {
 }
 
 function fromChatCompletion(completion: ChatCompletion): LlmResponse {
-  const message = completion.choices[0]?.message;
-  const toolCalls = message?.tool_calls ?? [];
-  const text: LlmTextBlock[] = message?.content ? [{ type: "text", text: message.content }] : [];
+  const message = completion.choices?.[0]?.message;
+  if (!message) throw new Error("OpenRouter returned no completion");
+  const toolCalls = message.tool_calls ?? [];
+  const text: LlmTextBlock[] = message.content ? [{ type: "text", text: message.content }] : [];
   const toolUses: LlmToolUseBlock[] = toolCalls.map((call) => ({
     type: "tool_use",
     id: call.id,
