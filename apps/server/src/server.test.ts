@@ -58,4 +58,24 @@ describe("POST /request", () => {
       { type: "agent", agent: "orchestrator" },
     ]);
   });
+
+  it.each(["{}", '{"text":42}', '{"text":""}', '{"text":"   "}', "null", '"به مامان زنگ بزن"'])(
+    "rejects the JSON body %s with 400 and does not run the orchestrator",
+    async (payload) => {
+      const { app, hub } = setup();
+      const events: AssistantEvent[] = [];
+      hub.subscribe((event) => events.push(event));
+
+      const response = await app.inject({
+        method: "POST",
+        url: "/request",
+        payload,
+        headers: { "content-type": "application/json" },
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toEqual({ error: 'Body must be { "text": a non-empty string }' });
+      expect(events).toEqual([]);
+    },
+  );
 });
