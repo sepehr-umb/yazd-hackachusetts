@@ -1,3 +1,4 @@
+import type { AssistantEvent } from "@mahmood/contracts";
 import { afterEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { createEventHub } from "./events/eventHub";
@@ -42,5 +43,19 @@ describe("POST /request", () => {
       reply: "دارم به مامان زنگ می‌زنم",
     });
     expect(calls).toEqual([{ tool: "call_contact", input: { contact: "مامان" } }]);
+  });
+
+  it("announces the typed text as a transcript event before the orchestrator starts", async () => {
+    const { app, hub } = setup();
+    const events: AssistantEvent[] = [];
+    hub.subscribe((event) => events.push(event));
+
+    await app.inject({ method: "POST", url: "/request", payload: { text: "به مامان زنگ بزن" } });
+
+    expect(events.slice(0, 3)).toEqual([
+      { type: "transcript", text: "به مامان زنگ بزن" },
+      { type: "state", state: "thinking" },
+      { type: "agent", agent: "orchestrator" },
+    ]);
   });
 });
