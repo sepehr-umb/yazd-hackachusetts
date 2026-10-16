@@ -8,12 +8,18 @@ export type MountSurfacesConfig = {
 };
 
 export function mountSurfaces({ registry, settings, root, context }: MountSurfacesConfig): Unmount {
+  const mounted: Array<{ host: HTMLElement; unmount: Unmount }> = [];
   for (const surface of registry) {
     if (settings.surfaces[surface.id] !== true) continue;
     const host = root.ownerDocument.createElement("section");
     host.dataset.surface = surface.id;
     root.append(host);
-    surface.mount(host, context);
+    mounted.push({ host, unmount: surface.mount(host, context) });
   }
-  return () => {};
+  return () => {
+    for (const { host, unmount } of mounted.splice(0)) {
+      unmount();
+      host.remove();
+    }
+  };
 }

@@ -37,4 +37,33 @@ describe("mountSurfaces", () => {
       "text surface",
     ]);
   });
+
+  it("does not mount a surface the settings do not mention", () => {
+    const root = document.createElement("div");
+
+    mountSurfaces({
+      registry: [labelledSurface("face")],
+      settings: { surfaces: {} },
+      root,
+      context,
+    });
+
+    expect(root.querySelectorAll("section")).toHaveLength(0);
+  });
+
+  it("unmounts every mounted surface and removes its section", () => {
+    const root = document.createElement("div");
+    const log: string[] = [];
+
+    const unmount = mountSurfaces({
+      registry: [labelledSurface("face", log), labelledSurface("panel", log)],
+      settings: { surfaces: { face: true, panel: true } },
+      root,
+      context,
+    });
+    unmount();
+
+    expect(log).toEqual(["mount face", "mount panel", "unmount face", "unmount panel"]);
+    expect(root.querySelectorAll("section")).toHaveLength(0);
+  });
 });
