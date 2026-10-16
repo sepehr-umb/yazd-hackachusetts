@@ -89,4 +89,42 @@ describe("createOpenRouterLlmClient", () => {
       content: [{ type: "text", text: "دارم به مامان زنگ می‌زنم" }],
     });
   });
+
+  it("maps tool calls to tool_use blocks with parsed input", async () => {
+    const { client } = clientWith({
+      body: {
+        choices: [
+          {
+            finish_reason: "tool_calls",
+            message: {
+              role: "assistant",
+              content: null,
+              tool_calls: [
+                {
+                  id: "call_1",
+                  type: "function",
+                  function: { name: "call_contact", arguments: '{"contact":"مامان"}' },
+                },
+                {
+                  id: "call_2",
+                  type: "function",
+                  function: { name: "set_light", arguments: '{"room":"hall","on":true}' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    const response = await client.complete(weatherRequest);
+
+    expect(response).toEqual({
+      stopReason: "tool_use",
+      content: [
+        { type: "tool_use", id: "call_1", name: "call_contact", input: { contact: "مامان" } },
+        { type: "tool_use", id: "call_2", name: "set_light", input: { room: "hall", on: true } },
+      ],
+    });
+  });
 });

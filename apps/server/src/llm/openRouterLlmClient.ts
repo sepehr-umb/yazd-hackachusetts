@@ -1,4 +1,5 @@
 import type { LlmClient, LlmRequest, LlmResponse } from "../orchestrator";
+import type { LlmTextBlock, LlmToolUseBlock } from "../orchestrator/llmClient";
 
 export type OpenRouterConfig = {
   apiKey: string;
@@ -9,11 +10,26 @@ export type OpenRouterConfig = {
 
 const DEFAULT_BASE_URL = "https://openrouter.ai/api/v1";
 
-type ChatCompletion = { choices: Array<{ message: { content: string | null } }> };
+type ChatToolCall = { id: string; function: { name: string; arguments: string } };
+
+type ChatCompletion = {
+  choices: Array<{ message: { content: string | null; tool_calls?: ChatToolCall[] } }>;
+};
 
 function fromChatCompletion(completion: ChatCompletion): LlmResponse {
-  const text = completion.choices[0]?.message.content;
-  return { content: text ? [{ type: "text", text }] : [], stopReason: "end_turn" };
+  const message = completion.choices[0]?.message;
+  const toolCalls = message?.tool_calls ?? [];
+  const text: LlmTextBlock[] = message?.content ? [{ type: "text", text: message.content }] : [];
+  const toolUses: LlmToolUseBlock[] = toolCalls.map((call) => ({
+    type: "tool_use",
+    id: call.id,
+    name: call.function.name,
+    input: JSON.parse(call.function.arguments) as Record<string, unknown>,
+  }));
+  return {
+    content: [...text, ...toolUses],
+    stopReason: toolUses.length > 0 ? "tool_use" : "end_turn",
+  };
 }
 
 function toChatRequest(model: string, request: LlmRequest) {
