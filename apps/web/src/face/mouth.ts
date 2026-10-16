@@ -1,3 +1,5 @@
+import { easeToward } from "./blend";
+
 export type MouthShape = { open: number; width: number; round: number };
 
 const BYTE_MAX = 255;
@@ -28,4 +30,28 @@ export function mouthFromSpectrum(bins: ArrayLike<number>, hzPerBin: number): Mo
   const high = meanLevel(bins, hzPerBin, VOWEL_SPLIT_HZ, SPEECH_HIGH_HZ);
   const round = low + high === 0 ? 0 : low / (low + high);
   return { open: clamp01((level - NOISE_FLOOR) * GAIN), width: 1 - ROUND_NARROWING * round, round };
+}
+
+export type MouthSmootherConfig = { attackRate?: number; releaseRate?: number; shapeRate?: number };
+
+export type MouthSmoother = { update(target: MouthShape, dt: number): MouthShape };
+
+export function createMouthSmoother({
+  attackRate = 60,
+  releaseRate = 10,
+  shapeRate = 20,
+}: MouthSmootherConfig = {}): MouthSmoother {
+  let current: MouthShape = { open: 0, width: 1, round: 0 };
+
+  return {
+    update(target, dt) {
+      const openRate = target.open > current.open ? attackRate : releaseRate;
+      current = {
+        open: easeToward(current.open, target.open, dt, openRate),
+        width: easeToward(current.width, target.width, dt, shapeRate),
+        round: easeToward(current.round, target.round, dt, shapeRate),
+      };
+      return current;
+    },
+  };
 }

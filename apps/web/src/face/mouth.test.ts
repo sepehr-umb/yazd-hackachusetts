@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mouthFromSpectrum } from "./mouth";
+import { createMouthSmoother, mouthFromSpectrum, type MouthShape } from "./mouth";
 
 const HZ_PER_BIN = 50;
 
@@ -57,5 +57,21 @@ describe("mouthFromSpectrum", () => {
     const ee = mouthFromSpectrum(spectrum(1500, 3800, 220), HZ_PER_BIN);
     expect(oo.width).toBeLessThan(ee.width);
     expect(oo.width).toBeGreaterThan(0.3);
+  });
+});
+
+describe("createMouthSmoother", () => {
+  const closed: MouthShape = { open: 0, width: 1, round: 0 };
+  const wide: MouthShape = { open: 1, width: 1, round: 0 };
+
+  it("opens faster than it closes", () => {
+    const opening = createMouthSmoother();
+    const rise = opening.update(wide, 0.03).open;
+
+    const closing = createMouthSmoother();
+    closing.update(wide, 5);
+    const fall = 1 - closing.update(closed, 0.03).open;
+
+    expect(rise).toBeGreaterThan(fall);
   });
 });
