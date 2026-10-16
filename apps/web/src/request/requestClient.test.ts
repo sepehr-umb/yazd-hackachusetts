@@ -29,4 +29,18 @@ describe("createRequestClient", () => {
     expect(calls[0]?.init.headers).toEqual({ "content-type": "application/json" });
     expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ text: "به مامان زنگ بزن" });
   });
+
+  it("throws the server's error message when the request is rejected", async () => {
+    const { fetchImpl } = fakeFetch({ status: 400, body: { error: "Body must be text" } });
+    const client = createRequestClient({ fetch: fetchImpl });
+
+    await expect(client.submit("")).rejects.toThrow("Body must be text");
+  });
+
+  it("throws when the response is not a request result", async () => {
+    const { fetchImpl } = fakeFetch({ body: { hello: "world" } });
+    const client = createRequestClient({ fetch: fetchImpl });
+
+    await expect(client.submit("hi")).rejects.toThrow("Unexpected response from the server");
+  });
 });

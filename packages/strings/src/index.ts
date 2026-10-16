@@ -1,4 +1,7 @@
 export const strings = {
+  request: {
+    unexpectedResponse: "Unexpected response from the server",
+  },
   activity: {
     title: "Activity",
     empty: "Nothing yet",
