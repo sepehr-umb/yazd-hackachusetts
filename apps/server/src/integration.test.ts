@@ -79,4 +79,31 @@ describe("typed request end to end", () => {
       { type: "state", state: "speaking" },
     ]);
   });
+
+  it("broadcasts a failed tool call and the error state when the contact is ambiguous", async () => {
+    const { port } = await startApp();
+    const { until } = await connectToEvents(port);
+
+    const response = await postRequest(port, "به احمدی زنگ بزن");
+    const events = await until(reachedFinalState);
+
+    expect(await response.json()).toEqual({
+      status: "failed",
+      agent: "comms",
+      failure: {
+        reason: "tool_failed",
+        tool: "call_contact",
+        error: 'Several contacts match "احمدی": حسین احمدی, حسن احمدی',
+      },
+    });
+    expect(events).toEqual([
+      { type: "transcript", text: "به احمدی زنگ بزن" },
+      { type: "state", state: "thinking" },
+      { type: "agent", agent: "orchestrator" },
+      { type: "agent", agent: "comms" },
+      { type: "tool_call", tool: "call_contact", status: "started" },
+      { type: "tool_call", tool: "call_contact", status: "failed" },
+      { type: "state", state: "error" },
+    ]);
+  });
 });
