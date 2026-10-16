@@ -1,20 +1,5 @@
-import type { AgentName, AssistantEvent, AssistantState } from "./events";
-
-const states: readonly string[] = [
-  "idle",
-  "listening",
-  "thinking",
-  "speaking",
-  "error",
-] satisfies AssistantState[];
-
-const agents: readonly string[] = [
-  "orchestrator",
-  "comms",
-  "home",
-  "media",
-  "clarifier",
-] satisfies AgentName[];
+import { agentNames, assistantStates, toolCallStatuses } from "./events";
+import type { AssistantEvent } from "./events";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -28,11 +13,13 @@ export function isAssistantEvent(value: unknown): value is AssistantEvent {
   if (!isRecord(value)) return false;
   switch (value.type) {
     case "state":
-      return isOneOf(states, value.state);
+      return isOneOf(assistantStates, value.state);
     case "agent":
-      return isOneOf(agents, value.agent);
+      return isOneOf(agentNames, value.agent);
     case "transcript":
       return typeof value.text === "string";
+    case "tool_call":
+      return typeof value.tool === "string" && isOneOf(toolCallStatuses, value.status);
     case "speech":
       return typeof value.audioUrl === "string";
     default:

@@ -1,8 +1,12 @@
-export type AssistantState = "idle" | "listening" | "thinking" | "speaking" | "error";
+export const assistantStates = ["idle", "listening", "thinking", "speaking", "error"] as const;
+export const agentNames = ["orchestrator", "comms", "home", "media", "clarifier"] as const;
+export const toolCallStatuses = ["started", "succeeded", "failed"] as const;
 
-export type AgentName = "orchestrator" | "comms" | "home" | "media" | "clarifier";
+export type AssistantState = (typeof assistantStates)[number];
 
-export type ToolCallStatus = "started" | "succeeded" | "failed";
+export type AgentName = (typeof agentNames)[number];
+
+export type ToolCallStatus = (typeof toolCallStatuses)[number];
 
 export type AssistantEvent =
   | { type: "state"; state: AssistantState }

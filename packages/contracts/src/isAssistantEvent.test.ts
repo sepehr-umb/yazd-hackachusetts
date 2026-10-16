@@ -55,4 +55,18 @@ describe("isAssistantEvent", () => {
   it("rejects a speech event with no audio url", () => {
     expect(isAssistantEvent({ type: "speech" })).toBe(false);
   });
+
+  it.each(["started", "succeeded", "failed"])("accepts a tool_call with status %s", (status) => {
+    expect(isAssistantEvent({ type: "tool_call", tool: "set_light", status })).toBe(true);
+  });
+
+  it("rejects a tool_call with an unknown status", () => {
+    expect(isAssistantEvent({ type: "tool_call", tool: "set_light", status: "paused" })).toBe(
+      false,
+    );
+  });
+
+  it("rejects a tool_call whose tool is not a string", () => {
+    expect(isAssistantEvent({ type: "tool_call", tool: 1, status: "started" })).toBe(false);
+  });
 });
