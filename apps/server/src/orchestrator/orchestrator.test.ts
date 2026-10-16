@@ -9,6 +9,7 @@ import callMom from "./fixtures/callMom.json";
 import ambiguousTurnOn from "./fixtures/ambiguousTurnOn.json";
 import lightOn from "./fixtures/lightOn.json";
 import pauseTv from "./fixtures/pauseTv.json";
+import unroutable from "./fixtures/unroutable.json";
 
 function lastText(conversation: RecordedConversation): string {
   const last = conversation.responses.at(-1) as LlmResponse;
@@ -231,6 +232,27 @@ describe("orchestrator", () => {
       });
       expect(bus.events.slice(-2)).toEqual([
         { type: "tool_call", tool: "call_contact", status: "failed" },
+        { type: "state", state: "error" },
+      ]);
+    });
+
+    it("fails when the model picks no valid agent", async () => {
+      const conversation = unroutable as RecordedConversation;
+      const bus = createRecordingEventBus();
+      const { tools, calls } = createStubTools();
+      const orchestrator = createOrchestrator({
+        llm: createReplayLlmClient(conversation.responses),
+        tools,
+        bus,
+      });
+
+      const result = await orchestrator.handle(conversation.transcript);
+
+      expect(result).toEqual({ status: "failed", failure: { reason: "unroutable" } });
+      expect(calls).toEqual([]);
+      expect(bus.events).toEqual([
+        { type: "state", state: "thinking" },
+        { type: "agent", agent: "orchestrator" },
         { type: "state", state: "error" },
       ]);
     });
