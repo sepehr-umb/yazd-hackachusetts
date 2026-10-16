@@ -6,3 +6,4 @@ export type { OrchestratorFailure, OrchestratorResult, SubAgentName } from "./re
 export type { Tool, ToolSet } from "./tool";
 export { createStubTools } from "./stubTools";
 export type { RecordedToolCall, StubToolOptions, StubTools } from "./stubTools";
+export { routeToolName } from "./routeRequest";

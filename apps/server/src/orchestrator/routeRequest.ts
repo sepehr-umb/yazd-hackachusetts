@@ -4,8 +4,10 @@ import type { SubAgentName } from "./result";
 
 const routableAgents = Object.keys(agentDefinitions) as SubAgentName[];
 
+export const routeToolName = "route_to_agent";
+
 const routeTool: LlmToolSchema = {
-  name: "route_to_agent",
+  name: routeToolName,
   description: "Choose the sub-agent that should handle the user's request.",
   inputSchema: {
     type: "object",
