@@ -1,3 +1,4 @@
+import type { ToolName, ToolResult } from "@mahmood/contracts";
 import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock, LlmToolSchema } from "./llmClient";
 import { agentDefinitions } from "./agents";
@@ -36,10 +37,18 @@ export async function runSubAgent(
     const results: LlmToolResultBlock[] = [];
     for (const toolUse of toolUses) {
       const tool = deps.tools[toolUse.name as keyof ToolSet] as {
-        execute(input: unknown): Promise<{ ok: boolean; output?: Record<string, unknown> }>;
+        execute(input: unknown): Promise<ToolResult>;
       };
       deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "started" });
       const result = await tool.execute(toolUse.input);
+      if (!result.ok) {
+        deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "failed" });
+        return {
+          status: "failed",
+          agent,
+          failure: { reason: "tool_failed", tool: toolUse.name as ToolName, error: result.error },
+        };
+      }
       deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "succeeded" });
       if (toolUse.name === "ask_for_clarification") {
         return {

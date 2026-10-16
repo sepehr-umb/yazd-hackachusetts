@@ -17,7 +17,7 @@ export function createOrchestrator(deps: OrchestratorDeps): Orchestrator {
       const agent = await routeRequest(deps.llm, transcript);
       deps.bus.emit({ type: "agent", agent });
       const result = await runSubAgent(deps, agent, transcript);
-      deps.bus.emit({ type: "state", state: "speaking" });
+      deps.bus.emit({ type: "state", state: result.status === "failed" ? "error" : "speaking" });
       return result;
     },
   };
