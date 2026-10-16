@@ -1,22 +1,28 @@
-import { matchContact } from "@mahmood/contacts";
+import type { ToolInputs, ToolResult } from "@mahmood/contracts";
 import type { Contact } from "@mahmood/contacts";
 import type { Tool, ToolSet } from "../orchestrator";
+import { resolveContact } from "./resolveContact";
 
-export function withContactResolution(tools: ToolSet, contacts: Contact[]): ToolSet {
-  const callContact: Tool<"call_contact"> = {
-    name: "call_contact",
-    async execute(input) {
-      const { candidates, ambiguous } = matchContact(input.contact, contacts);
-      const [match] = candidates;
-      if (!match) return { ok: false, error: `No contact matches "${input.contact}"` };
-      if (ambiguous) {
-        const names = candidates.map((candidate) => candidate.contact.name).join(", ");
-        return { ok: false, error: `Several contacts match "${input.contact}": ${names}` };
-      }
-      const name = match.contact.name;
-      const result = await tools.call_contact.execute({ contact: name });
-      return result.ok ? { ok: true, output: { ...result.output, contact: name } } : result;
+type ContactTool = "call_contact" | "send_message";
+
+function resolving<N extends ContactTool>(tool: Tool<N>, contacts: Contact[]): Tool<N> {
+  return {
+    name: tool.name,
+    async execute(input: ToolInputs[N]): Promise<ToolResult> {
+      const resolution = resolveContact(input.contact, contacts);
+      if (!resolution.ok) return resolution;
+      const result = await tool.execute({ ...input, contact: resolution.name });
+      return result.ok
+        ? { ok: true, output: { ...result.output, contact: resolution.name } }
+        : result;
     },
   };
-  return { ...tools, call_contact: callContact };
+}
+
+export function withContactResolution(tools: ToolSet, contacts: Contact[]): ToolSet {
+  return {
+    ...tools,
+    call_contact: resolving(tools.call_contact, contacts),
+    send_message: resolving(tools.send_message, contacts),
+  };
 }

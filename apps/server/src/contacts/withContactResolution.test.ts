@@ -19,6 +19,17 @@ describe("withContactResolution", () => {
     expect(calls).toEqual([{ tool: "call_contact", input: { contact: "فاطمه" } }]);
   });
 
+  it("sends the message to the matched contact by its stored name", async () => {
+    const { tools, calls } = setup();
+
+    const result = await tools.send_message.execute({ contact: "بابا", text: "سلام" });
+
+    expect(result).toEqual({ ok: true, output: { contact: "حسین احمدی" } });
+    expect(calls).toEqual([
+      { tool: "send_message", input: { contact: "حسین احمدی", text: "سلام" } },
+    ]);
+  });
+
   it("fails without dialing when nobody in the address book matches", async () => {
     const { tools, calls } = setup();
 
