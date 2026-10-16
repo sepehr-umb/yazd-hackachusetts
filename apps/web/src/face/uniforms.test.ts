@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import type { FaceParams } from "./faceParams";
 import { uniformsFor } from "./uniforms";
 
-const face: FaceParams = { mouthOpen: 0.3, mouthWidth: 0.7, mouthRound: 0.2, blink: 0.5, browRaise: -0.4 };
+const face: FaceParams = {
+  mouthOpen: 0.3,
+  mouthWidth: 0.7,
+  mouthRound: 0.2,
+  blink: 0.5,
+  browRaise: -0.4,
+};
 
 describe("uniformsFor", () => {
   it("names each face param and the clock after its shader uniform", () => {

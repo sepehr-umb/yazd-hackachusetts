@@ -3,7 +3,9 @@ import { createFaceAnimator } from "./faceAnimator";
 import { startFaceLoop } from "./faceLoop";
 import type { FaceUniforms } from "./uniforms";
 
-function harness(options: { getAudio?: () => { bins: ArrayLike<number>; hzPerBin: number } | null } = {}) {
+function harness(
+  options: { getAudio?: () => { bins: ArrayLike<number>; hzPerBin: number } | null } = {},
+) {
   const drawn: FaceUniforms[] = [];
   let pending: ((timestampMs: number) => void) | undefined;
   const animator = createFaceAnimator({ random: () => 0.5 });

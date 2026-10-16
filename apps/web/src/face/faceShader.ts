@@ -46,10 +46,10 @@ void main() {
   vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / (0.5 * scale);
   p.y -= 0.012 * sin(uTime * 1.3);
 
-  float anger = max(-uBrowRaise, 0.0);
+  float worry = max(-uBrowRaise, 0.0);
 
   vec3 background = mix(vec3(0.05, 0.07, 0.15), vec3(0.11, 0.14, 0.27), 0.5 + 0.5 * p.y);
-  vec3 skin = mix(vec3(1.0, 0.83, 0.58), vec3(1.0, 0.55, 0.45), anger * 0.7);
+  vec3 skin = mix(vec3(1.0, 0.83, 0.58), vec3(0.93, 0.80, 0.74), worry * 0.6);
   skin *= 1.0 - 0.18 * dot(p, p);
   vec3 ink = vec3(0.17, 0.10, 0.11);
   vec3 mouthInside = vec3(0.30, 0.06, 0.09);
@@ -69,9 +69,9 @@ void main() {
   color = mix(color, vec3(1.0), coverage(glintDistance, edge));
 
   vec2 browP = vec2(abs(p.x), p.y);
-  float lift = uBrowRaise * 0.09;
-  vec2 browInner = vec2(0.17, 0.40 + lift - anger * 0.07);
-  vec2 browOuter = vec2(0.44, 0.40 + lift + anger * 0.03);
+  float lift = uBrowRaise * 0.16;
+  vec2 browInner = vec2(0.17, 0.40 + lift + worry * 0.10);
+  vec2 browOuter = vec2(0.44, 0.40 + lift - worry * 0.04);
   color = mix(color, ink, coverage(sdCapsule(browP, browInner, browOuter, 0.018), edge));
 
   float bend = (uMouthWidth - 0.45) * 1.1 * (1.0 - uMouthOpen) * (1.0 - uMouthRound);

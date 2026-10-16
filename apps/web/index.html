@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mahmood face</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0d1226;
+        overflow: hidden;
+        font-family: system-ui, sans-serif;
+      }
+      canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      #controls {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        padding: 0 16px;
+      }
+      #controls button {
+        font: inherit;
+        font-size: 16px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 2px solid #5c6aa8;
+        background: #1a2145;
+        color: #e8ecff;
+        cursor: pointer;
+      }
+      #controls button[aria-pressed="true"] {
+        background: #ffd28a;
+        border-color: #ffd28a;
+        color: #2a1a1c;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="face"></canvas>
+    <div id="controls"></div>
+    <script type="module" src="/src/devPage.ts"></script>
+  </body>
+</html>

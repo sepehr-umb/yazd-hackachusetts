@@ -8,7 +8,9 @@ export type FakeEventSource = {
   stop(): void;
 };
 
-export function createFakeEventSource({ dwellMs = 3000 }: { dwellMs?: number } = {}): FakeEventSource {
+export function createFakeEventSource({
+  dwellMs = 3000,
+}: { dwellMs?: number } = {}): FakeEventSource {
   const listeners = new Set<EventListener>();
   let index = 0;
   let timer: ReturnType<typeof setInterval> | undefined;
