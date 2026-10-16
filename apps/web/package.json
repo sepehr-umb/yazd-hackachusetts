@@ -9,7 +9,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@mahmood/contracts": "*"
+    "@mahmood/contracts": "*",
+    "@mahmood/strings": "*"
   },
   "devDependencies": {
     "vite": "^8.3.4"
