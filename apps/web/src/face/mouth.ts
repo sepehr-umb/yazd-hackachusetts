@@ -3,6 +3,7 @@ export type MouthShape = { open: number; width: number; round: number };
 const BYTE_MAX = 255;
 const SPEECH_LOW_HZ = 80;
 const SPEECH_HIGH_HZ = 4000;
+const VOWEL_SPLIT_HZ = 800;
 const NOISE_FLOOR = 0.05;
 const GAIN = 2.5;
 
@@ -22,5 +23,8 @@ function meanLevel(bins: ArrayLike<number>, hzPerBin: number, fromHz: number, to
 
 export function mouthFromSpectrum(bins: ArrayLike<number>, hzPerBin: number): MouthShape {
   const level = meanLevel(bins, hzPerBin, SPEECH_LOW_HZ, SPEECH_HIGH_HZ);
-  return { open: clamp01((level - NOISE_FLOOR) * GAIN), width: 1, round: 0 };
+  const low = meanLevel(bins, hzPerBin, SPEECH_LOW_HZ, VOWEL_SPLIT_HZ);
+  const high = meanLevel(bins, hzPerBin, VOWEL_SPLIT_HZ, SPEECH_HIGH_HZ);
+  const round = low + high === 0 ? 0 : low / (low + high);
+  return { open: clamp01((level - NOISE_FLOOR) * GAIN), width: 1, round };
 }

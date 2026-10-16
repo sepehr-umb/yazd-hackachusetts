@@ -41,4 +41,14 @@ describe("mouthFromSpectrum", () => {
     expect(mouthFromSpectrum(bins, HZ_PER_BIN).open).toBeGreaterThan(0);
     expect(mouthFromSpectrum(bins, 200).open).toBe(0);
   });
+
+  it("rounds the lips for low-frequency vowels", () => {
+    const oo = spectrum(100, 700, 220);
+    expect(mouthFromSpectrum(oo, HZ_PER_BIN).round).toBeGreaterThan(0.8);
+  });
+
+  it("keeps the lips unrounded for bright high-frequency sounds", () => {
+    const ee = spectrum(1500, 3800, 220);
+    expect(mouthFromSpectrum(ee, HZ_PER_BIN).round).toBeLessThan(0.2);
+  });
 });
