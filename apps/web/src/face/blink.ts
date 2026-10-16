@@ -28,6 +28,11 @@ export function createBlinkScheduler({
         blinking = true;
         blinkTime = -untilBlink;
       }
+      if (blinkTime >= duration) {
+        blinking = false;
+        untilBlink = nextInterval() - (blinkTime - duration);
+        return 0;
+      }
       return Math.sin((Math.PI * blinkTime) / duration);
     },
   };

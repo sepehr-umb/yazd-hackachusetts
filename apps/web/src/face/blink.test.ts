@@ -9,4 +9,16 @@ describe("createBlinkScheduler", () => {
     expect(blink.update(2)).toBeCloseTo(0, 5);
     expect(blink.update(0.08)).toBeCloseTo(1, 5);
   });
+
+  it("keeps the eyes open until the interval has elapsed", () => {
+    const blink = createBlinkScheduler({ ...config, random: () => 0 });
+    expect(blink.update(1.9)).toBe(0);
+  });
+
+  it("reopens the eyes when the blink ends", () => {
+    const blink = createBlinkScheduler({ ...config, random: () => 0 });
+    blink.update(2);
+    expect(blink.update(0.16)).toBe(0);
+    expect(blink.update(0.01)).toBe(0);
+  });
 });
