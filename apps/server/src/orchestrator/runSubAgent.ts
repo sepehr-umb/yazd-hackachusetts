@@ -1,7 +1,8 @@
-import type { ToolName, ToolResult } from "@mahmood/contracts";
+import type { ToolName } from "@mahmood/contracts";
 import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock } from "./llmClient";
 import { agentDefinitions } from "./agents";
+import { executeTool } from "./executeTool";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
 import { toolSchemas } from "./toolSchemas";
@@ -36,11 +37,8 @@ export async function runSubAgent(
     messages.push({ role: "assistant", content: response.content });
     const results: LlmToolResultBlock[] = [];
     for (const toolUse of toolUses) {
-      const tool = deps.tools[toolUse.name as keyof ToolSet] as {
-        execute(input: unknown): Promise<ToolResult>;
-      };
       deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "started" });
-      const result = await tool.execute(toolUse.input);
+      const result = await executeTool(deps.tools, toolUse.name as ToolName, toolUse.input);
       if (!result.ok) {
         deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "failed" });
         return {

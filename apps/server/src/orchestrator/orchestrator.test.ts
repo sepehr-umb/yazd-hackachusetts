@@ -169,4 +169,38 @@ describe("orchestrator", () => {
       ]);
     });
   });
+
+  describe("when execution goes wrong", () => {
+    it("treats a throwing tool as a failed tool", async () => {
+      const conversation = callMom as RecordedConversation;
+      const bus = createRecordingEventBus();
+      const stubs = createStubTools();
+      const tools = {
+        ...stubs.tools,
+        call_contact: {
+          name: "call_contact" as const,
+          execute: async (): Promise<never> => {
+            throw new Error("device shell crashed");
+          },
+        },
+      };
+      const orchestrator = createOrchestrator({
+        llm: createReplayLlmClient(conversation.responses),
+        tools,
+        bus,
+      });
+
+      const result = await orchestrator.handle(conversation.transcript);
+
+      expect(result).toEqual({
+        status: "failed",
+        agent: "comms",
+        failure: { reason: "tool_failed", tool: "call_contact", error: "device shell crashed" },
+      });
+      expect(bus.events.slice(-2)).toEqual([
+        { type: "tool_call", tool: "call_contact", status: "failed" },
+        { type: "state", state: "error" },
+      ]);
+    });
+  });
 });
