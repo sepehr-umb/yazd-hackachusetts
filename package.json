@@ -10,14 +10,17 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "eval": "vitest run --config vitest.eval.config.ts",
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "concurrently -n server,web -c blue,green \"npm run dev -w @mahmood/server\" \"npm run dev -w @mahmood/web\"",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
+    "concurrently": "^10.0.6",
     "eslint": "^10.13.0",
+    "happy-dom": "^21.0.3",
     "prettier": "^3.9.10",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2",

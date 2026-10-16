@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "types": []
+    "types": ["node"]
   },
   "include": ["apps/*/src", "packages/*/src", "*.config.ts"]
 }
