@@ -9,6 +9,16 @@ This repo serves three deliverables:
 - Graphics (WebGL) class final project: the face
 - Hackathon demo
 
+## Direction
+
+The long-term goal is an open-source, extensible accessibility tool. Users choose which features they use, and eventually build their own extensions, with agent help, to fit their needs.
+
+Not in scope yet. Build nothing for it now. But when choosing between designs:
+- Prefer registries and data over hardcoded lists.
+- Every user-facing surface (face, activity panel, text input, voice button) is independent and can be turned off.
+- The AssistantEvent stream is the public seam. Surfaces consume it and never reach into the server.
+- Features read from a user profile, not from constants.
+
 ## Architecture
 
 ```
