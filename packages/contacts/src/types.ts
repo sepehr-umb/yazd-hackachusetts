@@ -12,3 +12,7 @@ export type ContactMatch = {
   candidates: ContactCandidate[];
   ambiguous: boolean;
 };
+
+export type MatchOptions = {
+  threshold?: number;
+};
