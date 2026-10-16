@@ -28,4 +28,15 @@ describe("isAssistantEvent", () => {
       expect(isAssistantEvent({ type: "state", state })).toBe(true);
     },
   );
+
+  it.each(["orchestrator", "comms", "home", "media", "clarifier"])(
+    "accepts the %s agent",
+    (agent) => {
+      expect(isAssistantEvent({ type: "agent", agent })).toBe(true);
+    },
+  );
+
+  it("rejects an agent event with an unknown agent", () => {
+    expect(isAssistantEvent({ type: "agent", agent: "banker" })).toBe(false);
+  });
 });
