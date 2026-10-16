@@ -19,6 +19,7 @@ export const activityPanelSurface: Surface = {
       const { text, tone } = describeEvent(event);
       const item = document.createElement("li");
       item.textContent = text;
+      item.dir = "auto";
       item.dataset.tone = tone;
       list.append(item);
       while (list.children.length > MAX_ENTRIES) list.firstElementChild?.remove();

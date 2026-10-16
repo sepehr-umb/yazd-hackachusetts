@@ -89,4 +89,11 @@ describe("textInputSurface", () => {
     expect(input.disabled).toBe(false);
     expect(button.disabled).toBe(false);
   });
+
+  it("lets the box and the status line pick their own text direction", () => {
+    const { input, status } = mounted();
+
+    expect(input.getAttribute("dir")).toBe("auto");
+    expect(status.getAttribute("dir")).toBe("auto");
+  });
 });

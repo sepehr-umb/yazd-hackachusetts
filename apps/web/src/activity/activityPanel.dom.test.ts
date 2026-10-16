@@ -60,4 +60,12 @@ describe("activityPanelSurface", () => {
     expect(context.listenerCount()).toBe(0);
     expect(host.children).toHaveLength(0);
   });
+
+  it("lets each entry pick its own text direction so Farsi and English both read correctly", () => {
+    const { context, host } = mounted();
+
+    context.emit({ type: "transcript", text: "به مامان زنگ بزن" });
+
+    expect(host.querySelector("li")?.getAttribute("dir")).toBe("auto");
+  });
 });

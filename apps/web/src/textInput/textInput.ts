@@ -10,12 +10,14 @@ export const textInputSurface: Surface = {
     const form = document.createElement("form");
     const input = document.createElement("input");
     input.type = "text";
+    input.dir = "auto";
     input.setAttribute("aria-label", strings.textInput.label);
     const button = document.createElement("button");
     button.type = "submit";
     button.textContent = strings.textInput.send;
     const status = document.createElement("p");
     status.setAttribute("role", "status");
+    status.dir = "auto";
     form.append(input, button);
     host.append(form, status);
 
