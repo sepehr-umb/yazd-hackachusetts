@@ -16,4 +16,9 @@ describe("mouthFromSpectrum", () => {
   it("is closed for silence", () => {
     expect(mouthFromSpectrum(new Uint8Array(256), HZ_PER_BIN).open).toBe(0);
   });
+
+  it("opens fully for loud energy across the speech band", () => {
+    const loud = spectrum(80, 4000, 255);
+    expect(mouthFromSpectrum(loud, HZ_PER_BIN).open).toBe(1);
+  });
 });
