@@ -126,6 +126,10 @@ npm run dev
 - Small modules with one job each.
 - Prefer pure functions. Push side effects to the edges.
 - User-facing strings live in one place (`packages/strings`), never inline.
+- User-facing strings live in one place (`packages/strings`), never inline.
+- No speculative abstractions. Build only what the current prompt asks for.
+- Prefer deleting code to adding it.
+- Keep files under 150 lines. Split by responsibility when one grows past that.
 
 ## Secrets
 
