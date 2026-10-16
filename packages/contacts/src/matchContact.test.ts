@@ -63,4 +63,12 @@ describe("matchContact", () => {
   it("does not flag an empty result", () => {
     expect(matchContact("حسین احمدی", []).ambiguous).toBe(false);
   });
+
+  it("matches a first name against a full contact name, below an exact match", () => {
+    const hossein = contact("1", "حسین احمدی");
+    const result = matchContact("حسین", [hossein]);
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]?.score).toBeGreaterThanOrEqual(0.6);
+    expect(result.candidates[0]?.score).toBeLessThan(1);
+  });
 });
