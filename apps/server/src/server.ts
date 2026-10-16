@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import { WebSocketServer } from "ws";
 import type { FastifyInstance } from "fastify";
 import type { EventHub } from "./events/eventHub";
 import type { Orchestrator } from "./orchestrator";
@@ -16,6 +17,17 @@ function readText(body: unknown): string | undefined {
 
 export function createServer({ orchestrator, hub }: ServerDeps): FastifyInstance {
   const app = Fastify();
+  const sockets = new WebSocketServer({ server: app.server, path: "/events" });
+
+  sockets.on("connection", (socket) => {
+    const unsubscribe = hub.subscribe((event) => socket.send(JSON.stringify(event)));
+    socket.on("close", unsubscribe);
+  });
+
+  app.addHook("onClose", async () => {
+    for (const socket of sockets.clients) socket.terminate();
+    await new Promise<void>((resolve) => sockets.close(() => resolve()));
+  });
 
   app.post("/request", async (request, reply) => {
     const text = readText(request.body);
