@@ -74,4 +74,21 @@ describe("createMouthSmoother", () => {
 
     expect(rise).toBeGreaterThan(fall);
   });
+
+  it("settles on the target given enough time", () => {
+    const smoother = createMouthSmoother();
+    const settled = smoother.update({ open: 0.7, width: 0.5, round: 0.9 }, 10);
+    expect(settled.open).toBeCloseTo(0.7, 3);
+    expect(settled.width).toBeCloseTo(0.5, 3);
+    expect(settled.round).toBeCloseTo(0.9, 3);
+  });
+
+  it("does not jump the lip shape in a single frame", () => {
+    const smoother = createMouthSmoother();
+    const step = smoother.update({ open: 1, width: 0.4, round: 1 }, 1 / 60);
+    expect(step.round).toBeGreaterThan(0);
+    expect(step.round).toBeLessThan(1);
+    expect(step.width).toBeLessThan(1);
+    expect(step.width).toBeGreaterThan(0.4);
+  });
 });
