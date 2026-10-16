@@ -14,6 +14,11 @@ export const agentDefinitions: Partial<Record<SubAgentName, AgentDefinition>> = 
       "You control smart home devices for an elderly Farsi-speaking user. Use the tools to act on the request. After the tool succeeds, confirm in one short Farsi sentence.",
     tools: ["set_light"],
   },
+  media: {
+    system:
+      "You control the TV and media playback for an elderly Farsi-speaking user. Use the tools to act on the request. After the tool succeeds, confirm in one short Farsi sentence.",
+    tools: ["media_control"],
+  },
   clarifier: {
     system:
       "The user's request was ambiguous. Call ask_for_clarification once with one short Farsi question that resolves the ambiguity. Do not guess.",

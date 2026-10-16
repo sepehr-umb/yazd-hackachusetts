@@ -1,3 +1,4 @@
+import { mediaActions } from "@mahmood/contracts";
 import type { ToolName } from "@mahmood/contracts";
 import type { LlmToolSchema } from "./llmClient";
 
@@ -22,6 +23,18 @@ export const toolSchemas: Partial<Record<ToolName, LlmToolSchema>> = {
         brightness: { type: "number", minimum: 0, maximum: 100 },
       },
       required: ["room", "on"],
+    },
+  },
+  media_control: {
+    name: "media_control",
+    description: "Control TV playback, or start something by title.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        action: { type: "string", enum: mediaActions },
+        query: { type: "string", description: "Title to play, when the user named one" },
+      },
+      required: ["action"],
     },
   },
   ask_for_clarification: {

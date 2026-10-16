@@ -8,6 +8,7 @@ import type { RecordedConversation } from "./testing/replayLlmClient";
 import callMom from "./fixtures/callMom.json";
 import ambiguousTurnOn from "./fixtures/ambiguousTurnOn.json";
 import lightOn from "./fixtures/lightOn.json";
+import pauseTv from "./fixtures/pauseTv.json";
 
 function lastText(conversation: RecordedConversation): string {
   const last = conversation.responses.at(-1) as LlmResponse;
@@ -86,6 +87,21 @@ describe("orchestrator", () => {
       },
     ]);
     expect(llm.requests).toHaveLength(2);
+  });
+
+  it("routes a TV request to media and controls playback", async () => {
+    const conversation = pauseTv as RecordedConversation;
+    const { tools, calls } = createStubTools();
+    const orchestrator = createOrchestrator({
+      llm: createReplayLlmClient(conversation.responses),
+      tools,
+      bus: createRecordingEventBus(),
+    });
+
+    const result = await orchestrator.handle(conversation.transcript);
+
+    expect(result).toEqual({ status: "succeeded", agent: "media", reply: lastText(conversation) });
+    expect(calls).toEqual([{ tool: "media_control", input: { action: "pause" } }]);
   });
 
   describe("when a tool fails", () => {

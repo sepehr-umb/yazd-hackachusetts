@@ -1,0 +1,31 @@
+{
+  "transcript": "تلویزیون را متوقف کن",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "media" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_media_1",
+          "name": "media_control",
+          "input": { "action": "pause" }
+        }
+      ]
+    },
+    {
+      "stopReason": "end_turn",
+      "content": [{ "type": "text", "text": "تلویزیون متوقف شد" }]
+    }
+  ]
+}
