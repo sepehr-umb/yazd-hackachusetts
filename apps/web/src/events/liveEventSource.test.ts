@@ -83,4 +83,20 @@ describe("createLiveEventSource", () => {
     expect(kept).toHaveLength(1);
     expect(dropped).toEqual([]);
   });
+
+  it("reconnects after the reconnect delay when the socket drops", () => {
+    vi.useFakeTimers();
+    const { source, received, socket } = setup();
+    source.start();
+    const first = socket();
+
+    first.drop();
+    vi.advanceTimersByTime(999);
+    expect(FakeSocket.instances).toHaveLength(1);
+
+    vi.advanceTimersByTime(1);
+    expect(FakeSocket.instances).toHaveLength(2);
+    socket().receive(JSON.stringify({ type: "state", state: "idle" }));
+    expect(received).toEqual([{ type: "state", state: "idle" }]);
+  });
 });

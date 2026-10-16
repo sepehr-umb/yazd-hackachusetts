@@ -32,6 +32,9 @@ export function createLiveEventSource({
       const event = parseEvent(message.data);
       if (event) listeners.forEach((listener) => listener(event));
     };
+    socket.onclose = () => {
+      setTimeout(connect, reconnectDelayMs);
+    };
   };
 
   return {
