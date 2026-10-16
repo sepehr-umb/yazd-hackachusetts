@@ -6,6 +6,10 @@ export const strings = {
     unroutable: "The assistant does not know how to help with that",
     llmError: (message: string) => `The language model failed: ${message}`,
   },
+  textInput: {
+    label: "Type a request",
+    send: "Send",
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },

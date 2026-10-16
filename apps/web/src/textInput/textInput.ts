@@ -1,0 +1,32 @@
+import { strings } from "@mahmood/strings";
+import type { Surface } from "../surfaces/surface";
+
+export const textInputSurface: Surface = {
+  id: "textInput",
+  mount(host, context) {
+    const document = host.ownerDocument;
+    const form = document.createElement("form");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.setAttribute("aria-label", strings.textInput.label);
+    const button = document.createElement("button");
+    button.type = "submit";
+    button.textContent = strings.textInput.send;
+    const status = document.createElement("p");
+    status.setAttribute("role", "status");
+    form.append(input, button);
+    host.append(form, status);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      input.value = "";
+      void context.requests.submit(text);
+    });
+
+    return () => {
+      form.remove();
+      status.remove();
+    };
+  },
+};
