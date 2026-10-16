@@ -13,4 +13,10 @@ describe("expressionFor", () => {
   it("thinking pinches the mouth rounder than idle", () => {
     expect(expressionFor("thinking").mouthRound).toBeGreaterThan(expressionFor("idle").mouthRound);
   });
+
+  it("speaking leaves mouth opening to the audio and smiles wider than idle", () => {
+    const speaking = expressionFor("speaking");
+    expect(speaking.mouthOpen).toBe(0);
+    expect(speaking.mouthWidth).toBeGreaterThan(expressionFor("idle").mouthWidth);
+  });
 });

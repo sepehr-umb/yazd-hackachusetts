@@ -7,7 +7,7 @@ const expressions: Record<AssistantState, FaceParams> = {
   idle,
   listening: { ...idle, browRaise: 0.6 },
   thinking: { ...idle, mouthWidth: 0.35, mouthRound: 0.5, browRaise: 0.25 },
-  speaking: idle,
+  speaking: { ...idle, mouthWidth: 0.7, browRaise: 0.15 },
   error: idle,
 };
 
