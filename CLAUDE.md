@@ -1,4 +1,4 @@
-# Project Mahmood
+# Project Yazd
 
 A language-agnostic voice assistant built as a suite of agents. The user speaks a request. An orchestrator agent routes it to a sub-agent that acts: call or message a contact, control smart home devices, control the TV. An animated face on screen shows what the assistant is doing and moves its mouth when it speaks.
 
