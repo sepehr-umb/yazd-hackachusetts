@@ -1,8 +1,8 @@
 # Project Mahmood
 
-A Farsi voice assistant built as a suite of agents. The user speaks a request. An orchestrator agent routes it to a sub-agent that acts: call or message a contact, control smart home devices, control the TV. An animated face on screen shows what the assistant is doing and moves its mouth when it speaks.
+A language-agnostic voice assistant built as a suite of agents. The user speaks a request. An orchestrator agent routes it to a sub-agent that acts: call or message a contact, control smart home devices, control the TV. An animated face on screen shows what the assistant is doing and moves its mouth when it speaks.
 
-The primary user is an elderly Farsi speaker with near-total vision loss and limited dexterity. Audio feedback is the main interface. The face is a secondary interface for sighted users and for demos.
+The primary user is an elderly person who does not speak English, with low vision and limited dexterity. The reference user is a Farsi speaker. The assistant understands and replies in whatever language the user speaks. Audio feedback is the main interface. The face is a secondary interface for sighted users and for demos.
 
 This repo serves three deliverables:
 - Agentic AI class project
@@ -28,12 +28,12 @@ mic → frontend → backend (STT) → orchestrator → sub-agent → tool → r
 | Agent | Responsibility |
 |---|---|
 | Orchestrator | Classifies intent, picks a sub-agent, handles failures and retries |
-| Comms | Calls and messages. Fuzzy-matches Farsi contact names |
+| Comms | Calls and messages. Fuzzy-matches contact names in any script |
 | Home | Smart home control through Home Assistant |
 | Media | TV and Jellyfin control |
 | Clarifier | Asks a short follow-up question when a request is ambiguous |
 
-The orchestrator and sub-agents run on the Claude API with tool use.
+The orchestrator and sub-agents run on Claude models through OpenRouter with tool use, behind the `LlmClient` interface.
 
 ### Tools
 
@@ -70,7 +70,7 @@ The face must work against a fake event source with no backend running.
 
 - Stylized, not realistic. Built from shapes driven by shader uniforms.
 - States map to expressions: idle, listening, thinking, speaking, error.
-- Mouth opening is driven by playback amplitude from a Web Audio `AnalyserNode`, smoothed with fast attack and slow release. This is language-agnostic and works for Farsi.
+- Mouth opening is driven by playback amplitude from a Web Audio `AnalyserNode`, smoothed with fast attack and slow release. This is language-agnostic and works for any language.
 - Viseme lip sync is a later upgrade, not a requirement.
 - Rendering logic lives in pure, testable modules (state machine, amplitude smoothing, expression blending). The WebGL draw code stays thin.
 
@@ -88,14 +88,14 @@ Rules:
 - Never change a test to make it pass unless the test itself was wrong. Say so explicitly when that happens.
 - Show the red run output before the green run output.
 - One behavior per cycle. Small steps.
-- Mock only at the boundaries: Anthropic API, OpenAI API, Home Assistant, Jellyfin, the device shell. Never mock the module under test.
+- Mock only at the boundaries: OpenRouter API, Home Assistant, Jellyfin, the device shell. Never mock the module under test.
 - Agent routing is tested with recorded model responses as fixtures. Live-model evaluation runs in a separate suite (`npm run eval`) and is not part of the default test run.
 - Shader code is checked visually. Everything feeding the shader is unit tested.
 
 ## Stack
 
 - TypeScript everywhere, npm workspaces monorepo
-- Backend: Node, Fastify, `ws`, Anthropic SDK, OpenAI SDK (Whisper STT)
+- Backend: Node, Fastify, `ws`, OpenRouter (OpenAI-compatible API) for the LLM, speech-to-text and text-to-speech
 - Frontend: Vite, WebGL2, Web Audio API
 - Tests: Vitest
 - Lint and format: ESLint, Prettier
@@ -115,13 +115,14 @@ npm run dev
 - No code comments. Code explains itself through names and structure.
 - Small modules with one job each.
 - Prefer pure functions. Push side effects to the edges.
-- Farsi strings live in one place (`packages/strings`), never inline.
+- User-facing strings live in one place (`packages/strings`), never inline.
 
 ## Secrets
 
 - Keys live in `.env`, which is gitignored. Never commit keys.
 - `.env.example` lists every variable with an empty value.
-- Variables: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `HA_URL`, `HA_TOKEN`, `JELLYFIN_URL`, `JELLYFIN_TOKEN`.
+- Variables: `OPENROUTER_API_KEY`, `LLM_MODEL`, `STT_MODEL`, `TTS_MODEL`, `HA_URL`, `HA_TOKEN`, `JELLYFIN_URL`, `JELLYFIN_TOKEN`.
+- Every OpenRouter client is used only when `OPENROUTER_API_KEY` is set. Without it, the app runs on stubs and replay fixtures.
 
 ## Do not
 
