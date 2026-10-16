@@ -11,6 +11,8 @@ export type FaceLoopConfig = {
 
 export type FaceLoop = { stop(): void };
 
+const MAX_FRAME_SECONDS = 0.1;
+
 export function startFaceLoop({
   animator,
   renderer,
@@ -24,7 +26,7 @@ export function startFaceLoop({
 
   const onFrame = (timestampMs: number) => {
     startMs ??= timestampMs;
-    const dt = (timestampMs - (previousMs || timestampMs)) / 1000;
+    const dt = Math.min((timestampMs - (previousMs || timestampMs)) / 1000, MAX_FRAME_SECONDS);
     previousMs = timestampMs;
     const time = (timestampMs - startMs) / 1000;
     renderer.render(uniformsFor(animator.update(dt, getAudio()), time));

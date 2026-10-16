@@ -35,4 +35,29 @@ describe("startFaceLoop", () => {
     frame(7000);
     expect(drawn.map((uniforms) => uniforms.uTime)).toEqual([0, 0.5, 2]);
   });
+
+  it("caps a long gap such as a hidden tab so the face never lurches", () => {
+    const { animator, drawn, frame } = harness();
+    frame(1000);
+    animator.apply({ type: "state", state: "listening" });
+    frame(60000);
+    expect(drawn).toHaveLength(2);
+    const eased = 0.6 * (1 - Math.exp(-6 * 0.1));
+    expect(animator.update(0, null).browRaise).toBeLessThanOrEqual(eased + 1e-9);
+  });
+
+  it("feeds playback audio to the mouth", () => {
+    const loud = { bins: new Uint8Array(256).fill(230), hzPerBin: 50 };
+    const { animator, drawn, frame } = harness({ getAudio: () => loud });
+    animator.apply({ type: "state", state: "speaking" });
+    for (let t = 0; t <= 500; t += 16) frame(t);
+    expect(drawn.at(-1)?.uMouthOpen).toBeGreaterThan(0.8);
+  });
+
+  it("stops scheduling frames once stopped", () => {
+    const { loop, isScheduled } = harness();
+    expect(isScheduled()).toBe(true);
+    loop.stop();
+    expect(isScheduled()).toBe(false);
+  });
 });
