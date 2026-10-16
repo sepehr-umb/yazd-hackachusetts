@@ -8,7 +8,7 @@ const expressions: Record<AssistantState, FaceParams> = {
   listening: { ...idle, browRaise: 0.6 },
   thinking: { ...idle, mouthWidth: 0.35, mouthRound: 0.5, browRaise: 0.25 },
   speaking: { ...idle, mouthWidth: 0.7, browRaise: 0.15 },
-  error: idle,
+  error: { ...idle, mouthWidth: 0.2, browRaise: -0.8 },
 };
 
 export function expressionFor(state: AssistantState): FaceParams {

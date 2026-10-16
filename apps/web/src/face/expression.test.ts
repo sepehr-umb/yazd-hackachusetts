@@ -19,4 +19,10 @@ describe("expressionFor", () => {
     expect(speaking.mouthOpen).toBe(0);
     expect(speaking.mouthWidth).toBeGreaterThan(expressionFor("idle").mouthWidth);
   });
+
+  it("error lowers the brows and narrows the mouth", () => {
+    const error = expressionFor("error");
+    expect(error.browRaise).toBeLessThan(0);
+    expect(error.mouthWidth).toBeLessThan(expressionFor("idle").mouthWidth);
+  });
 });
