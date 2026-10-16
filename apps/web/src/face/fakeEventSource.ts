@@ -22,6 +22,10 @@ export function createFakeEventSource({ dwellMs = 3000 }: { dwellMs?: number } =
     },
     start() {
       emitCurrentState();
+      setInterval(() => {
+        index = (index + 1) % assistantStates.length;
+        emitCurrentState();
+      }, dwellMs);
     },
     stop() {},
   };

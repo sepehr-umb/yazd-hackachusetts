@@ -18,4 +18,19 @@ describe("createFakeEventSource", () => {
     source.start();
     expect(events).toEqual([{ type: "state", state: "idle" }]);
   });
+
+  it("cycles through every state in order and wraps around", () => {
+    const source = createFakeEventSource({ dwellMs: 1000 });
+    const events = collect(source);
+    source.start();
+    vi.advanceTimersByTime(5000);
+    expect(events.map((event) => event.type === "state" && event.state)).toEqual([
+      "idle",
+      "listening",
+      "thinking",
+      "speaking",
+      "error",
+      "idle",
+    ]);
+  });
 });
