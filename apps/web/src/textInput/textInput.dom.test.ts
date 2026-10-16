@@ -61,4 +61,15 @@ describe("textInputSurface", () => {
     expect(status.textContent).toBe("The assistant does not know how to help with that");
     expect(status.dataset.tone).toBe("error");
   });
+
+  it("shows the error message when the request itself fails", async () => {
+    const { context, status, submit, settle } = mounted();
+    context.replyWith(new Error("Failed to fetch"));
+
+    submit("به مامان زنگ بزن");
+    await settle();
+
+    expect(status.textContent).toBe("Failed to fetch");
+    expect(status.dataset.tone).toBe("error");
+  });
 });

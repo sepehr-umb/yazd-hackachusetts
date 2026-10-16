@@ -1,6 +1,7 @@
 import { strings } from "@mahmood/strings";
-import { describeResult } from "./describeResult";
+import type { Tone } from "../activity/describeEvent";
 import type { Surface } from "../surfaces/surface";
+import { describeResult } from "./describeResult";
 
 export const textInputSurface: Surface = {
   id: "textInput",
@@ -18,16 +19,26 @@ export const textInputSurface: Surface = {
     form.append(input, button);
     host.append(form, status);
 
+    const show = (message: string, tone: Tone) => {
+      status.textContent = message;
+      status.dataset.tone = tone;
+    };
+
+    const send = async (text: string) => {
+      try {
+        const { text: message, tone } = describeResult(await context.requests.submit(text));
+        show(message, tone);
+      } catch (error) {
+        show(error instanceof Error ? error.message : String(error), "error");
+      }
+    };
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const text = input.value.trim();
       if (text === "") return;
       input.value = "";
-      void context.requests.submit(text).then((result) => {
-        const { text: message, tone } = describeResult(result);
-        status.textContent = message;
-        status.dataset.tone = tone;
-      });
+      void send(text);
     });
 
     return () => {
