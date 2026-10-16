@@ -1,0 +1,31 @@
+{
+  "transcript": "چراغ اتاق خواب را روشن کن",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "home" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_light_1",
+          "name": "set_light",
+          "input": { "room": "اتاق خواب", "on": true }
+        }
+      ]
+    },
+    {
+      "stopReason": "end_turn",
+      "content": [{ "type": "text", "text": "چراغ اتاق خواب روشن شد" }]
+    }
+  ]
+}

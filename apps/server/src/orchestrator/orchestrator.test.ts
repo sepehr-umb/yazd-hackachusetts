@@ -6,6 +6,7 @@ import { createRecordingEventBus } from "./testing/recordingEventBus";
 import { createReplayLlmClient } from "./testing/replayLlmClient";
 import type { RecordedConversation } from "./testing/replayLlmClient";
 import callMom from "./fixtures/callMom.json";
+import lightOn from "./fixtures/lightOn.json";
 
 function lastText(conversation: RecordedConversation): string {
   const last = conversation.responses.at(-1) as LlmResponse;
@@ -47,5 +48,20 @@ describe("orchestrator", () => {
       { type: "tool_call", tool: "call_contact", status: "succeeded" },
       { type: "state", state: "speaking" },
     ]);
+  });
+
+  it("routes a light request to home and sets the light", async () => {
+    const conversation = lightOn as RecordedConversation;
+    const { tools, calls } = createStubTools();
+    const orchestrator = createOrchestrator({
+      llm: createReplayLlmClient(conversation.responses),
+      tools,
+      bus: createRecordingEventBus(),
+    });
+
+    const result = await orchestrator.handle(conversation.transcript);
+
+    expect(result).toEqual({ status: "succeeded", agent: "home", reply: lastText(conversation) });
+    expect(calls).toEqual([{ tool: "set_light", input: { room: "اتاق خواب", on: true } }]);
   });
 });

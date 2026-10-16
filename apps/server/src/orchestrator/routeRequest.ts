@@ -1,18 +1,21 @@
+import { agentDefinitions } from "./agents";
 import type { LlmClient, LlmToolSchema } from "./llmClient";
 import type { SubAgentName } from "./result";
+
+const routableAgents = Object.keys(agentDefinitions) as SubAgentName[];
 
 const routeTool: LlmToolSchema = {
   name: "route_to_agent",
   description: "Choose the sub-agent that should handle the user's request.",
   inputSchema: {
     type: "object",
-    properties: { agent: { type: "string", enum: ["comms"] } },
+    properties: { agent: { type: "string", enum: routableAgents } },
     required: ["agent"],
   },
 };
 
 const routerSystem =
-  "You route spoken requests from an elderly Farsi-speaking user to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages.";
+  "You route spoken requests from an elderly Farsi-speaking user to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages. home: lights and other smart home devices.";
 
 export async function routeRequest(llm: LlmClient, transcript: string): Promise<SubAgentName> {
   const response = await llm.complete({
@@ -23,6 +26,7 @@ export async function routeRequest(llm: LlmClient, transcript: string): Promise<
   const choice = response.content.find(
     (block) => block.type === "tool_use" && block.name === routeTool.name,
   );
-  if (choice?.type === "tool_use" && choice.input.agent === "comms") return "comms";
+  const agent = choice?.type === "tool_use" ? choice.input.agent : undefined;
+  if (routableAgents.includes(agent as SubAgentName)) return agent as SubAgentName;
   throw new Error("Unroutable request");
 }
