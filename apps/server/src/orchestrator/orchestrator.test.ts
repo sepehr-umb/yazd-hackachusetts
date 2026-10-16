@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { LlmResponse } from "./llmClient";
+import type { LlmRequest, LlmResponse } from "./llmClient";
 import { createOrchestrator } from "./orchestrator";
 import { createStubTools } from "./stubTools";
 import { createRecordingEventBus } from "./testing/recordingEventBus";
@@ -255,6 +255,32 @@ describe("orchestrator", () => {
         { type: "agent", agent: "orchestrator" },
         { type: "state", state: "error" },
       ]);
+    });
+
+    it.each([
+      ["while routing", 0],
+      ["while the sub-agent is working", 1],
+    ])("fails when the LLM errors %s", async (_when, failingCall) => {
+      const conversation = callMom as RecordedConversation;
+      const replay = createReplayLlmClient(conversation.responses);
+      const llm = {
+        async complete(request: LlmRequest) {
+          if (replay.requests.length === failingCall) throw new Error("rate limited");
+          return replay.complete(request);
+        },
+      };
+      const bus = createRecordingEventBus();
+      const { tools, calls } = createStubTools();
+      const orchestrator = createOrchestrator({ llm, tools, bus });
+
+      const result = await orchestrator.handle(conversation.transcript);
+
+      expect(result).toMatchObject({
+        status: "failed",
+        failure: { reason: "llm_error", message: "rate limited" },
+      });
+      expect(calls).toEqual([]);
+      expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
     });
   });
 });
