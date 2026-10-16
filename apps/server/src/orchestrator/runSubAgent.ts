@@ -8,6 +8,8 @@ import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
 import { toolSchemas } from "./toolSchemas";
 
+export const MAX_TOOL_TURNS = 5;
+
 type SubAgentDeps = { llm: LlmClient; tools: ToolSet; bus: EventBus };
 
 export async function runSubAgent(
@@ -18,6 +20,8 @@ export async function runSubAgent(
   const definition = agentDefinitions[agent];
   const schemas = definition.tools.map((name) => toolSchemas[name]);
   const messages: LlmMessage[] = [{ role: "user", content: transcript }];
+
+  let toolTurns = 0;
 
   for (;;) {
     const response = await deps.llm.complete({
@@ -33,6 +37,11 @@ export async function runSubAgent(
         .map((block) => (block.type === "text" ? block.text : ""))
         .join("");
       return { status: "succeeded", agent, reply };
+    }
+
+    toolTurns += 1;
+    if (toolTurns > MAX_TOOL_TURNS) {
+      return { status: "failed", agent, failure: { reason: "too_many_steps" } };
     }
 
     messages.push({ role: "assistant", content: response.content });

@@ -204,6 +204,47 @@ describe("orchestrator", () => {
       },
     );
 
+    describe("step cap", () => {
+      function endlessCallConversation(toolTurns: number): LlmResponse[] {
+        const callMomConversation = callMom as RecordedConversation;
+        const [routing, toolTurn] = callMomConversation.responses as [LlmResponse, LlmResponse];
+        const finalReply = callMomConversation.responses.at(-1) as LlmResponse;
+        return [routing, ...Array.from({ length: toolTurns }, () => toolTurn), finalReply];
+      }
+
+      it("fails with too_many_steps on the sixth tool-use turn without running it", async () => {
+        const { tools, calls } = createStubTools();
+        const bus = createRecordingEventBus();
+        const orchestrator = createOrchestrator({
+          llm: createReplayLlmClient(endlessCallConversation(6)),
+          tools,
+          bus,
+        });
+
+        const result = await orchestrator.handle("به مامان زنگ بزن");
+
+        expect(result).toEqual({
+          status: "failed",
+          agent: "comms",
+          failure: { reason: "too_many_steps" },
+        });
+        expect(calls).toHaveLength(5);
+        expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
+      });
+
+      it("still succeeds when the fifth tool-use turn is the last", async () => {
+        const orchestrator = createOrchestrator({
+          llm: createReplayLlmClient(endlessCallConversation(5)),
+          tools: createStubTools().tools,
+          bus: createRecordingEventBus(),
+        });
+
+        const result = await orchestrator.handle("به مامان زنگ بزن");
+
+        expect(result.status).toBe("succeeded");
+      });
+    });
+
     it("treats a throwing tool as a failed tool", async () => {
       const conversation = callMom as RecordedConversation;
       const bus = createRecordingEventBus();
