@@ -17,6 +17,14 @@ type ChatCompletion = {
   choices: Array<{ message: { content: string | null; tool_calls?: ChatToolCall[] } }>;
 };
 
+function parseArguments({ name, arguments: raw }: ChatToolCall["function"]) {
+  try {
+    return JSON.parse(raw) as Record<string, unknown>;
+  } catch {
+    throw new Error(`OpenRouter returned invalid arguments for ${name}`);
+  }
+}
+
 function fromChatCompletion(completion: ChatCompletion): LlmResponse {
   const message = completion.choices[0]?.message;
   const toolCalls = message?.tool_calls ?? [];
@@ -25,7 +33,7 @@ function fromChatCompletion(completion: ChatCompletion): LlmResponse {
     type: "tool_use",
     id: call.id,
     name: call.function.name,
-    input: JSON.parse(call.function.arguments) as Record<string, unknown>,
+    input: parseArguments(call.function),
   }));
   return {
     content: [...text, ...toolUses],

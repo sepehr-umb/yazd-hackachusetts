@@ -187,4 +187,25 @@ describe("createOpenRouterLlmClient", () => {
       "OpenRouter request failed (401): No auth credentials found",
     );
   });
+
+  it("throws when the model returns tool arguments that are not JSON", async () => {
+    const { client } = clientWith({
+      body: {
+        choices: [
+          {
+            message: {
+              content: null,
+              tool_calls: [
+                { id: "call_1", function: { name: "call_contact", arguments: "{contact:" } },
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    await expect(client.complete(weatherRequest)).rejects.toThrow(
+      "OpenRouter returned invalid arguments for call_contact",
+    );
+  });
 });
