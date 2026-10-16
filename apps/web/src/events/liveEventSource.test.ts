@@ -99,4 +99,33 @@ describe("createLiveEventSource", () => {
     socket().receive(JSON.stringify({ type: "state", state: "idle" }));
     expect(received).toEqual([{ type: "state", state: "idle" }]);
   });
+
+  it("closes the socket on stop and does not reconnect, even while a reconnect is pending", () => {
+    vi.useFakeTimers();
+    const { source, socket } = setup();
+    source.start();
+    const first = socket();
+    first.drop();
+
+    source.stop();
+    vi.advanceTimersByTime(5000);
+
+    expect(FakeSocket.instances).toHaveLength(1);
+
+    source.start();
+    source.stop();
+    expect(socket().closed).toBe(true);
+    first.drop();
+    vi.advanceTimersByTime(5000);
+    expect(FakeSocket.instances).toHaveLength(2);
+  });
+
+  it("opens only one socket when started twice", () => {
+    const { source } = setup();
+
+    source.start();
+    source.start();
+
+    expect(FakeSocket.instances).toHaveLength(1);
+  });
 });

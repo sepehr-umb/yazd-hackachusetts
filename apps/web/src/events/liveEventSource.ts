@@ -24,16 +24,20 @@ export function createLiveEventSource({
   reconnectDelayMs = 1000,
 }: LiveEventSourceConfig): LiveEventSource {
   const listeners = new Set<AssistantEventListener>();
+  let running = false;
   let socket: WebSocket | undefined;
+  let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
 
   const connect = () => {
-    socket = createSocket(url);
-    socket.onmessage = (message) => {
+    const current = createSocket(url);
+    socket = current;
+    current.onmessage = (message) => {
       const event = parseEvent(message.data);
       if (event) listeners.forEach((listener) => listener(event));
     };
-    socket.onclose = () => {
-      setTimeout(connect, reconnectDelayMs);
+    current.onclose = () => {
+      if (!running || socket !== current) return;
+      reconnectTimer = setTimeout(connect, reconnectDelayMs);
     };
   };
 
@@ -42,7 +46,16 @@ export function createLiveEventSource({
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
-    start: connect,
-    stop() {},
+    start() {
+      if (running) return;
+      running = true;
+      connect();
+    },
+    stop() {
+      running = false;
+      clearTimeout(reconnectTimer);
+      socket?.close();
+      socket = undefined;
+    },
   };
 }
