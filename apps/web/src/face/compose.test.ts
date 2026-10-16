@@ -14,4 +14,15 @@ describe("composeFace", () => {
     const face = composeFace(base, { open: 0.7, width: 1, round: 0 }, 0);
     expect(face.mouthOpen).toBeCloseTo(0.7, 5);
   });
+
+  it("hands lip shape to the speech as the mouth opens", () => {
+    const speech = { open: 1, width: 0.4, round: 0.9 };
+    const face = composeFace(base, speech, 0);
+    expect(face.mouthWidth).toBeCloseTo(0.4, 5);
+    expect(face.mouthRound).toBeCloseTo(0.9, 5);
+
+    const half = composeFace(base, { ...speech, open: 0.5 }, 0);
+    expect(half.mouthWidth).toBeCloseTo(0.5, 5);
+    expect(half.mouthRound).toBeCloseTo(0.5, 5);
+  });
 });
