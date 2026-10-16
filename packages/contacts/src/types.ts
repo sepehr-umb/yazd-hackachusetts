@@ -15,4 +15,5 @@ export type ContactMatch = {
 
 export type MatchOptions = {
   threshold?: number;
+  ambiguityMargin?: number;
 };
