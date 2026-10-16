@@ -3,11 +3,11 @@ import type { SubAgentName } from "./result";
 
 export type AgentDefinition = { system: string; tools: ToolName[] };
 
-export const agentDefinitions: Partial<Record<SubAgentName, AgentDefinition>> = {
+export const agentDefinitions: Record<SubAgentName, AgentDefinition> = {
   comms: {
     system:
-      "You handle phone calls for an elderly Farsi-speaking user. Use the tools to act on the request. After the tool succeeds, confirm in one short Farsi sentence.",
-    tools: ["call_contact"],
+      "You handle phone calls and text messages for an elderly Farsi-speaking user. Use the tools to act on the request. After the tool succeeds, confirm in one short Farsi sentence.",
+    tools: ["call_contact", "send_message"],
   },
   home: {
     system:

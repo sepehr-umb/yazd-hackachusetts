@@ -2,7 +2,7 @@ import { mediaActions } from "@mahmood/contracts";
 import type { ToolName } from "@mahmood/contracts";
 import type { LlmToolSchema } from "./llmClient";
 
-export const toolSchemas: Partial<Record<ToolName, LlmToolSchema>> = {
+export const toolSchemas: Record<ToolName, LlmToolSchema> = {
   call_contact: {
     name: "call_contact",
     description: "Place a phone call to a contact from the user's address book.",
@@ -10,6 +10,18 @@ export const toolSchemas: Partial<Record<ToolName, LlmToolSchema>> = {
       type: "object",
       properties: { contact: { type: "string", description: "Contact name as the user said it" } },
       required: ["contact"],
+    },
+  },
+  send_message: {
+    name: "send_message",
+    description: "Send a text message to a contact from the user's address book.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        contact: { type: "string", description: "Contact name as the user said it" },
+        text: { type: "string", description: "The message to send, in the user's words" },
+      },
+      required: ["contact", "text"],
     },
   },
   set_light: {

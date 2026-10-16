@@ -104,6 +104,25 @@ describe("orchestrator", () => {
     expect(calls).toEqual([{ tool: "media_control", input: { action: "pause" } }]);
   });
 
+  it("offers the router all four agents and each agent only its own tools", async () => {
+    const conversation = callMom as RecordedConversation;
+    const llm = createReplayLlmClient(conversation.responses);
+    const orchestrator = createOrchestrator({
+      llm,
+      tools: createStubTools().tools,
+      bus: createRecordingEventBus(),
+    });
+
+    await orchestrator.handle(conversation.transcript);
+
+    const [routing, comms] = llm.requests;
+    expect(routing?.tools.map((tool) => tool.name)).toEqual(["route_to_agent"]);
+    expect(routing?.tools[0]?.inputSchema).toMatchObject({
+      properties: { agent: { enum: ["comms", "home", "media", "clarifier"] } },
+    });
+    expect(comms?.tools.map((tool) => tool.name)).toEqual(["call_contact", "send_message"]);
+  });
+
   describe("when a tool fails", () => {
     async function runFailingCall() {
       const conversation = callMom as RecordedConversation;

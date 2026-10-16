@@ -1,6 +1,6 @@
 import type { ToolName, ToolResult } from "@mahmood/contracts";
 import type { EventBus } from "./eventBus";
-import type { LlmClient, LlmMessage, LlmToolResultBlock, LlmToolSchema } from "./llmClient";
+import type { LlmClient, LlmMessage, LlmToolResultBlock } from "./llmClient";
 import { agentDefinitions } from "./agents";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
@@ -13,8 +13,8 @@ export async function runSubAgent(
   agent: SubAgentName,
   transcript: string,
 ): Promise<OrchestratorResult> {
-  const definition = agentDefinitions[agent]!;
-  const schemas = definition.tools.map((name) => toolSchemas[name] as LlmToolSchema);
+  const definition = agentDefinitions[agent];
+  const schemas = definition.tools.map((name) => toolSchemas[name]);
   const messages: LlmMessage[] = [{ role: "user", content: transcript }];
 
   for (;;) {
