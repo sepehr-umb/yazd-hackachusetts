@@ -76,6 +76,14 @@ type AssistantEvent =
 
 The face must work against a fake event source with no backend running.
 
+## Dependency rules
+
+- packages/contracts depends on nothing in this repo.
+- packages/* never import from apps/*.
+- apps/web never imports from apps/server, and apps/server never imports from apps/web. They talk only through HTTP, the WebSocket and packages/contracts.
+- Tools never import agents. Agents never call external services directly.
+- A new cross-module dependency must be stated in the PR description.
+
 ## Face
 
 - Stylized, not realistic. Built from shapes driven by shader uniforms.
