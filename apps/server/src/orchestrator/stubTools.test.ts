@@ -43,4 +43,21 @@ describe("stub tools", () => {
 
     expect(result).toEqual({ ok: true, output: { question: "کدام چراغ؟" } });
   });
+
+  it("fails with the configured error and still records the call", async () => {
+    const { tools, calls } = createStubTools({ failures: { call_contact: "no network" } });
+
+    const result = await tools.call_contact.execute({ contact: "مامان" });
+
+    expect(result).toEqual({ ok: false, error: "no network" });
+    expect(calls).toEqual([{ tool: "call_contact", input: { contact: "مامان" } }]);
+  });
+
+  it("only fails the configured tool", async () => {
+    const { tools } = createStubTools({ failures: { call_contact: "no network" } });
+
+    const result = await tools.set_light.execute({ room: "آشپزخانه", on: true });
+
+    expect(result).toEqual({ ok: true });
+  });
 });
