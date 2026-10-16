@@ -6,6 +6,8 @@ export const normalizeText = (text: string): string =>
     .toLowerCase()
     .replaceAll("ي", "ی")
     .replaceAll("ك", "ک")
+    .replace(/[أإآ]/g, "ا")
+    .replaceAll("ة", "ه")
     .replace(DIACRITICS_AND_TATWEEL, "")
     .replace(WORD_SEPARATORS, " ")
     .trim();
