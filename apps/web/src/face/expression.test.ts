@@ -5,4 +5,8 @@ describe("expressionFor", () => {
   it("idle is a calm neutral face", () => {
     expect(expressionFor("idle")).toMatchObject({ mouthOpen: 0, browRaise: 0, blink: 0 });
   });
+
+  it("listening raises the brows above idle", () => {
+    expect(expressionFor("listening").browRaise).toBeGreaterThan(expressionFor("idle").browRaise);
+  });
 });
