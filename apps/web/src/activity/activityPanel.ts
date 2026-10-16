@@ -2,6 +2,8 @@ import { strings } from "@mahmood/strings";
 import type { Surface } from "../surfaces/surface";
 import { describeEvent } from "./describeEvent";
 
+export const MAX_ENTRIES = 100;
+
 export const activityPanelSurface: Surface = {
   id: "activityPanel",
   mount(host, context) {
@@ -19,6 +21,7 @@ export const activityPanelSurface: Surface = {
       item.textContent = text;
       item.dataset.tone = tone;
       list.append(item);
+      while (list.children.length > MAX_ENTRIES) list.firstElementChild?.remove();
     });
 
     return () => {
