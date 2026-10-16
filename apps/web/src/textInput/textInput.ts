@@ -1,4 +1,5 @@
 import { strings } from "@mahmood/strings";
+import { describeResult } from "./describeResult";
 import type { Surface } from "../surfaces/surface";
 
 export const textInputSurface: Surface = {
@@ -22,7 +23,11 @@ export const textInputSurface: Surface = {
       const text = input.value.trim();
       if (text === "") return;
       input.value = "";
-      void context.requests.submit(text);
+      void context.requests.submit(text).then((result) => {
+        const { text: message, tone } = describeResult(result);
+        status.textContent = message;
+        status.dataset.tone = tone;
+      });
     });
 
     return () => {

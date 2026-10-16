@@ -39,4 +39,26 @@ describe("textInputSurface", () => {
 
     expect(context.submitted).toEqual([]);
   });
+
+  it("shows the reply once the request succeeds", async () => {
+    const { context, status, submit, settle } = mounted();
+    context.replyWith({ status: "succeeded", agent: "comms", reply: "دارم زنگ می‌زنم" });
+
+    submit("به مامان زنگ بزن");
+    await settle();
+
+    expect(status.textContent).toBe("دارم زنگ می‌زنم");
+    expect(status.dataset.tone).toBe("neutral");
+  });
+
+  it("shows a failure with the error tone", async () => {
+    const { context, status, submit, settle } = mounted();
+    context.replyWith({ status: "failed", failure: { reason: "unroutable" } });
+
+    submit("what is the weather");
+    await settle();
+
+    expect(status.textContent).toBe("The assistant does not know how to help with that");
+    expect(status.dataset.tone).toBe("error");
+  });
 });
