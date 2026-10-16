@@ -9,4 +9,23 @@ describe("isAssistantEvent", () => {
   it.each([null, undefined, "state", 42, true, []])("rejects non-object %j", (value) => {
     expect(isAssistantEvent(value)).toBe(false);
   });
+
+  it("rejects an unknown event type", () => {
+    expect(isAssistantEvent({ type: "dance" })).toBe(false);
+  });
+
+  it("rejects a state event with an unknown state", () => {
+    expect(isAssistantEvent({ type: "state", state: "sleeping" })).toBe(false);
+  });
+
+  it("rejects a state event with no state", () => {
+    expect(isAssistantEvent({ type: "state" })).toBe(false);
+  });
+
+  it.each(["idle", "listening", "thinking", "speaking", "error"])(
+    "accepts the %s state",
+    (state) => {
+      expect(isAssistantEvent({ type: "state", state })).toBe(true);
+    },
+  );
 });
