@@ -21,4 +21,14 @@ describe("createBlinkScheduler", () => {
     expect(blink.update(0.16)).toBe(0);
     expect(blink.update(0.01)).toBe(0);
   });
+
+  it("draws a fresh randomized interval after each blink", () => {
+    const draws = [0, 1];
+    const blink = createBlinkScheduler({ ...config, random: () => draws.shift() ?? 0 });
+    blink.update(2);
+    blink.update(0.16);
+    expect(blink.update(5.9)).toBe(0);
+    expect(blink.update(0.1)).toBeCloseTo(0, 5);
+    expect(blink.update(0.08)).toBeCloseTo(1, 5);
+  });
 });
