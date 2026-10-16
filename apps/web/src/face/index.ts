@@ -1,0 +1,11 @@
+export { createFaceAnimator } from "./faceAnimator";
+export type { AudioFrame, FaceAnimator } from "./faceAnimator";
+export { createFakeEventSource } from "./fakeEventSource";
+export type { FakeEventSource } from "./fakeEventSource";
+export { fakeSpectrum } from "./fakeSpectrum";
+export { startFaceLoop } from "./faceLoop";
+export type { FaceLoop } from "./faceLoop";
+export { createFaceRenderer } from "./faceRenderer";
+export type { FaceRenderer } from "./faceRenderer";
+export type { FaceParams } from "./faceParams";
+export type { FaceUniforms } from "./uniforms";
