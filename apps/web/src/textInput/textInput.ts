@@ -20,6 +20,7 @@ export const textInputSurface: Surface = {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const text = input.value.trim();
+      if (text === "") return;
       input.value = "";
       void context.requests.submit(text);
     });

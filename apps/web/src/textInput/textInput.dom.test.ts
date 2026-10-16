@@ -31,4 +31,12 @@ describe("textInputSurface", () => {
     expect(context.submitted).toEqual(["به مامان زنگ بزن"]);
     expect(input.value).toBe("");
   });
+
+  it.each(["", "   "])("does not send blank input %j", (blank) => {
+    const { context, submit } = mounted();
+
+    submit(blank);
+
+    expect(context.submitted).toEqual([]);
+  });
 });
