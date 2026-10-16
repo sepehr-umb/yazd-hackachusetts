@@ -1,4 +1,11 @@
 export const strings = {
+  failure: {
+    toolFailed: (tool: string, error: string) => `${tool} failed: ${error}`,
+    invalidToolCall: (tool: string) => `The assistant asked for an action it cannot do: ${tool}`,
+    tooManySteps: "The assistant took too many steps",
+    unroutable: "The assistant does not know how to help with that",
+    llmError: (message: string) => `The language model failed: ${message}`,
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },
