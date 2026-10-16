@@ -27,4 +27,25 @@ describe("orchestrator", () => {
     expect(result).toEqual({ status: "succeeded", agent: "comms", reply: lastText(conversation) });
     expect(calls).toEqual([{ tool: "call_contact", input: { contact: "مامان" } }]);
   });
+
+  it("emits state, agent and tool call events in order", async () => {
+    const conversation = callMom as RecordedConversation;
+    const bus = createRecordingEventBus();
+    const orchestrator = createOrchestrator({
+      llm: createReplayLlmClient(conversation.responses),
+      tools: createStubTools().tools,
+      bus,
+    });
+
+    await orchestrator.handle(conversation.transcript);
+
+    expect(bus.events).toEqual([
+      { type: "state", state: "thinking" },
+      { type: "agent", agent: "orchestrator" },
+      { type: "agent", agent: "comms" },
+      { type: "tool_call", tool: "call_contact", status: "started" },
+      { type: "tool_call", tool: "call_contact", status: "succeeded" },
+      { type: "state", state: "speaking" },
+    ]);
+  });
 });

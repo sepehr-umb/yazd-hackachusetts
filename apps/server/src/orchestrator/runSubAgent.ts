@@ -1,10 +1,11 @@
+import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock, LlmToolSchema } from "./llmClient";
 import { agentDefinitions } from "./agents";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
 import { toolSchemas } from "./toolSchemas";
 
-type SubAgentDeps = { llm: LlmClient; tools: ToolSet };
+type SubAgentDeps = { llm: LlmClient; tools: ToolSet; bus: EventBus };
 
 export async function runSubAgent(
   deps: SubAgentDeps,
@@ -37,7 +38,9 @@ export async function runSubAgent(
       const tool = deps.tools[toolUse.name as keyof ToolSet] as {
         execute(input: unknown): Promise<{ ok: boolean; output?: Record<string, unknown> }>;
       };
+      deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "started" });
       const result = await tool.execute(toolUse.input);
+      deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "succeeded" });
       results.push({
         type: "tool_result",
         toolUseId: toolUse.id,
