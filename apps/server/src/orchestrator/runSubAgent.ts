@@ -1,4 +1,4 @@
-import type { ToolName } from "@mahmood/contracts";
+import { isToolName } from "@mahmood/contracts";
 import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock } from "./llmClient";
 import { agentDefinitions } from "./agents";
@@ -37,17 +37,25 @@ export async function runSubAgent(
     messages.push({ role: "assistant", content: response.content });
     const results: LlmToolResultBlock[] = [];
     for (const toolUse of toolUses) {
-      deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "started" });
-      const result = await executeTool(deps.tools, toolUse.name as ToolName, toolUse.input);
-      if (!result.ok) {
-        deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "failed" });
+      if (!isToolName(toolUse.name) || !definition.tools.includes(toolUse.name)) {
         return {
           status: "failed",
           agent,
-          failure: { reason: "tool_failed", tool: toolUse.name as ToolName, error: result.error },
+          failure: { reason: "invalid_tool_call", tool: toolUse.name },
         };
       }
-      deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "succeeded" });
+      const toolName = toolUse.name;
+      deps.bus.emit({ type: "tool_call", tool: toolName, status: "started" });
+      const result = await executeTool(deps.tools, toolName, toolUse.input);
+      if (!result.ok) {
+        deps.bus.emit({ type: "tool_call", tool: toolName, status: "failed" });
+        return {
+          status: "failed",
+          agent,
+          failure: { reason: "tool_failed", tool: toolName, error: result.error },
+        };
+      }
+      deps.bus.emit({ type: "tool_call", tool: toolName, status: "succeeded" });
       if (toolUse.name === "ask_for_clarification") {
         return {
           status: "clarification",

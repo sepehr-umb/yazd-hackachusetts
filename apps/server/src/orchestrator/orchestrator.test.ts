@@ -171,6 +171,38 @@ describe("orchestrator", () => {
   });
 
   describe("when execution goes wrong", () => {
+    function callMomRequestingTool(toolName: string): RecordedConversation {
+      const conversation = structuredClone(callMom) as RecordedConversation;
+      const toolUse = conversation.responses[1]?.content[0];
+      if (toolUse?.type === "tool_use") toolUse.name = toolName;
+      return conversation;
+    }
+
+    it.each(["set_light", "launch_missiles"])(
+      "refuses to run %s for the comms agent and fails",
+      async (toolName) => {
+        const conversation = callMomRequestingTool(toolName);
+        const { tools, calls } = createStubTools();
+        const bus = createRecordingEventBus();
+        const orchestrator = createOrchestrator({
+          llm: createReplayLlmClient(conversation.responses),
+          tools,
+          bus,
+        });
+
+        const result = await orchestrator.handle(conversation.transcript);
+
+        expect(result).toEqual({
+          status: "failed",
+          agent: "comms",
+          failure: { reason: "invalid_tool_call", tool: toolName },
+        });
+        expect(calls).toEqual([]);
+        expect(bus.events.at(-1)).toEqual({ type: "state", state: "error" });
+        expect(bus.events).not.toContainEqual(expect.objectContaining({ type: "tool_call" }));
+      },
+    );
+
     it("treats a throwing tool as a failed tool", async () => {
       const conversation = callMom as RecordedConversation;
       const bus = createRecordingEventBus();
