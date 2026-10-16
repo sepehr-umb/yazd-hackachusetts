@@ -45,4 +45,18 @@ describe("createFaceSurface", () => {
     expect(host.querySelectorAll("canvas")).toHaveLength(1);
     expect(drawn.at(-1)?.uBrowRaise).toBeGreaterThan(restingBrow + 0.1);
   });
+
+  it("stops drawing, stops listening and removes the canvas when unmounted", () => {
+    const { context, host, unmount, drawn, runFrames, isScheduled } = mounted();
+    runFrames(1);
+    const drawnBefore = drawn.length;
+
+    unmount();
+    runFrames(3);
+
+    expect(isScheduled()).toBe(false);
+    expect(drawn).toHaveLength(drawnBefore);
+    expect(context.listenerCount()).toBe(0);
+    expect(host.querySelectorAll("canvas")).toHaveLength(0);
+  });
 });
