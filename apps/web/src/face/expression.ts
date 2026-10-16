@@ -6,7 +6,7 @@ const idle: FaceParams = { mouthOpen: 0, mouthWidth: 0.6, mouthRound: 0, blink: 
 const expressions: Record<AssistantState, FaceParams> = {
   idle,
   listening: { ...idle, browRaise: 0.6 },
-  thinking: idle,
+  thinking: { ...idle, mouthWidth: 0.35, mouthRound: 0.5, browRaise: 0.25 },
   speaking: idle,
   error: idle,
 };

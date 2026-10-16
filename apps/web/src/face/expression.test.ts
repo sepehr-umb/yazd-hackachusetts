@@ -9,4 +9,8 @@ describe("expressionFor", () => {
   it("listening raises the brows above idle", () => {
     expect(expressionFor("listening").browRaise).toBeGreaterThan(expressionFor("idle").browRaise);
   });
+
+  it("thinking pinches the mouth rounder than idle", () => {
+    expect(expressionFor("thinking").mouthRound).toBeGreaterThan(expressionFor("idle").mouthRound);
+  });
 });
