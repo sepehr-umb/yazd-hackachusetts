@@ -15,8 +15,9 @@ function readText(body: unknown): string | undefined {
   return typeof text === "string" && text.trim() !== "" ? text.trim() : undefined;
 }
 
-export function createServer({ orchestrator, hub }: ServerDeps): FastifyInstance {
+export function createServer({ orchestrator, hub, idleAfterMs }: ServerDeps): FastifyInstance {
   const app = Fastify();
+  let idleTimer: ReturnType<typeof setTimeout> | undefined;
   const sockets = new WebSocketServer({ server: app.server, path: "/events" });
 
   sockets.on("connection", (socket) => {
@@ -25,6 +26,7 @@ export function createServer({ orchestrator, hub }: ServerDeps): FastifyInstance
   });
 
   app.addHook("onClose", async () => {
+    clearTimeout(idleTimer);
     for (const socket of sockets.clients) socket.terminate();
     await new Promise<void>((resolve) => sockets.close(() => resolve()));
   });
@@ -35,7 +37,11 @@ export function createServer({ orchestrator, hub }: ServerDeps): FastifyInstance
       return reply.code(400).send({ error: 'Body must be { "text": a non-empty string }' });
     }
     hub.emit({ type: "transcript", text });
-    return orchestrator.handle(text);
+    const result = await orchestrator.handle(text);
+    if (idleAfterMs !== undefined) {
+      idleTimer = setTimeout(() => hub.emit({ type: "state", state: "idle" }), idleAfterMs);
+    }
+    return result;
   });
 
   return app;

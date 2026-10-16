@@ -1,5 +1,5 @@
 import type { AssistantEvent } from "@mahmood/contracts";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { createEventHub } from "./events/eventHub";
 import { replayConversations } from "./llm/replayConversations";
@@ -23,6 +23,7 @@ function setup(options: { idleAfterMs?: number } = {}) {
 }
 
 afterEach(async () => {
+  vi.useRealTimers();
   await Promise.all(openServers.splice(0).map((app) => app.close()));
 });
 
@@ -78,4 +79,20 @@ describe("POST /request", () => {
       expect(events).toEqual([]);
     },
   );
+});
+
+describe("settling to idle", () => {
+  it("emits idle once idleAfterMs has passed since the reply, and not before", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const { app, hub } = setup({ idleAfterMs: 3000 });
+    const states: string[] = [];
+    hub.subscribe((event) => event.type === "state" && states.push(event.state));
+
+    await app.inject({ method: "POST", url: "/request", payload: { text: "به مامان زنگ بزن" } });
+    vi.advanceTimersByTime(2999);
+    expect(states).toEqual(["thinking", "speaking"]);
+
+    vi.advanceTimersByTime(1);
+    expect(states).toEqual(["thinking", "speaking", "idle"]);
+  });
 });
