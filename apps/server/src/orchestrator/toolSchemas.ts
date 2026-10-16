@@ -24,4 +24,13 @@ export const toolSchemas: Partial<Record<ToolName, LlmToolSchema>> = {
       required: ["room", "on"],
     },
   },
+  ask_for_clarification: {
+    name: "ask_for_clarification",
+    description: "Ask the user one short follow-up question in Farsi.",
+    inputSchema: {
+      type: "object",
+      properties: { question: { type: "string" } },
+      required: ["question"],
+    },
+  },
 };

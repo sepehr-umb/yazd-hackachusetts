@@ -41,6 +41,13 @@ export async function runSubAgent(
       deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "started" });
       const result = await tool.execute(toolUse.input);
       deps.bus.emit({ type: "tool_call", tool: toolUse.name, status: "succeeded" });
+      if (toolUse.name === "ask_for_clarification") {
+        return {
+          status: "clarification",
+          agent: "clarifier",
+          question: String(result.output?.question),
+        };
+      }
       results.push({
         type: "tool_result",
         toolUseId: toolUse.id,

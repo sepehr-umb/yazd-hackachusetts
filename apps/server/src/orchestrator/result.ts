@@ -6,4 +6,5 @@ export type OrchestratorFailure = { reason: "tool_failed"; tool: ToolName; error
 
 export type OrchestratorResult =
   | { status: "succeeded"; agent: SubAgentName; reply: string }
+  | { status: "clarification"; agent: "clarifier"; question: string }
   | { status: "failed"; agent: SubAgentName; failure: OrchestratorFailure };
