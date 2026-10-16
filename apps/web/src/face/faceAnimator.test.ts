@@ -15,4 +15,13 @@ describe("createFaceAnimator", () => {
     expect(face.mouthOpen).toBe(0);
     expect(face.browRaise).toBeCloseTo(0, 5);
   });
+
+  it("follows state events and settles on that state's expression", () => {
+    const animator = createFaceAnimator({ random: () => 0.5 });
+    animator.apply({ type: "state", state: "error" });
+    let face = animator.update(FRAME, null);
+    runFor(2, (dt) => (face = animator.update(dt, null)));
+    expect(animator.state).toBe("error");
+    expect(face.browRaise).toBeCloseTo(-0.8, 2);
+  });
 });
