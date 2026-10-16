@@ -33,6 +33,11 @@ function fromChatCompletion(completion: ChatCompletion): LlmResponse {
   };
 }
 
+function errorMessageOf(payload: unknown): string {
+  const message = (payload as { error?: { message?: unknown } } | null)?.error?.message;
+  return typeof message === "string" ? message : JSON.stringify(payload);
+}
+
 function toChatRequest(model: string, request: LlmRequest) {
   return {
     model,
@@ -57,7 +62,13 @@ export function createOpenRouterLlmClient({
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
         body: JSON.stringify(toChatRequest(model, request)),
       });
-      const completion = (await httpResponse.json()) as ChatCompletion;
+      const payload: unknown = await httpResponse.json();
+      if (!httpResponse.ok) {
+        throw new Error(
+          `OpenRouter request failed (${httpResponse.status}): ${errorMessageOf(payload)}`,
+        );
+      }
+      const completion = payload as ChatCompletion;
       return fromChatCompletion(completion);
     },
   };

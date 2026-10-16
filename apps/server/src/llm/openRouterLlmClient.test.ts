@@ -176,4 +176,15 @@ describe("createOpenRouterLlmClient", () => {
       ],
     });
   });
+
+  it("throws with the status and OpenRouter's message when the request is rejected", async () => {
+    const { client } = clientWith({
+      status: 401,
+      body: { error: { code: 401, message: "No auth credentials found" } },
+    });
+
+    await expect(client.complete(weatherRequest)).rejects.toThrow(
+      "OpenRouter request failed (401): No auth credentials found",
+    );
+  });
 });
