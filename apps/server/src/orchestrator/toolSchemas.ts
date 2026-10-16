@@ -51,7 +51,7 @@ export const toolSchemas: Record<ToolName, LlmToolSchema> = {
   },
   ask_for_clarification: {
     name: "ask_for_clarification",
-    description: "Ask the user one short follow-up question in Farsi.",
+    description: "Ask the user one short follow-up question in the user's language.",
     inputSchema: {
       type: "object",
       properties: { question: { type: "string" } },
