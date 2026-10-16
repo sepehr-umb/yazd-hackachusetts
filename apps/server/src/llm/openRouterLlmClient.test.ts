@@ -78,4 +78,15 @@ describe("createOpenRouterLlmClient", () => {
       ],
     });
   });
+
+  it("maps a text reply to a text block that ends the turn", async () => {
+    const { client } = clientWith({ body: textCompletion("دارم به مامان زنگ می‌زنم") });
+
+    const response = await client.complete(weatherRequest);
+
+    expect(response).toEqual({
+      stopReason: "end_turn",
+      content: [{ type: "text", text: "دارم به مامان زنگ می‌زنم" }],
+    });
+  });
 });

@@ -9,6 +9,13 @@ export type OpenRouterConfig = {
 
 const DEFAULT_BASE_URL = "https://openrouter.ai/api/v1";
 
+type ChatCompletion = { choices: Array<{ message: { content: string | null } }> };
+
+function fromChatCompletion(completion: ChatCompletion): LlmResponse {
+  const text = completion.choices[0]?.message.content;
+  return { content: text ? [{ type: "text", text }] : [], stopReason: "end_turn" };
+}
+
 function toChatRequest(model: string, request: LlmRequest) {
   return {
     model,
@@ -31,12 +38,13 @@ export function createOpenRouterLlmClient({
 }: OpenRouterConfig): LlmClient {
   return {
     async complete(request): Promise<LlmResponse> {
-      await fetchImpl(`${baseUrl}/chat/completions`, {
+      const httpResponse = await fetchImpl(`${baseUrl}/chat/completions`, {
         method: "POST",
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
         body: JSON.stringify(toChatRequest(model, request)),
       });
-      return { content: [], stopReason: "end_turn" };
+      const completion = (await httpResponse.json()) as ChatCompletion;
+      return fromChatCompletion(completion);
     },
   };
 }
