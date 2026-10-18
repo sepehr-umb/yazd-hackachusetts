@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mahmood face</title>
+    <title>Mahmood</title>
     <style>
       html,
       body {
@@ -12,45 +12,94 @@
         background: #0d1226;
         overflow: hidden;
         font-family: system-ui, sans-serif;
+        font-size: 20px;
+        color: #e8ecff;
       }
-      canvas {
+      [data-surface="face"] canvas {
         position: fixed;
         inset: 0;
         width: 100%;
         height: 100%;
         display: block;
       }
-      #controls {
+      [data-surface="activityPanel"] {
         position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 16px;
+        top: 16px;
+        right: 16px;
+        bottom: 120px;
+        width: min(360px, calc(100% - 32px));
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-        padding: 0 16px;
+        flex-direction: column;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background: rgba(26, 33, 69, 0.85);
+        overflow: hidden;
       }
-      #controls button {
+      [data-surface="activityPanel"] h2 {
+        margin: 0 0 8px;
+        font-size: 1em;
+      }
+      [data-surface="activityPanel"] ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        overflow-y: auto;
+        flex: 1;
+      }
+      [data-surface="activityPanel"] li {
+        padding: 4px 0;
+        font-size: 0.8em;
+        overflow-wrap: anywhere;
+      }
+      [data-tone="success"] {
+        color: #8fe3a2;
+      }
+      [data-tone="error"] {
+        color: #ff9a9a;
+      }
+      [data-surface="textInput"] {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      [data-surface="textInput"] form {
+        display: flex;
+        gap: 8px;
+      }
+      [data-surface="textInput"] input {
+        flex: 1;
+        min-width: 0;
         font: inherit;
-        font-size: 16px;
-        padding: 10px 18px;
+        padding: 12px 16px;
         border-radius: 999px;
         border: 2px solid #5c6aa8;
         background: #1a2145;
-        color: #e8ecff;
+        color: inherit;
+      }
+      [data-surface="textInput"] button {
+        font: inherit;
+        padding: 12px 24px;
+        border-radius: 999px;
+        border: 2px solid #ffd28a;
+        background: #ffd28a;
+        color: #2a1a1c;
         cursor: pointer;
       }
-      #controls button[aria-pressed="true"] {
-        background: #ffd28a;
-        border-color: #ffd28a;
-        color: #2a1a1c;
+      [data-surface="textInput"] input:disabled,
+      [data-surface="textInput"] button:disabled {
+        opacity: 0.6;
+      }
+      [data-surface="textInput"] p {
+        margin: 8px 16px 0;
+        min-height: 1.4em;
       }
     </style>
   </head>
   <body>
-    <canvas id="face"></canvas>
-    <div id="controls"></div>
-    <script type="module" src="/src/devPage.ts"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
