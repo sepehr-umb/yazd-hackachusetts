@@ -71,9 +71,12 @@ describe("voice surface", () => {
     expect(button.getAttribute("aria-label")).toBe("Start recording");
   });
 
-  it("stops by itself after the silence timeout", async () => {
+  it("stops by itself once the silence timeout passes after speech", async () => {
     const { context, click } = mounted();
     await click();
+    context.mic.level = 0.5;
+    await vi.advanceTimersByTimeAsync(300);
+    context.mic.level = 0;
 
     await vi.advanceTimersByTimeAsync(900);
     expect(context.mic.stops).toBe(0);
@@ -82,6 +85,15 @@ describe("voice surface", () => {
     expect(context.mic.stops).toBe(1);
     expect(context.chimes).toEqual(["start", "stop"]);
     expect(context.recorded).toHaveLength(1);
+  });
+
+  it("keeps recording through silence before the user starts speaking", async () => {
+    const { context, click } = mounted();
+    await click();
+
+    await vi.advanceTimersByTimeAsync(5000);
+
+    expect(context.mic.stops).toBe(0);
   });
 
   it("keeps recording while the input stays above the silence threshold", async () => {

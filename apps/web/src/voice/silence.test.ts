@@ -18,15 +18,24 @@ describe("levelOf", () => {
 });
 
 describe("createSilenceDetector", () => {
-  it("asks to stop once the level stayed under the threshold for the timeout", () => {
-    const detector = createSilenceDetector(config, 0);
+  it("does not count silence before any speech was heard", () => {
+    const detector = createSilenceDetector(config);
 
-    expect(detector.update(0.05, 999)).toBe(false);
-    expect(detector.update(0.05, 1000)).toBe(true);
+    expect(detector.update(0.05, 1000)).toBe(false);
+    expect(detector.update(0.05, 60_000)).toBe(false);
+  });
+
+  it("asks to stop once the level stayed under the threshold for the timeout after speech", () => {
+    const detector = createSilenceDetector(config);
+
+    detector.update(0.5, 300);
+
+    expect(detector.update(0.05, 1299)).toBe(false);
+    expect(detector.update(0.05, 1300)).toBe(true);
   });
 
   it("restarts the timeout whenever the level rises above the threshold", () => {
-    const detector = createSilenceDetector(config, 0);
+    const detector = createSilenceDetector(config);
 
     detector.update(0.5, 800);
 

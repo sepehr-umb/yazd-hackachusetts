@@ -14,15 +14,15 @@ export function levelOf(samples: ArrayLike<number>): number {
 
 export type SilenceDetector = { update(level: number, nowMs: number): boolean };
 
-export function createSilenceDetector(
-  { silenceThreshold, silenceTimeoutMs }: VoiceConfig,
-  startMs: number,
-): SilenceDetector {
-  let lastLoudMs = startMs;
+export function createSilenceDetector({
+  silenceThreshold,
+  silenceTimeoutMs,
+}: VoiceConfig): SilenceDetector {
+  let lastLoudMs: number | undefined;
   return {
     update(level, nowMs) {
       if (level > silenceThreshold) lastLoudMs = nowMs;
-      return nowMs - lastLoudMs >= silenceTimeoutMs;
+      return lastLoudMs !== undefined && nowMs - lastLoudMs >= silenceTimeoutMs;
     },
   };
 }
