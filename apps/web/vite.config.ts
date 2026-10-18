@@ -6,6 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/request": serverTarget,
+      "/audio": serverTarget,
+      "/speech": serverTarget,
       "/events": { target: serverTarget, ws: true },
     },
   },

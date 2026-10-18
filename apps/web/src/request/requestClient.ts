@@ -1,15 +1,11 @@
 import { isRequestResult } from "@mahmood/contracts";
 import { strings } from "@mahmood/strings";
 import type { RequestResult, TypedRequest } from "@mahmood/contracts";
+import { errorMessageOf } from "./errorMessageOf";
 
 export type RequestClient = { submit(text: string): Promise<RequestResult> };
 
 export type RequestClientConfig = { fetch?: typeof fetch; url?: string };
-
-function errorMessageOf(payload: unknown): string {
-  const message = (payload as { error?: unknown } | null)?.error;
-  return typeof message === "string" ? message : strings.request.unexpectedResponse;
-}
 
 export function createRequestClient({
   fetch: fetchImpl = (input, init) => fetch(input, init),

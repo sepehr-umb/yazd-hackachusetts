@@ -53,8 +53,9 @@ function postRequest(port: number, text: string) {
   });
 }
 
-const reachedFinalState = (events: AssistantEvent[]) =>
-  events.some((event) => event.type === "state" && ["speaking", "error"].includes(event.state));
+const reachedSpeech = (events: AssistantEvent[]) => events.some((event) => event.type === "speech");
+
+const speechEvent = { type: "speech", audioUrl: expect.stringMatching(/^\/speech\/.+/) };
 
 describe("typed request end to end", () => {
   it("broadcasts the event sequence of a successful call over /events", async () => {
@@ -62,7 +63,7 @@ describe("typed request end to end", () => {
     const { until } = await connectToEvents(port);
 
     const response = await postRequest(port, "به مامان زنگ بزن");
-    const events = await until(reachedFinalState);
+    const events = await until(reachedSpeech);
 
     expect(await response.json()).toEqual({
       status: "succeeded",
@@ -77,6 +78,7 @@ describe("typed request end to end", () => {
       { type: "tool_call", tool: "call_contact", status: "started" },
       { type: "tool_call", tool: "call_contact", status: "succeeded" },
       { type: "state", state: "speaking" },
+      speechEvent,
     ]);
   });
 
@@ -85,7 +87,7 @@ describe("typed request end to end", () => {
     const { until } = await connectToEvents(port);
 
     const response = await postRequest(port, "به احمدی زنگ بزن");
-    const events = await until(reachedFinalState);
+    const events = await until(reachedSpeech);
 
     expect(await response.json()).toEqual({
       status: "failed",
@@ -104,6 +106,7 @@ describe("typed request end to end", () => {
       { type: "tool_call", tool: "call_contact", status: "started" },
       { type: "tool_call", tool: "call_contact", status: "failed" },
       { type: "state", state: "error" },
+      speechEvent,
     ]);
   });
 });
