@@ -96,6 +96,42 @@
         margin: 8px 16px 0;
         min-height: 1.4em;
       }
+      [data-surface="voice"] {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 88px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        pointer-events: none;
+      }
+      [data-surface="voice"] button {
+        pointer-events: auto;
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        border: 6px solid #ffd28a;
+        background: #ffd28a;
+        cursor: pointer;
+      }
+      [data-surface="voice"] button:focus-visible {
+        outline: 4px solid #e8ecff;
+        outline-offset: 4px;
+      }
+      [data-surface="voice"] button[data-phase="recording"] {
+        background: #ff6b6b;
+        border-color: #ff6b6b;
+      }
+      [data-surface="voice"] button:disabled {
+        opacity: 0.6;
+      }
+      [data-surface="voice"] p {
+        margin: 0;
+        min-height: 1.4em;
+        text-align: center;
+      }
     </style>
   </head>
   <body>

@@ -59,4 +59,15 @@ describe("createFaceSurface", () => {
     expect(context.listenerCount()).toBe(0);
     expect(host.querySelectorAll("canvas")).toHaveLength(0);
   });
+
+  it("opens the mouth from the speech analyser frame the context provides", () => {
+    const { context, drawn, runFrames } = mounted();
+    runFrames(1);
+    const closed = drawn.at(-1)?.uMouthOpen ?? 0;
+
+    context.setSpeechFrame({ bins: new Uint8Array(64).fill(255), hzPerBin: 100 });
+    runFrames(10);
+
+    expect(drawn.at(-1)?.uMouthOpen).toBeGreaterThan(closed + 0.3);
+  });
 });

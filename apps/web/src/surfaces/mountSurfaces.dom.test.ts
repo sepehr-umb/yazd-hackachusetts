@@ -1,11 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { createTestContext } from "../testing/testContext";
 import type { Surface, SurfaceContext } from "./surface";
 import { mountSurfaces } from "./mountSurfaces";
 
-const context: SurfaceContext = {
-  events: { subscribe: () => () => {} },
-  requests: { submit: async () => ({ status: "failed", failure: { reason: "unroutable" } }) },
-};
+const context: SurfaceContext = createTestContext();
 
 function labelledSurface(id: string, log: string[] = []): Surface {
   return {

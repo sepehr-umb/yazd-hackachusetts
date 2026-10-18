@@ -15,6 +15,12 @@ export const strings = {
     label: "Type a request",
     send: "Send",
   },
+  voice: {
+    start: "Start recording",
+    stop: "Stop recording",
+    listening: "Listening",
+    thinking: "Thinking",
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },
