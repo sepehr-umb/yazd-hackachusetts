@@ -6,6 +6,8 @@ import { selectLlmClient } from "./llm/selectLlmClient";
 import type { Env, LlmClientOptions } from "./llm/selectLlmClient";
 import { createOrchestrator, createStubTools } from "./orchestrator";
 import { createServer } from "./server";
+import { selectStt } from "./stt/selectStt";
+import { selectTts } from "./tts/selectTts";
 
 export type AppOptions = LlmClientOptions & { idleAfterMs?: number };
 
@@ -16,5 +18,11 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
     tools: withContactResolution(createStubTools().tools, fixtureContacts),
     bus: hub,
   });
-  return createServer({ orchestrator, hub, idleAfterMs: options.idleAfterMs });
+  return createServer({
+    orchestrator,
+    hub,
+    stt: selectStt(env, options),
+    tts: selectTts(env, options),
+    idleAfterMs: options.idleAfterMs,
+  });
 }

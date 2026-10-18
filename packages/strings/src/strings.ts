@@ -6,6 +6,11 @@ export const strings = {
     unroutable: "The assistant does not know how to help with that",
     llmError: (message: string) => `The language model failed: ${message}`,
   },
+  audio: {
+    emptyRecording: "The recording was empty",
+    nothingHeard: "Nothing was heard in the recording",
+    transcriptionFailed: (message: string) => `The recording could not be transcribed: ${message}`,
+  },
   textInput: {
     label: "Type a request",
     send: "Send",
