@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 import { createOpenRouterTts } from "./openRouterTts";
 
 function fakeFetch(respond: () => Response) {
-  const calls: Array<{ url: string; headers: Record<string, string>; body: Record<string, unknown> }> = [];
+  const calls: Array<{
+    url: string;
+    headers: Record<string, string>;
+    body: Record<string, unknown>;
+  }> = [];
   const fetchImpl: typeof fetch = async (input, init) => {
     calls.push({
       url: String(input),
