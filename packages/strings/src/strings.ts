@@ -20,6 +20,7 @@ export const strings = {
     stop: "Stop recording",
     listening: "Listening",
     thinking: "Thinking",
+    nothingHeard: "Nothing was heard",
   },
   request: {
     unexpectedResponse: "Unexpected response from the server",

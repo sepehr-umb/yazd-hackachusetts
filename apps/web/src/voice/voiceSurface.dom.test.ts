@@ -96,6 +96,46 @@ describe("voice surface", () => {
     expect(context.mic.stops).toBe(0);
   });
 
+  it("stops without sending and says nothing was heard when no speech comes in time", async () => {
+    const { context, button, status, click } = mounted();
+    await click();
+
+    await vi.advanceTimersByTimeAsync(7900);
+    expect(context.mic.stops).toBe(0);
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(context.mic.stops).toBe(1);
+    expect(context.chimes).toEqual(["start", "stop"]);
+    expect(context.recorded).toHaveLength(0);
+    expect(status.textContent).toBe("Nothing was heard");
+    expect(status.dataset.tone).toBe("error");
+    expect(button.getAttribute("aria-label")).toBe("Start recording");
+    expect(button.disabled).toBe(false);
+  });
+
+  it("sends the recording when speech comes just before the no-speech timeout", async () => {
+    const { context, click } = mounted();
+    await click();
+    await vi.advanceTimersByTimeAsync(7000);
+    context.mic.level = 0.5;
+    await vi.advanceTimersByTimeAsync(100);
+    context.mic.level = 0;
+
+    await vi.advanceTimersByTimeAsync(1100);
+
+    expect(context.recorded).toHaveLength(1);
+  });
+
+  it("can record again after nothing was heard", async () => {
+    const { context, click } = mounted();
+    await click();
+    await vi.advanceTimersByTimeAsync(8100);
+
+    await click();
+
+    expect(context.mic.starts).toBe(2);
+  });
+
   it("keeps recording while the input stays above the silence threshold", async () => {
     const { context, click } = mounted();
     await click();

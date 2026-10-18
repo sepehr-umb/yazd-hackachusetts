@@ -55,17 +55,30 @@ export function createVoiceSurface({ config = voiceConfig }: VoiceSurfaceDeps = 
         }
       };
 
-      const finish = async () => {
-        const active = recording;
-        if (phase !== "recording" || !active) return;
+      const stopRecording = async (active: Recording) => {
         clearInterval(poll);
         recording = undefined;
         phase = "sending";
         render();
-        show(strings.voice.thinking, "neutral");
         const blob = await active.stop();
         context.chime("stop");
-        await send(blob);
+        return blob;
+      };
+
+      const finish = async () => {
+        const active = recording;
+        if (phase !== "recording" || !active) return;
+        show(strings.voice.thinking, "neutral");
+        await send(await stopRecording(active));
+        phase = "idle";
+        render();
+      };
+
+      const giveUp = async () => {
+        const active = recording;
+        if (phase !== "recording" || !active) return;
+        await stopRecording(active);
+        show(strings.voice.nothingHeard, "error");
         phase = "idle";
         render();
       };
@@ -90,8 +103,10 @@ export function createVoiceSurface({ config = voiceConfig }: VoiceSurfaceDeps = 
         show(strings.voice.listening, "neutral");
         const detector = createSilenceDetector(config, Date.now());
         poll = setInterval(() => {
-          if (recording && detector.update(recording.level(), Date.now()) === "silence")
-            void finish();
+          if (!recording) return;
+          const outcome = detector.update(recording.level(), Date.now());
+          if (outcome === "silence") void finish();
+          else if (outcome === "no_speech") void giveUp();
         }, POLL_MS);
       };
 
