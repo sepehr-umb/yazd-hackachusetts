@@ -1,3 +1,3 @@
 export type VoiceConfig = { silenceThreshold: number; silenceTimeoutMs: number };
 
-export const voiceConfig: VoiceConfig = { silenceThreshold: 0.02, silenceTimeoutMs: 1500 };
+export const voiceConfig: VoiceConfig = { silenceThreshold: 0.02, silenceTimeoutMs: 2000 };
