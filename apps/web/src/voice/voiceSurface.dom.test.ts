@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTestContext } from "../testing/testContext";
 import { createVoiceSurface } from "./voiceSurface";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000 };
+const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
 
 beforeEach(() => {
   vi.useFakeTimers();

@@ -88,9 +88,10 @@ export function createVoiceSurface({ config = voiceConfig }: VoiceSurfaceDeps = 
         phase = "recording";
         render();
         show(strings.voice.listening, "neutral");
-        const detector = createSilenceDetector(config);
+        const detector = createSilenceDetector(config, Date.now());
         poll = setInterval(() => {
-          if (recording && detector.update(recording.level(), Date.now())) void finish();
+          if (recording && detector.update(recording.level(), Date.now()) === "silence")
+            void finish();
         }, POLL_MS);
       };
 
