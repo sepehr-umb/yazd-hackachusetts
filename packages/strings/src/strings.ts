@@ -150,6 +150,12 @@ export const strings = {
       },
     },
   },
+  offline: {
+    fa: "دستیار برای کار به اینترنت نیاز دارد.",
+    en: "The assistant needs an internet connection.",
+    es: "El asistente necesita conexión a internet.",
+    it: "L'assistente ha bisogno di una connessione a internet.",
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },
