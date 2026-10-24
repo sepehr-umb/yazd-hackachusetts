@@ -7,6 +7,7 @@ import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
 import { createNarrator } from "./setup/narrator";
 import { createSetupControl } from "./setup/setupControl";
+import { applyVisionParam } from "./setup/visionParam";
 import { createSpeechPlayer } from "./speech/speechPlayer";
 import { mountForProfile } from "./surfaces/mountForProfile";
 import { surfaceRegistry } from "./surfaces/registry";
@@ -30,6 +31,7 @@ const microphone = createMicrophone({
   createRecorder: (stream) => new MediaRecorder(stream),
 });
 const profile = createProfileStore(browserStorage(() => localStorage));
+applyVisionParam(location.href, profile, (url) => history.replaceState(history.state, "", url));
 applyProfile(document, profile.get());
 profile.subscribe((next) => applyProfile(document, next));
 

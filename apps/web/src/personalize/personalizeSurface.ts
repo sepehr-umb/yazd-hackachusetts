@@ -3,6 +3,7 @@ import type { Character } from "../characters/character";
 import { characterRegistry } from "../characters/registry";
 import { languages as profileLanguages } from "../profile/languages";
 import type { Language } from "../profile/languages";
+import { createViewChoices } from "../setup/viewChoices";
 import type { Surface } from "../surfaces/surface";
 import { personalizeIcon } from "./personalizeIcon";
 import { createSheet } from "./sheet";
@@ -27,6 +28,8 @@ export function createPersonalizeSurface({
       backdrop.dataset.role = "backdrop";
       backdrop.hidden = true;
       const sheet = createSheet(document, { ...context, characters, languages });
+      const view = createViewChoices(document, context.profile, () => close());
+      sheet.element.querySelector("h2")?.after(view.element);
       host.append(opener, backdrop, sheet.element);
 
       const setOpen = (open: boolean) => {
@@ -63,6 +66,7 @@ export function createPersonalizeSurface({
       setOpen(false);
 
       return () => {
+        view.dispose();
         unsubscribe();
         document.removeEventListener("keydown", onKeyDown);
         opener.remove();

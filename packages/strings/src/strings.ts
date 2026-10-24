@@ -66,6 +66,9 @@ export const strings = {
         minimal: "صفحه را به‌سختی می‌بینم",
       },
       confirmation: "انجام شد. صفحه آماده است.",
+      holdHint: "برای تغییر تنظیمات، صفحه را دو ثانیه نگه دارید",
+      settings: "تنظیمات",
+      view: { title: "نما", full: "کامل", low: "کم", minimal: "حداقل" },
     },
     en: {
       languageName: "English",
@@ -78,6 +81,9 @@ export const strings = {
         minimal: "I barely see the screen",
       },
       confirmation: "Done. The screen is ready.",
+      holdHint: "Hold the screen for two seconds to change settings",
+      settings: "Settings",
+      view: { title: "View", full: "Full", low: "Low", minimal: "Minimal" },
     },
     es: {
       languageName: "Español",
@@ -90,6 +96,9 @@ export const strings = {
         minimal: "Apenas veo la pantalla",
       },
       confirmation: "Listo. La pantalla está preparada.",
+      holdHint: "Mantén pulsada la pantalla dos segundos para cambiar los ajustes",
+      settings: "Ajustes",
+      view: { title: "Vista", full: "Completa", low: "Baja", minimal: "Mínima" },
     },
     it: {
       languageName: "Italiano",
@@ -102,6 +111,9 @@ export const strings = {
         minimal: "Vedo a malapena lo schermo",
       },
       confirmation: "Fatto. Lo schermo è pronto.",
+      holdHint: "Tieni premuto lo schermo per due secondi per cambiare le impostazioni",
+      settings: "Impostazioni",
+      view: { title: "Vista", full: "Completa", low: "Bassa", minimal: "Minima" },
     },
   },
   flip: {

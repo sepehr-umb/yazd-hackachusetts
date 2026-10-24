@@ -51,4 +51,10 @@ describe("settingsFor", () => {
       expect(on(vision, false)).not.toContain("activityPanel");
     }
   });
+
+  it("lets every level reach the setup sheet: personalize when sighted, the full-screen button at minimal", () => {
+    expect(on("full")).toEqual(expect.arrayContaining(["personalize", "setup"]));
+    expect(on("low")).toEqual(expect.arrayContaining(["personalize", "setup"]));
+    expect(on("minimal")).toEqual(expect.arrayContaining(["fullscreen", "setup"]));
+  });
 });

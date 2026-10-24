@@ -10,6 +10,7 @@ import { voiceConfig } from "../voice/voiceConfig";
 import type { VoiceConfig } from "../voice/voiceConfig";
 import { createVoiceSession } from "../voice/voiceSession";
 import { accessState } from "./accessState";
+import { createSettingsButton } from "./settingsButton";
 
 export type FullscreenSurfaceDeps = Partial<FrameScheduler> & {
   config?: VoiceConfig;
@@ -22,6 +23,7 @@ export function createFullscreenSurface({
   requestFrame = (callback) => requestAnimationFrame(callback),
   cancelFrame = (handle) => cancelAnimationFrame(handle),
 }: FullscreenSurfaceDeps = {}): Surface {
+  let hinted = false;
   return {
     id: "fullscreen",
     mount(host, context) {
@@ -33,7 +35,8 @@ export function createFullscreenSurface({
       const status = document.createElement("p");
       status.setAttribute("role", "status");
       status.dir = "auto";
-      host.append(button, status);
+      const settings = createSettingsButton(document, context.setup.open);
+      host.append(settings, button, status);
 
       let streamState: AssistantState = "idle";
       let failed = false;
@@ -46,6 +49,8 @@ export function createFullscreenSurface({
         status.lang = language;
         button.lang = language;
         button.setAttribute("aria-label", copy.label);
+        settings.lang = language;
+        settings.textContent = strings.setup[language].settings;
       };
 
       const session = createVoiceSession({
@@ -84,6 +89,11 @@ export function createFullscreenSurface({
       });
       const stopKeys = onToggleKey(document, session.toggle);
       render();
+      if (!hinted) {
+        hinted = true;
+        const { language } = profile.get();
+        context.narrator.say(strings.setup[language].holdHint, language);
+      }
 
       return () => {
         flip.stop();
@@ -92,6 +102,7 @@ export function createFullscreenSurface({
         session.dispose();
         unsubscribeProfile();
         unsubscribeEvents();
+        settings.remove();
         button.remove();
         status.remove();
       };

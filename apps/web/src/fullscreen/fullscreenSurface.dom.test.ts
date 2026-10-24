@@ -17,11 +17,14 @@ describe("fullscreen surface", () => {
     expect(createFullscreenSurface().id).toBe("fullscreen");
   });
 
-  it("is one labelled button, black with white ink, saying it is ready", () => {
+  it("is one labelled screen button after the hidden Settings button, black with white ink, saying it is ready", () => {
     const { host, button, status, flip, runFrames } = mounted();
     runFrames(1);
 
-    expect(host.querySelectorAll("button")).toHaveLength(1);
+    expect([...host.querySelectorAll("button")].map((each) => each.dataset.role)).toEqual([
+      "settings",
+      "flip",
+    ]);
     expect(button.getAttribute("aria-label")).toBe("Tap to talk. Hold for settings.");
     expect(status.textContent).toBe("Ready");
     expect(status.lang).toBe("en");

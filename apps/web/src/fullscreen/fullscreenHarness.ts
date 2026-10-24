@@ -23,7 +23,7 @@ export function mountFullscreen({ language = "en" as Language, reduced = false }
       pending = undefined;
     },
   }).mount(host, context);
-  const button = host.querySelector("button") as HTMLButtonElement;
+  const button = host.querySelector("[data-role=flip]") as HTMLButtonElement;
   const status = host.querySelector("[role=status]") as HTMLElement;
   const flip = () => ({
     color: host.style.getPropertyValue("--flip-color"),

@@ -1,4 +1,5 @@
 import { strings } from "@mahmood/strings";
+import { createViewChoices } from "../setup/viewChoices";
 import type { Surface } from "../surfaces/surface";
 import { describeEvent } from "./describeEvent";
 
@@ -14,7 +15,8 @@ export const activityPanelSurface: Surface = {
     const list = document.createElement("ul");
     list.setAttribute("role", "log");
     list.setAttribute("aria-live", "polite");
-    drawer.append(summary, list);
+    const view = createViewChoices(document, context.profile);
+    drawer.append(summary, view.element, list);
     host.append(drawer);
 
     const unsubscribe = context.events.subscribe((event) => {
@@ -28,6 +30,7 @@ export const activityPanelSurface: Surface = {
     });
 
     return () => {
+      view.dispose();
       unsubscribe();
       drawer.remove();
     };
