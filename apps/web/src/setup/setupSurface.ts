@@ -45,7 +45,6 @@ export function createSetupSurface({
       );
       host.append(sheet);
       let rotation: Rotation | undefined;
-      let language: Language = profile.get().language;
       const stopRotating = () => {
         rotation?.stop();
         rotation = undefined;
@@ -76,7 +75,6 @@ export function createSetupSurface({
       };
       const showVision = (chosen: Language, heard: boolean) => {
         const copy = strings.setup[chosen];
-        language = chosen;
         stopRotating();
         sheet.dataset.step = "vision";
         show(chosen, copy.visionQuestion);
@@ -117,11 +115,13 @@ export function createSetupSurface({
       };
       orb.addEventListener("click", () => {
         if (sheet.dataset.step !== "vision") flow.greet();
-        else flow.answer(language);
+        else flow.answer(profile.get().language);
       });
       const open = () => {
         flow.cancel();
-        showWelcome();
+        const { vision, language: current } = profile.get();
+        if (vision) showVision(current, false);
+        else showWelcome();
         sheet.hidden = false;
         history.opened();
         heading.focus();

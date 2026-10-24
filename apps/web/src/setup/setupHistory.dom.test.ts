@@ -46,11 +46,10 @@ describe("setup sheet and the back gesture", () => {
     expect(history.pushes).toBe(2);
   });
 
-  it("pops its own entry when a choice closes it, and ignores the back that follows", async () => {
-    const { context, sheet, pick, history, fallBack } = mounted("full");
+  it("pops its own entry when a choice closes it, and ignores the back that follows", () => {
+    const { context, sheet, pick, history } = mounted("full");
+    context.profile.update({ language: "en" });
     context.setup.open();
-    await fallBack();
-    pick("English");
 
     pick("I see the screen well");
     history.pop();

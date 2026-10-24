@@ -71,12 +71,26 @@ describe("setup surface", () => {
     expect(sheet.hidden).toBe(true);
   });
 
-  it("starts again from the welcome when reopened", () => {
-    const { context, heading } = mounted({ vision: "full" });
+  it("starts at the spoken vision question in the profile's language when reopened, and listens after it", async () => {
+    const { context, heading, options, spoken, endSpeech } = mounted({ vision: "full" });
+    context.profile.update({ language: "es" });
 
     context.setup.open();
 
-    expect(heading().textContent).toBe("دکمه را فشار بده و بگو «سلام»");
+    expect([heading().textContent, heading().lang]).toEqual([
+      strings.setup.es.visionQuestion,
+      "es",
+    ]);
+    expect(options()).toHaveLength(3);
+    expect(spoken.at(-1)).toBe(`es: ${strings.setup.es.visionQuestionSpoken}`);
+    expect(spoken).not.toContain(`es: ${strings.setup.es.heard}`);
+    endSpeech();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(context.mic.starts).toBe(1);
+  });
+
+  it("still greets with the welcome while setup has never run", () => {
+    expect(mounted().heading().textContent).toBe("دکمه را فشار بده و بگو «سلام»");
   });
 
   it("closes on Escape once setup has run, but not before", () => {
