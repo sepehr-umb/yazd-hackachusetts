@@ -37,3 +37,18 @@
   border-inline-start: 4px solid var(--error);
   padding-inline-start: 8px;
 }
+
+:root[data-vision="minimal"] [data-surface="activityPanel"] {
+  position: fixed;
+  inset-block-start: max(var(--gap), var(--safe-top));
+  inset-inline: max(var(--gap), var(--safe-inline));
+  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+:root[data-vision="minimal"] [data-surface="activityPanel"] details {
+  max-inline-size: 100%;
+  pointer-events: auto;
+}

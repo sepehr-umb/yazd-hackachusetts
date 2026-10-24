@@ -17,6 +17,10 @@ import { createMicrophone } from "./voice/microphone";
 const root = document.querySelector<HTMLElement>("#app");
 if (!root) throw new Error("Page markup is missing #app");
 
+type ViteMeta = ImportMeta & { env: { DEV: boolean } };
+
+const debug =
+  (import.meta as ViteMeta).env.DEV || new URLSearchParams(location.search).has("debug");
 const audioContext = new AudioContext();
 const events = createLiveEventSource({ url: eventsUrl(location) });
 const speech = createSpeechPlayer({ events, context: audioContext });
@@ -31,7 +35,7 @@ profile.subscribe((next) => applyProfile(document, next));
 
 mountForProfile({
   registry: surfaceRegistry,
-  settingsFor,
+  settingsFor: (current) => settingsFor(current, { debug }),
   root,
   context: {
     events,
