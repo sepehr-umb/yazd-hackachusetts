@@ -20,6 +20,8 @@ describe("profile store", () => {
       shape: "circle",
       character: "orb",
       language: "fa",
+      flipIdle: "#000000",
+      flipListening: "#FFE600",
     });
   });
 

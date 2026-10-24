@@ -86,7 +86,13 @@ describe("personalize surface", () => {
       "Glowing orb",
       "Face",
     ]);
-    expect(choices("Language").map((button) => button.lang)).toEqual(["fa", "en"]);
+    expect(choices("Language").map((button) => button.lang)).toEqual(["fa", "en", "es", "it"]);
+    expect(choices("Language").map((button) => button.textContent)).toEqual([
+      "فارسی",
+      "English",
+      "Español",
+      "Italiano",
+    ]);
 
     choices("Shape")[1]?.click();
     choices("Character")[1]?.click();

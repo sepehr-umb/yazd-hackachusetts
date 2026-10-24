@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import type { Language } from "../profile/languages";
 import { createTestContext } from "../testing/testContext";
 import type { Shortcut } from "./shortcuts";
 import { createShortcutsSurface } from "./shortcutsSurface";
@@ -28,7 +29,7 @@ afterEach(() => {
 
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-function mounted(language = "fa") {
+function mounted(language: Language = "fa") {
   const context = createTestContext();
   const host = document.createElement("section");
   document.body.append(host);
@@ -142,7 +143,7 @@ describe("shortcuts surface", () => {
   });
 
   it("falls back to the first language in the data when the profile's is missing", () => {
-    const { buttons } = mounted("de");
+    const { buttons } = mounted("es");
 
     expect(buttons[0]?.querySelector("[data-role=label]")?.textContent).toBe("مامان");
   });

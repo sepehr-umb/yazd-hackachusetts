@@ -1,17 +1,17 @@
 import { strings } from "@mahmood/strings";
 import type { Character } from "../characters/character";
 import { characterRegistry } from "../characters/registry";
-import { shortcuts } from "../shortcuts/shortcuts";
+import { languages as profileLanguages } from "../profile/languages";
+import type { Language } from "../profile/languages";
 import type { Surface } from "../surfaces/surface";
-import { languagesOf } from "./languageName";
 import { personalizeIcon } from "./personalizeIcon";
 import { createSheet } from "./sheet";
 
-export type PersonalizeSurfaceDeps = { characters?: Character[]; languages?: string[] };
+export type PersonalizeSurfaceDeps = { characters?: Character[]; languages?: readonly Language[] };
 
 export function createPersonalizeSurface({
   characters = characterRegistry,
-  languages = languagesOf(shortcuts),
+  languages = profileLanguages,
 }: PersonalizeSurfaceDeps = {}): Surface {
   return {
     id: "personalize",

@@ -43,6 +43,7 @@ export const strings = {
     character: "Character",
     language: "Language",
     done: "Done",
+    setup: "Vision and language",
     shapes: { circle: "Circle", blob: "Blob", ring: "Ring" },
     hues: {
       apricot: "Apricot",
@@ -51,6 +52,102 @@ export const strings = {
       terracotta: "Terracotta",
       honey: "Honey",
       marigold: "Marigold",
+    },
+  },
+  setup: {
+    fa: {
+      languageName: "فارسی",
+      title: "راه‌اندازی",
+      chooseLanguage: "زبان خود را انتخاب کنید",
+      visionQuestion: "صفحه را چقدر خوب می‌بینید؟",
+      vision: {
+        full: "صفحه را خوب می‌بینم",
+        low: "شکل‌ها و رنگ‌ها را می‌بینم",
+        minimal: "صفحه را به‌سختی می‌بینم",
+      },
+      confirmation: "انجام شد. صفحه آماده است.",
+    },
+    en: {
+      languageName: "English",
+      title: "Setup",
+      chooseLanguage: "Choose your language",
+      visionQuestion: "How well do you see the screen?",
+      vision: {
+        full: "I see the screen well",
+        low: "I see shapes and colors",
+        minimal: "I barely see the screen",
+      },
+      confirmation: "Done. The screen is ready.",
+    },
+    es: {
+      languageName: "Español",
+      title: "Configuración",
+      chooseLanguage: "Elige tu idioma",
+      visionQuestion: "¿Qué tan bien ves la pantalla?",
+      vision: {
+        full: "Veo bien la pantalla",
+        low: "Veo formas y colores",
+        minimal: "Apenas veo la pantalla",
+      },
+      confirmation: "Listo. La pantalla está preparada.",
+    },
+    it: {
+      languageName: "Italiano",
+      title: "Configurazione",
+      chooseLanguage: "Scegli la tua lingua",
+      visionQuestion: "Quanto bene vedi lo schermo?",
+      vision: {
+        full: "Vedo bene lo schermo",
+        low: "Vedo forme e colori",
+        minimal: "Vedo a malapena lo schermo",
+      },
+      confirmation: "Fatto. Lo schermo è pronto.",
+    },
+  },
+  flip: {
+    fa: {
+      label: "برای صحبت ضربه بزنید. برای تنظیمات نگه دارید.",
+      hint: "برای تغییر تنظیمات نگه دارید",
+      status: {
+        idle: "آماده",
+        listening: "گوش می‌دهم",
+        thinking: "فکر می‌کنم",
+        done: "تمام",
+        error: "دوباره",
+      },
+    },
+    en: {
+      label: "Tap to talk. Hold for settings.",
+      hint: "Hold to change settings",
+      status: {
+        idle: "Ready",
+        listening: "Listening",
+        thinking: "Thinking",
+        done: "Done",
+        error: "Try again",
+      },
+    },
+    es: {
+      label: "Toca para hablar. Mantén pulsado para los ajustes.",
+      hint: "Mantén pulsado para cambiar los ajustes",
+      status: {
+        idle: "En espera",
+        listening: "Escuchando",
+        thinking: "Pensando",
+        done: "Hecho",
+        error: "Otra vez",
+      },
+    },
+    it: {
+      label: "Tocca per parlare. Tieni premuto per le impostazioni.",
+      hint: "Tieni premuto per cambiare le impostazioni",
+      status: {
+        idle: "Pronto",
+        listening: "Ascolto",
+        thinking: "Penso",
+        done: "Fatto",
+        error: "Riprova",
+      },
     },
   },
   request: {
