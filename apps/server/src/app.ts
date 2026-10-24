@@ -19,8 +19,9 @@ export type AppOptions = LlmClientOptions & { idleAfterMs?: number; staticDir?: 
 export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
   const hub = createEventHub();
   const clock: Clock = { now: () => new Date() };
+  const llm = selectLlmClient(env, options);
   const orchestrator = createOrchestrator({
-    llm: selectLlmClient(env, options),
+    llm,
     tools: withClock(
       withSettings(withContactResolution(createStubTools().tools, fixtureContacts), hub),
       clock,
@@ -32,6 +33,7 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
   return createServer({
     orchestrator,
     hub,
+    apologyLlm: llm,
     stt: selectStt(env, options),
     tts: selectTts(env, options),
     translator: selectTranslator(env, options),

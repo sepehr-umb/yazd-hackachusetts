@@ -102,7 +102,7 @@ describe("typed request end to end", () => {
     ]);
   });
 
-  it("broadcasts a failed tool call and the error state when the contact is ambiguous", async () => {
+  it("broadcasts a succeeded tool call and the question when the contact is ambiguous", async () => {
     const { port } = await startApp();
     const { until } = await connectToEvents(port);
 
@@ -110,13 +110,9 @@ describe("typed request end to end", () => {
     const events = await until(reachedSpeech);
 
     expect(await response.json()).toEqual({
-      status: "failed",
+      status: "succeeded",
       agent: "comms",
-      failure: {
-        reason: "tool_failed",
-        tool: "call_contact",
-        error: 'Several contacts match "احمدی": حسین احمدی, حسن احمدی',
-      },
+      reply: "می‌خواهید با کدام یک تماس بگیرم: حسین احمدی یا حسن احمدی؟",
     });
     expect(captionsOf(events).map((event) => event.speaker)).toEqual(["user", "assistant"]);
     expect(withoutCaptions(events)).toEqual([
@@ -125,8 +121,8 @@ describe("typed request end to end", () => {
       { type: "agent", agent: "orchestrator" },
       { type: "agent", agent: "comms" },
       { type: "tool_call", tool: "call_contact", status: "started" },
-      { type: "tool_call", tool: "call_contact", status: "failed" },
-      { type: "state", state: "error" },
+      { type: "tool_call", tool: "call_contact", status: "succeeded" },
+      { type: "state", state: "speaking" },
       speechEvent,
     ]);
   });

@@ -1,0 +1,301 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Write bug condition exploration tests": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324138
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872327751
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872406941
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324164
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872406964
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872515886
+      }
+    ],
+    "3.1 Add Italian aliases and `closestContacts` in `packages/contacts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324195
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872516047
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872587131
+      }
+    ],
+    "3.2 Add `detectLanguage` and the `friendlyApology` table in `packages/strings`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324218
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872587712
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872657261
+      }
+    ],
+    "3.3 Return a structured miss from `resolveContact` and correct its tests": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324240
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872658026
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872711458
+      }
+    ],
+    "3.4 Return `applied: false` from `withContactResolution` and correct its tests": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324264
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872710870
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872772452
+      }
+    ],
+    "3.5 Add `appliedFalseRule` to every agent prompt in `agents.ts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324287
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872772422
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872812750
+      }
+    ],
+    "3.6 Add `failure/askModelForApology.ts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324325
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872812088
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872860322
+      }
+    ],
+    "3.7 Add `failure/replier.ts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324347
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872859741
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872912585
+      }
+    ],
+    "3.8 Cover the replier with a replay-model fallback check": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324368
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872913328
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872960087
+      }
+    ],
+    "3.9 Make `spokenText` and `speaker` operate on strings and correct their tests": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324389
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872960131
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873021876
+      }
+    ],
+    "3.10 Wire the replier into `server.ts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324410
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873021036
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873100571
+      }
+    ],
+    "3.11 Wire the LLM client into `app.ts`": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324433
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873101544
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873208926
+      }
+    ],
+    "3.12 Add integration tests": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324455
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873209602
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873305951
+      }
+    ],
+    "3.13 Verify bug condition exploration tests now pass": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324476
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873306834
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873324714
+      }
+    ],
+    "3.14 Verify preservation tests still pass": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324506
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873325577
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873343806
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792872324539
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873344627
+      },
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873400384
+      }
+    ],
+    "3. Fix for raw English failures, contact misses ending the run, missing prompt rule and missing Italian aliases": [
+      {
+        "executionId": "34cb40e1-c034-4a2f-ad8d-bfb3af215f0b",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792873343830
+      }
+    ]
+  }
+}

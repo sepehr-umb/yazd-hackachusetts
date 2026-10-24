@@ -1,9 +1,13 @@
 import type { ToolName } from "@mahmood/contracts";
+import { appliedFalseRule, contactChoiceRule } from "./appliedFalseRule";
 import type { SubAgentName } from "./result";
 
 export type AgentDefinition = { system: string; tools: ToolName[] };
 
-export const agentDefinitions: Record<SubAgentName, AgentDefinition> = {
+const withRule = (system: string, ...rules: string[]) =>
+  [system, ...rules, appliedFalseRule].join(" ");
+
+const definitions: Record<SubAgentName, AgentDefinition> = {
   comms: {
     system:
       "You handle phone calls and text messages for an elderly user. Use the tools to act on the request. After the tool succeeds, confirm in one short sentence in the user's language, the language the user spoke.",
@@ -35,3 +39,22 @@ export const agentDefinitions: Record<SubAgentName, AgentDefinition> = {
     tools: ["ask_for_clarification"],
   },
 };
+
+export const agentDefinitions = {
+  ...definitions,
+  comms: {
+    ...definitions.comms,
+    system: withRule(definitions.comms.system, contactChoiceRule),
+  },
+  home: { ...definitions.home, system: withRule(definitions.home.system) },
+  media: { ...definitions.media, system: withRule(definitions.media.system) },
+  settings: {
+    ...definitions.settings,
+    system: withRule(definitions.settings.system),
+  },
+  clock: { ...definitions.clock, system: withRule(definitions.clock.system) },
+  clarifier: {
+    ...definitions.clarifier,
+    system: withRule(definitions.clarifier.system),
+  },
+} satisfies Record<SubAgentName, AgentDefinition>;

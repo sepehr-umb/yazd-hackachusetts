@@ -6,6 +6,7 @@ describe("@mahmood/contacts public API", () => {
     expect(Object.keys(contacts).sort()).toEqual([
       "DEFAULT_AMBIGUITY_MARGIN",
       "DEFAULT_THRESHOLD",
+      "closestContacts",
       "fixtureContacts",
       "matchContact",
       "normalizeText",

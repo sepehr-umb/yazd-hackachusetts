@@ -3,9 +3,9 @@ import Fastify from "fastify";
 import { WebSocketServer } from "ws";
 import type { FastifyInstance } from "fastify";
 import type { EventHub } from "./events/eventHub";
-import type { Orchestrator } from "./orchestrator";
+import { createReplier } from "./failure/replier";
+import type { LlmClient, Orchestrator } from "./orchestrator";
 import { createSpeaker } from "./speech/speaker";
-import { spokenText } from "./speech/spokenText";
 import { createSpeechStore } from "./speech/speechStore";
 import type { SpeechStore } from "./speech/speechStore";
 import type { Stt } from "./stt/stt";
@@ -23,6 +23,7 @@ export type ServerDeps = {
   speech?: SpeechStore;
   idleAfterMs?: number;
   staticDir?: string;
+  apologyLlm?: LlmClient;
 };
 
 const MAX_RECORDING_BYTES = 10 * 1024 * 1024;
@@ -41,10 +42,12 @@ export function createServer({
   speech = createSpeechStore(),
   idleAfterMs,
   staticDir,
+  apologyLlm,
 }: ServerDeps): FastifyInstance {
   const app = Fastify();
   const speaker = createSpeaker({ tts, store: speech, bus: hub });
   const captioner = createCaptioner({ translator, bus: hub });
+  const replier = createReplier({ llm: apologyLlm });
   let idleTimer: ReturnType<typeof setTimeout> | undefined;
   const sockets = new WebSocketServer({ server: app.server, path: "/events" });
 
@@ -72,9 +75,10 @@ export function createServer({
       captioner.announce("user", text),
       orchestrator.handle(text),
     ]);
+    const replyText = await replier.reply(result, text);
     await Promise.all([
-      captioner.announce("assistant", spokenText(result)),
-      speaker.speak(result).catch((error: unknown) => {
+      captioner.announce("assistant", replyText),
+      speaker.speak(replyText).catch((error: unknown) => {
         const message = error instanceof Error ? error.message : String(error);
         console.error("Speech failed:", message);
       }),
