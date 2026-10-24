@@ -61,6 +61,7 @@ export const strings = {
   },
   activity: {
     title: "Activity",
+    details: "Details",
     request: (text: string) => `Request: ${text}`,
     state: (state: string) => `State: ${state}`,
     agent: (agent: string) => `Agent: ${agent}`,

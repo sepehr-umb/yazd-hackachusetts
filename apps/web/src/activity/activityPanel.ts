@@ -8,12 +8,14 @@ export const activityPanelSurface: Surface = {
   id: "activityPanel",
   mount(host, context) {
     const document = host.ownerDocument;
-    const title = document.createElement("h2");
-    title.textContent = strings.activity.title;
+    const drawer = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = strings.activity.details;
     const list = document.createElement("ul");
     list.setAttribute("role", "log");
     list.setAttribute("aria-live", "polite");
-    host.append(title, list);
+    drawer.append(summary, list);
+    host.append(drawer);
 
     const unsubscribe = context.events.subscribe((event) => {
       const { text, tone } = describeEvent(event);
@@ -27,8 +29,7 @@ export const activityPanelSurface: Surface = {
 
     return () => {
       unsubscribe();
-      title.remove();
-      list.remove();
+      drawer.remove();
     };
   },
 };

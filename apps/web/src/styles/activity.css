@@ -1,0 +1,39 @@
+[data-surface="activityPanel"] details {
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+[data-surface="activityPanel"] summary {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--target);
+  padding-inline: calc(var(--gap) * 1.5);
+  border-radius: var(--radius-card);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[data-surface="activityPanel"] ul {
+  max-block-size: 40vh;
+  margin: 0;
+  padding: 0 calc(var(--gap) * 1.5) var(--gap);
+  overflow-y: auto;
+  list-style: none;
+}
+
+[data-surface="activityPanel"] li {
+  padding-block: 6px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+[data-surface="activityPanel"] li[data-tone="success"] {
+  border-inline-start: 4px solid var(--ok);
+  padding-inline-start: 8px;
+}
+
+[data-surface="activityPanel"] li[data-tone="error"] {
+  border-inline-start: 4px solid var(--error);
+  padding-inline-start: 8px;
+}

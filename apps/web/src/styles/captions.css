@@ -14,6 +14,26 @@
   border-inline-start: 6px solid var(--accent);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
+  animation: caption-in var(--dur-state) var(--ease) both;
+}
+
+@keyframes caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes caption-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="captions"] [data-speaker] {
+    animation-name: caption-fade;
+  }
 }
 
 [data-surface="captions"] [data-speaker="assistant"] {

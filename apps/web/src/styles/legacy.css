@@ -29,29 +29,3 @@
 [data-surface="voice"] button:disabled {
   opacity: 0.6;
 }
-
-[data-surface="activityPanel"] {
-  padding: var(--gap);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-}
-
-[data-surface="activityPanel"] h2 {
-  margin: 0 0 8px;
-  font-size: 1em;
-}
-
-[data-surface="activityPanel"] ul {
-  max-block-size: 40vh;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  list-style: none;
-}
-
-[data-surface="activityPanel"] li {
-  padding-block: 4px;
-  font-size: 18px;
-  overflow-wrap: anywhere;
-}

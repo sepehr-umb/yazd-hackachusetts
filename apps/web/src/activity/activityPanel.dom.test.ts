@@ -15,6 +15,15 @@ describe("activityPanelSurface", () => {
     expect(activityPanelSurface.id).toBe("activityPanel");
   });
 
+  it("sits in a Details drawer that starts closed and opens from its summary", () => {
+    const { host } = mounted();
+    const drawer = host.querySelector("details") as HTMLDetailsElement;
+
+    expect(drawer.open).toBe(false);
+    expect(drawer.querySelector("summary")?.textContent).toBe("Details");
+    expect(drawer.querySelector("[role=log]")).not.toBeNull();
+  });
+
   it("lists each event as it arrives, oldest first", () => {
     const { context, entries } = mounted();
 

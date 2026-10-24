@@ -24,7 +24,7 @@ body {
   max-inline-size: 1100px;
   margin-inline: auto;
   padding: var(--gap);
-  padding-block-end: calc(var(--gap) * 2);
+  padding-block-end: calc(var(--target) + var(--gap) * 2);
 }
 
 button,
