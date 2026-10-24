@@ -20,6 +20,9 @@ export type VoiceSessionDeps = {
 export type VoiceSession = {
   readonly phase: VoicePhase;
   toggle(): void;
+  capture(): Promise<Blob | undefined>;
+  listen(): Promise<Blob | undefined>;
+  cancel(): void;
   level(): number;
   dispose(): void;
 };
@@ -27,6 +30,7 @@ export type VoiceSession = {
 const POLL_MS = 50;
 
 const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
+const failure = (error: unknown): VoiceNotice => ({ text: messageOf(error), tone: "error" });
 
 export function createVoiceSession({
   context,
@@ -38,18 +42,17 @@ export function createVoiceSession({
   let recording: Recording | undefined;
   let poll: ReturnType<typeof setInterval> | undefined;
   let disposed = false;
+  let pending: { blob: Promise<Blob | undefined>; resolve(blob?: Blob): void } | undefined;
+
+  const settle = (blob?: Blob) => {
+    const done = pending;
+    pending = undefined;
+    done?.resolve(blob);
+  };
 
   const enter = (next: VoicePhase) => {
     phase = next;
     onPhase(next);
-  };
-
-  const send = async (blob: Blob) => {
-    try {
-      onNotice(describeResult(await context.recordings.submit(blob)));
-    } catch (error) {
-      onNotice({ text: messageOf(error), tone: "error" });
-    }
   };
 
   const stopRecording = async (active: Recording) => {
@@ -62,19 +65,17 @@ export function createVoiceSession({
     return blob;
   };
 
-  const finish = async () => {
+  const end = async (heard: boolean) => {
     const active = recording;
     if (phase !== "recording" || !active) return;
+    const blob = await stopRecording(active);
+    if (pending || !heard) {
+      if (!heard) onNotice({ text: strings.voice.nothingHeard, tone: "error" });
+      enter("idle");
+      return settle(heard ? blob : undefined);
+    }
     onNotice({ text: strings.voice.thinking, tone: "neutral" });
-    await send(await stopRecording(active));
-    enter("idle");
-  };
-
-  const giveUp = async () => {
-    const active = recording;
-    if (phase !== "recording" || !active) return;
-    await stopRecording(active);
-    onNotice({ text: strings.voice.nothingHeard, tone: "error" });
+    onNotice(await context.recordings.submit(blob).then(describeResult, failure));
     enter("idle");
   };
 
@@ -83,8 +84,7 @@ export function createVoiceSession({
     poll = setInterval(() => {
       if (!recording) return;
       const outcome = detector.update(recording.level(), Date.now());
-      if (outcome === "silence") void finish();
-      else if (outcome === "no_speech") void giveUp();
+      if (outcome !== "listening") void end(outcome === "silence");
     }, POLL_MS);
   };
 
@@ -99,8 +99,8 @@ export function createVoiceSession({
       recording = started;
     } catch (error) {
       enter("idle");
-      onNotice({ text: messageOf(error), tone: "error" });
-      return;
+      onNotice(failure(error));
+      return settle();
     }
     context.chime("start");
     context.haptic("start");
@@ -109,21 +109,41 @@ export function createVoiceSession({
     listen();
   };
 
+  const startCapture = () => {
+    if (pending || phase !== "idle" || disposed) return pending?.blob ?? Promise.resolve(undefined);
+    let resolve: (blob?: Blob) => void = () => {};
+    const blob = new Promise<Blob | undefined>((done) => (resolve = done));
+    pending = { blob, resolve };
+    void begin();
+    return blob;
+  };
+
+  const cancel = () => {
+    clearInterval(poll);
+    void recording?.stop();
+    recording = undefined;
+    if (phase !== "idle") enter("idle");
+    settle();
+  };
+
   return {
     get phase() {
       return phase;
     },
     toggle() {
-      if (disposed) return;
-      if (phase === "idle") void begin();
-      else if (phase === "recording") void finish();
+      if (phase === "idle" && !disposed) void begin();
+      else if (phase === "recording") void end(true);
     },
+    capture() {
+      if (pending && phase === "recording") void end(true);
+      return startCapture();
+    },
+    listen: startCapture,
+    cancel,
     level: () => recording?.level() ?? 0,
     dispose() {
       disposed = true;
-      clearInterval(poll);
-      void recording?.stop();
-      recording = undefined;
+      cancel();
     },
   };
 }
