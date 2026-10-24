@@ -1,14 +1,23 @@
 import type { Language } from "../profile/languages";
 
 export type VoiceLike = { lang: string };
-export type UtteranceLike = { text: string; lang: string; voice: unknown };
+export type UtteranceLike = {
+  text: string;
+  lang: string;
+  voice: unknown;
+  onend?: ((event: never) => unknown) | null;
+  onerror?: ((event: never) => unknown) | null;
+};
 export type SynthLike = {
   speak(utterance: UtteranceLike): void;
   cancel(): void;
   getVoices(): VoiceLike[];
 };
 
-export type Narrator = { say(text: string, language: Language): void; stop(): void };
+export type Narrator = {
+  say(text: string, language: Language, onEnd?: () => void): void;
+  stop(): void;
+};
 
 export type NarratorDeps = {
   synth?: SynthLike;
@@ -26,17 +35,21 @@ function voiceFor(synth: SynthLike, language: Language) {
 
 export function createNarrator({ synth, createUtterance }: NarratorDeps): Narrator {
   return {
-    say(text, language) {
-      if (!synth || !createUtterance) return;
+    say(text, language, onEnd) {
       try {
+        if (!synth || !createUtterance) return onEnd?.();
         const { found, voice } = voiceFor(synth, language);
-        if (!found) return;
+        if (!found) return onEnd?.();
         const utterance = createUtterance(text);
         utterance.lang = speechTags[language];
         utterance.voice = voice;
+        if (onEnd) {
+          utterance.onend = onEnd;
+          utterance.onerror = onEnd;
+        }
         synth.speak(utterance);
       } catch {
-        return;
+        onEnd?.();
       }
     },
     stop() {

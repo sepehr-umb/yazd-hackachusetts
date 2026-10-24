@@ -1,16 +1,21 @@
 import { strings } from "@mahmood/strings";
+import { prefersReducedMotion } from "../flip/reducedMotion";
 import { languages } from "../profile/languages";
 import type { Language } from "../profile/languages";
-import { visions } from "../profile/profile";
 import type { Vision } from "../profile/profile";
-import { prefersReducedMotion } from "../flip/reducedMotion";
+import { createTranscribeClient } from "../request/transcribeClient";
 import type { TranscribeClient } from "../request/transcribeClient";
 import type { Surface } from "../surfaces/surface";
+import { voiceConfig } from "../voice/voiceConfig";
 import type { VoiceConfig } from "../voice/voiceConfig";
+import { createVoiceSession } from "../voice/voiceSession";
 import { rotateLines } from "./rotatingLine";
 import type { Rotation } from "./rotatingLine";
 import { optionButtons } from "./setupOptions";
+import { createSetupSheet } from "./setupSheet";
 import { trackSheetHistory } from "./sheetHistory";
+import { visionOptions } from "./visionOptions";
+import { createVoiceFlow } from "./voiceFlow";
 
 export type SetupSurfaceDeps = {
   transcribe?: TranscribeClient;
@@ -24,6 +29,8 @@ const hellos = languages.map((language) => ({
 }));
 
 export function createSetupSurface({
+  transcribe = createTranscribeClient(),
+  config = voiceConfig,
   reducedMotion = prefersReducedMotion,
 }: SetupSurfaceDeps = {}): Surface {
   return {
@@ -31,104 +38,101 @@ export function createSetupSurface({
     mount(host, context) {
       const document = host.ownerDocument;
       const { profile, narrator } = context;
-      const sheet = document.createElement("div");
-      sheet.setAttribute("role", "dialog");
-      sheet.setAttribute("aria-modal", "true");
-      sheet.hidden = true;
-      const heading = document.createElement("h2");
-      heading.id = "setup-heading";
-      heading.tabIndex = -1;
-      heading.dir = "auto";
-      sheet.setAttribute("aria-labelledby", heading.id);
-      const list = document.createElement("div");
-      list.dataset.role = "options";
-      const orb = document.createElement("button");
-      orb.type = "button";
-      orb.dataset.role = "orb";
-      orb.setAttribute("aria-label", hellos.map(({ text }) => text).join(" · "));
+      const { sheet, orb, heading, list, show } = createSetupSheet(
+        document,
+        hellos.map(({ text }) => text).join(" · "),
+      );
+      host.append(sheet);
       let rotation: Rotation | undefined;
+      let language: Language = profile.get().language;
       const stopRotating = () => {
         rotation?.stop();
         rotation = undefined;
       };
-      sheet.append(orb, heading, list);
-      host.append(sheet);
-
-      const show = (language: Language, title: string) => {
-        heading.lang = language;
-        heading.textContent = title;
-      };
-
-      const history = trackSheetHistory(context.setup.history, () => {
-        if (profile.get().vision) sheet.hidden = true;
-        else history.opened();
+      const session = createVoiceSession({
+        context,
+        config,
+        onPhase: (phase) => {
+          orb.dataset.listening = String(phase === "recording");
+        },
       });
-
+      const history = trackSheetHistory(context.setup.history, () => {
+        if (!profile.get().vision) return history.opened();
+        flow.cancel();
+        stopRotating();
+        sheet.hidden = true;
+      });
       const close = () => {
+        flow.cancel();
         stopRotating();
         sheet.hidden = true;
         history.closed();
       };
-
-      const choose = (language: Language, vision: Vision) => {
-        narrator.stop();
-        narrator.say(strings.setup[language].confirmation, language);
+      const choose = (chosen: Language, vision: Vision) => {
         close();
-        profile.update({ language, vision });
+        narrator.say(strings.setup[chosen].confirmation, chosen);
+        profile.update({ language: chosen, vision });
       };
-
-      const showVision = (language: Language) => {
-        const copy = strings.setup[language];
+      const showVision = (chosen: Language, heard: boolean) => {
+        const copy = strings.setup[chosen];
+        language = chosen;
         stopRotating();
         sheet.dataset.step = "vision";
-        show(language, copy.visionQuestion);
-        const options = visions.map((vision) => ({
-          text: copy.vision[vision],
-          detail: copy.visionDetail[vision],
-          language,
-          onFocus: () => {
-            narrator.stop();
-            narrator.say(copy.vision[vision], language);
-          },
-          onChoose: () => choose(language, vision),
-        }));
+        show(chosen, copy.visionQuestion);
+        const options = visionOptions(chosen, narrator, (vision) => choose(chosen, vision));
         list.replaceChildren(...optionButtons(document, options));
-        narrator.stop();
-        narrator.say(copy.visionQuestion, language);
-        options.forEach(({ text }) => narrator.say(text, language));
         heading.focus();
+        if (heard) narrator.say(copy.heard, chosen);
+        flow.ask(chosen);
       };
-
-      const showLanguages = () => {
+      const flow = createVoiceFlow({
+        session,
+        transcribe,
+        narrator,
+        onLanguage: (heard) => {
+          if (!heard) return;
+          profile.update({ language: heard });
+          showVision(heard, true);
+        },
+        onVision: choose,
+      });
+      const showWelcome = () => {
         sheet.dataset.step = "welcome";
         stopRotating();
         rotation = rotateLines(heading, hellos, reducedMotion);
-        const options = languages.map((language) => ({
-          text: strings.setup[language].languageName,
-          language,
-          onChoose: () => showVision(language),
+        const options = languages.map((choice) => ({
+          text: strings.setup[choice].languageName,
+          language: choice,
+          onChoose: () => {
+            flow.cancel();
+            profile.update({ language: choice });
+            showVision(choice, false);
+          },
         }));
         list.replaceChildren(...optionButtons(document, options));
       };
-
+      orb.addEventListener("click", () => {
+        if (sheet.dataset.step === "welcome") flow.greet();
+        else flow.answer(language);
+      });
       const open = () => {
-        showLanguages();
+        flow.cancel();
+        showWelcome();
         sheet.hidden = false;
         history.opened();
         heading.focus();
       };
-
       const onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Escape" && profile.get().vision) close();
+        if (event.key === "Escape" && profile.get().vision && !sheet.hidden) close();
       };
-
       const stopOpening = context.setup.onOpen(open);
       document.addEventListener("keydown", onKeyDown);
       if (!profile.get().vision) open();
-
       return () => {
         stopOpening();
         stopRotating();
+        flow.cancel();
+        session.dispose();
         history.stop();
         document.removeEventListener("keydown", onKeyDown);
         sheet.remove();

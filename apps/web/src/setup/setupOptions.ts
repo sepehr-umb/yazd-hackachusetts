@@ -3,17 +3,25 @@ import type { Language } from "../profile/languages";
 export type SetupOption = {
   text: string;
   detail?: string;
+  number?: string;
   language: Language;
   onFocus?: () => void;
   onChoose: () => void;
 };
 
 export function optionButtons(document: Document, options: SetupOption[]): HTMLButtonElement[] {
-  return options.map(({ text, detail, language, onFocus, onChoose }) => {
+  return options.map(({ text, detail, number, language, onFocus, onChoose }) => {
     const button = document.createElement("button");
     button.type = "button";
     button.lang = language;
     button.dir = "auto";
+    if (number) {
+      const mark = document.createElement("span");
+      mark.dataset.role = "number";
+      mark.setAttribute("aria-hidden", "true");
+      mark.textContent = number;
+      button.append(mark);
+    }
     const title = document.createElement("span");
     title.dataset.role = "title";
     title.textContent = text;

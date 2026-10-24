@@ -58,6 +58,10 @@ export const strings = {
     fa: {
       languageName: "فارسی",
       sayHello: "دکمه را فشار بده و بگو «سلام»",
+      heard: "فارسی!",
+      visionQuestionSpoken:
+        "صفحه را چقدر خوب می‌بینید؟ بگویید یک: صفحه را خوب می‌بینم. دو: شکل‌ها و رنگ‌ها را می‌بینم. سه: صفحه را به‌سختی می‌بینم.",
+      sayAgain: "متوجه نشدم. یک، دو یا سه بگویید.",
       title: "راه‌اندازی",
       chooseLanguage: "زبان خود را انتخاب کنید",
       visionQuestion: "صفحه را چقدر خوب می‌بینید؟",
@@ -79,6 +83,10 @@ export const strings = {
     en: {
       languageName: "English",
       sayHello: 'Press the button and say "hello"',
+      heard: "English!",
+      visionQuestionSpoken:
+        "How well do you see the screen? Say one: I see the screen well. Two: I see shapes and colors. Three: I barely see the screen.",
+      sayAgain: "Sorry, I didn't catch that. Say one, two or three.",
       title: "Setup",
       chooseLanguage: "Choose your language",
       visionQuestion: "How well do you see the screen?",
@@ -100,6 +108,10 @@ export const strings = {
     es: {
       languageName: "Español",
       sayHello: "Pulsa el botón y di «hola»",
+      heard: "¡Español!",
+      visionQuestionSpoken:
+        "¿Qué tan bien ves la pantalla? Di uno: veo bien la pantalla. Dos: veo formas y colores. Tres: apenas veo la pantalla.",
+      sayAgain: "Perdona, no te he entendido. Di uno, dos o tres.",
       title: "Configuración",
       chooseLanguage: "Elige tu idioma",
       visionQuestion: "¿Qué tan bien ves la pantalla?",
@@ -121,6 +133,10 @@ export const strings = {
     it: {
       languageName: "Italiano",
       sayHello: "Premi il pulsante e di' «ciao»",
+      heard: "Italiano!",
+      visionQuestionSpoken:
+        "Quanto bene vedi lo schermo? Di' uno: vedo bene lo schermo. Due: vedo forme e colori. Tre: vedo a malapena lo schermo.",
+      sayAgain: "Scusa, non ho capito. Di' uno, due o tre.",
       title: "Configurazione",
       chooseLanguage: "Scegli la tua lingua",
       visionQuestion: "Quanto bene vedi lo schermo?",

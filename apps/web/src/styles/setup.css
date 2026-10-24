@@ -79,7 +79,7 @@
 
 [data-surface="setup"] button {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 16px;
   inline-size: 100%;
@@ -102,7 +102,7 @@
 
 [data-surface="setup"] button::after {
   content: "›";
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 1 / span 2;
   font-size: 40px;
   line-height: 1;
@@ -112,13 +112,19 @@
   content: "‹";
 }
 
-[data-surface="setup"] [data-role="title"] {
+[data-surface="setup"] [data-role="number"] {
   grid-column: 1;
+  grid-row: 1 / span 2;
+  font-size: 36px;
+}
+
+[data-surface="setup"] [data-role="title"] {
+  grid-column: 2;
   overflow-wrap: anywhere;
 }
 
 [data-surface="setup"] [data-role="detail"] {
-  grid-column: 1;
+  grid-column: 2;
   overflow: hidden;
   font-size: 18px;
   font-weight: 400;

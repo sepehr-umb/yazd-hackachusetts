@@ -79,4 +79,28 @@ describe("narrator", () => {
     ).not.toThrow();
     expect(() => createNarrator({ synth: broken }).stop()).not.toThrow();
   });
+
+  it("tells the caller when the utterance ends or fails", () => {
+    const fake = fakeSynth([{ lang: "it-IT", name: "Alice" }]);
+    const ended: string[] = [];
+    const narrator = createNarrator(fake);
+
+    narrator.say("Uno", "it", () => ended.push("first"));
+    narrator.say("Due", "it", () => ended.push("second"));
+    fake.spoken[0]?.onend?.(undefined as never);
+    fake.spoken[1]?.onerror?.(undefined as never);
+
+    expect(ended).toEqual(["first", "second"]);
+  });
+
+  it("tells the caller at once when it cannot speak, so listening still starts", () => {
+    const ended: string[] = [];
+
+    createNarrator(fakeSynth([{ lang: "en-US", name: "Samantha" }])).say("سلام", "fa", () =>
+      ended.push("no voice"),
+    );
+    createNarrator({}).say("Hello", "en", () => ended.push("no synth"));
+
+    expect(ended).toEqual(["no voice", "no synth"]);
+  });
 });

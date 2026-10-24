@@ -1,3 +1,4 @@
+import { strings } from "@mahmood/strings";
 import { afterEach, describe, expect, it } from "vitest";
 import type { Vision } from "../profile/profile";
 import { createTestContext } from "../testing/testContext";
@@ -57,7 +58,7 @@ describe("setup surface", () => {
     expect(sheet.hidden).toBe(false);
   });
 
-  it("asks about vision in the chosen language and reads the question and the options aloud", () => {
+  it("asks about vision in the chosen language and speaks the question with its numbered options", () => {
     const { context, heading, options, pick } = mounted();
 
     pick("Italiano");
@@ -67,14 +68,8 @@ describe("setup surface", () => {
     expect(
       options().map((button) => button.querySelector("[data-role=title]")?.textContent),
     ).toEqual(["Vedo bene lo schermo", "Vedo forme e colori", "Vedo a malapena lo schermo"]);
-    expect(context.narration).toEqual([
-      "stop",
-      "it: Quanto bene vedi lo schermo?",
-      "it: Vedo bene lo schermo",
-      "it: Vedo forme e colori",
-      "it: Vedo a malapena lo schermo",
-    ]);
-    expect(context.profile.get().language).toBe("fa");
+    expect(context.narration.at(-1)).toBe(`it: ${strings.setup.it.visionQuestionSpoken}`);
+    expect(context.profile.get().language).toBe("it");
   });
 
   it("reads an option again when it gets focus", () => {
