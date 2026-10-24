@@ -82,19 +82,30 @@ take injected `requestFrame`/`cancelFrame`. DOM behavior is tested in `*.dom.tes
 fakes in `apps/web/src/testing/testContext.ts`; math in plain unit tests. `apps/web/src/face/**`
 is read-only.
 
-## iPhone
+## Phone rules
 
-- Design for 390×844 and 430×932 portrait. Landscape must not break but is not optimized.
+The shipped form is an Android app: the deployed HTTPS site wrapped as a Trusted Web Activity
+(PWABuilder or Bubblewrap, outside this repo). Nothing native enters the repo. Chrome on Android
+comes first, Safari on iPhone second.
+
+- Design for portrait at Android 360×800 and 412×915, and iPhone 390×844 and 430×932. Landscape must
+  not break but is not optimized.
 - Viewport meta carries `viewport-fit=cover`; pad edges with `env(safe-area-inset-*)`. Use `100dvh`,
   never `100vh`.
 - `touch-action: manipulation` on everything interactive; `-webkit-tap-highlight-color:
   transparent`. The full-screen button also gets `user-select: none` and `-webkit-touch-callout:
   none` so a long press shows no system menu.
 - All audio starts inside the tap. The voice session resumes the AudioContext there;
-  `speechSynthesis` is also called from the gesture.
-- Works with VoiceOver: every control is a real `<button>` with an `aria-label` from strings; state
+  `speechSynthesis` is also called from the gesture. Chrome on Android also requires a prior tap
+  before `navigator.vibrate` works; every haptic follows one.
+- Works with TalkBack and VoiceOver: every control is a real `<button>` with an `aria-label` from strings; state
   changes go to a `role="status"` live region.
 - Never more than one flash per state change and never more than three flashes in any second.
+- The full-screen button and the setup buttons cancel `contextmenu`, so a long press on Android
+  shows no selection menu.
+- Haptics use `navigator.vibrate` first (Chrome on Android). The iOS switch toggle is a fallback.
+- An open setup sheet owns one history entry, so the Android back gesture closes the sheet, not the
+  app.
 
 ## Vision levels and the flip
 
