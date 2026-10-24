@@ -22,6 +22,43 @@
         height: 100%;
         display: block;
       }
+      [data-surface="captions"] {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        right: calc(min(360px, 100% - 32px) + 64px);
+        max-height: calc(100% - 260px);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        pointer-events: none;
+      }
+      [data-surface="captions"] [data-speaker] {
+        padding: 12px 20px;
+        border-radius: 16px;
+        background: #000;
+        border: 3px solid #ffd28a;
+        color: #fff;
+      }
+      [data-surface="captions"] [data-speaker="assistant"] {
+        border-color: #8fe3a2;
+      }
+      [data-surface="captions"] p {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      [data-surface="captions"] [data-role="original"] {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+      [data-surface="captions"] [data-role="english"] {
+        margin-top: 8px;
+        font-size: 28px;
+        line-height: 1.3;
+        color: #ffe6a8;
+      }
       [data-surface="activityPanel"] {
         position: fixed;
         top: 16px;

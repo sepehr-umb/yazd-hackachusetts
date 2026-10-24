@@ -7,6 +7,7 @@ import type { Env, LlmClientOptions } from "./llm/selectLlmClient";
 import { createOrchestrator, createStubTools } from "./orchestrator";
 import { createServer } from "./server";
 import { selectStt } from "./stt/selectStt";
+import { selectTranslator } from "./translation/selectTranslator";
 import { selectTts } from "./tts/selectTts";
 
 export type AppOptions = LlmClientOptions & { idleAfterMs?: number };
@@ -23,6 +24,7 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
     hub,
     stt: selectStt(env, options),
     tts: selectTts(env, options),
+    translator: selectTranslator(env, options),
     idleAfterMs: options.idleAfterMs,
   });
 }

@@ -42,9 +42,11 @@ function fromChatCompletion(completion: ChatCompletion): LlmResponse {
 }
 
 function toChatRequest(model: string, request: LlmRequest) {
+  const messages = toChatMessages(request.system, request.messages);
+  if (request.tools.length === 0) return { model, messages };
   return {
     model,
-    messages: toChatMessages(request.system, request.messages),
+    messages,
     tools: request.tools.map((tool) => ({
       type: "function",
       function: { name: tool.name, description: tool.description, parameters: tool.inputSchema },

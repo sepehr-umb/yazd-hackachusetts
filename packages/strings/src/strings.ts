@@ -25,6 +25,9 @@ export const strings = {
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },
+  captions: {
+    translationUnavailable: "Translation unavailable",
+  },
   activity: {
     title: "Activity",
     request: (text: string) => `Request: ${text}`,
@@ -32,5 +35,8 @@ export const strings = {
     agent: (agent: string) => `Agent: ${agent}`,
     toolCall: (tool: string, status: string) => `Tool ${tool}: ${status}`,
     speech: (audioUrl: string) => `Speech: ${audioUrl}`,
+    userCaption: (text: string, english: string) => `You said: ${text} · English: ${english}`,
+    assistantCaption: (text: string, english: string) =>
+      `Assistant said: ${text} · English: ${english}`,
   },
 };

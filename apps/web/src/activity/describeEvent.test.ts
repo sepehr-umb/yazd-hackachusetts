@@ -24,6 +24,16 @@ describe("describeEvent", () => {
       "error",
     ],
     [{ type: "speech", audioUrl: "/audio/1.mp3" }, "Speech: /audio/1.mp3", "neutral"],
+    [
+      { type: "caption", speaker: "user", text: "به مامان زنگ بزن", english: "Call mom" },
+      "You said: به مامان زنگ بزن · English: Call mom",
+      "neutral",
+    ],
+    [
+      { type: "caption", speaker: "assistant", text: "دارم زنگ می‌زنم", english: "Calling mom" },
+      "Assistant said: دارم زنگ می‌زنم · English: Calling mom",
+      "neutral",
+    ],
   ])("describes %j as %j with tone %s", (event, text, tone) => {
     expect(describeEvent(event)).toEqual({ text, tone });
   });

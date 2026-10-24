@@ -79,6 +79,24 @@ describe("createOpenRouterLlmClient", () => {
     });
   });
 
+  it("omits the tools field when the request has no tools", async () => {
+    const { client, calls } = clientWith({ body: textCompletion("Hello") });
+
+    await client.complete({
+      system: "Translate.",
+      messages: [{ role: "user", content: "سلام" }],
+      tools: [],
+    });
+
+    expect(calls[0]?.body).toEqual({
+      model: "test/model",
+      messages: [
+        { role: "system", content: "Translate." },
+        { role: "user", content: "سلام" },
+      ],
+    });
+  });
+
   it("replays assistant tool use as tool_calls and tool results as tool messages", async () => {
     const { client, calls } = clientWith({ body: textCompletion("done") });
 
