@@ -1,6 +1,6 @@
 # How we used Kiro to build yazd
 
-yazd is a voice-first assistant for people who cannot use a smartphone. We arrived with a working core and 412 tests. Everything built at the event was built with Kiro. Main ended the day at 1,263 tests.
+yazd is a voice-first assistant for people who cannot use a smartphone. We arrived with a working core and 412 tests. Everything built at the event was built with Kiro. Main ended the day at 991 tests.
 
 ## 1. Kiro tools
 
@@ -10,11 +10,11 @@ yazd is a voice-first assistant for people who cannot use a smartphone. We arriv
 
 ## 2. Spec-driven development
 
-Seven specs: `settings-agent`, `clock`, `ui-companion`, `ui-access`, and three bug fix specs.
+Six specs: `settings-agent`, `clock`, `ui-companion`, and three bug fix specs.
 
 - **Settings agent.** Kiro expanded our brief with edge cases nobody would demo. We cut them in review. Review also surfaced a real problem: slowing Web Audio playback drops pitch, which distorts speech for an elderly listener. "Preserve pitch" became a requirement.
 - **Clock.** One prompt starting with `#extensions` produced a spec that ran on Autopilot in 12 minutes. That proves our extension story: a new ability, specced, tested and merged from one prompt.
-- **UI.** The `ui-access` spec added three vision modes and a voice-first setup that detects the user's language from "hello." Kiro also corrected our brief: a text color we picked failed our own 7:1 contrast rule.
+- **UI.** The `ui-companion` spec replaced the face with a tap-to-talk companion, shortcut tiles and personalization, in four phases that each shipped alone. Kiro also corrected our brief: a text color we picked failed our own 7:1 contrast rule.
 - **Bug fix mode.** Silent speech traced to a disabled logger hiding the real error. Failures now get explained in the user's language. Follow-up answers now count, so "Call Ahmadi" then "Hossein" places the call.
 
 Specs gave us a plan to review before any code existed. Vibe chat handled small jobs like deploy changes and prompt fixes.

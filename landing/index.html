@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>yazd. An assistant that adapts to the person using it.</title>
+    <title>yazd — An assistant that adapts to the person using it.</title>
     <meta
       name="description"
-      content="yazd is an open-source, voice-first assistant. Say hello in your own language. yazd sets itself up, answers out loud and shows captions."
+      content="yazd is an open-source, voice-first assistant. Speak in your own language, specialized agents act, and the answer is spoken back with captions."
     />
     <meta name="theme-color" content="#fbf6ee" />
     <link rel="stylesheet" href="styles.css" />
@@ -23,7 +23,6 @@
         <nav class="site-nav" aria-label="Sections">
           <ul>
             <li><a href="#problem">Problem</a></li>
-            <li><a href="#welcome">First launch</a></li>
             <li><a href="#how">How it works</a></li>
             <li><a href="#adapts">Adapts</a></li>
             <li><a href="#extend">Extend</a></li>
@@ -37,12 +36,12 @@
         <div class="wrap">
           <p class="eyebrow">Open source · Voice first · Any language</p>
           <h1 id="hero-title">
-            <span class="name">yazd</span><span class="sr-only">. </span>
+            <span class="name">yazd</span><span class="sr-only"> — </span>
             An assistant that adapts to the person using it.
           </h1>
           <p class="lead">
-            Say hello in your own language. yazd sets itself up for how well you see. It answers
-            out loud and shows captions.
+            Speak a request in your own language. yazd answers out loud, shows captions, and
+            changes how it speaks and looks when you ask it to.
           </p>
           <div class="actions">
             <a class="button button-primary" href="https://yazd-hackachusetts.onrender.com">
@@ -66,13 +65,13 @@
           <figure class="shot">
             <div class="shot-frame">
               <img
-                src="images/yazd-desktop-full-vision-en.png"
+                src="images/app-desktop-face.png"
                 width="1280"
-                height="800"
-                alt="The yazd app at full vision on a wide screen. Six tinted shortcut tiles in three columns: Call Mom, Call Dad, Kitchen light on, Kitchen light off, Play TV and Pause TV, each with its Farsi phrase underneath. Below them, a large orange orb with a faint microphone and the words Tap to talk. A text box with a round send button sits at the bottom."
+                height="900"
+                alt="The yazd web app on a wide screen. Six large shortcut tiles: Call Mom, Call Dad, Kitchen light on, Kitchen light off, Play TV and Pause TV, each with its Farsi phrase underneath. Below them, a round face character with the name yazd, and a round settings button in the corner."
               />
             </div>
-            <figcaption>Full vision at 1280px wide, in English.</figcaption>
+            <figcaption>The yazd web app at 1280px wide, with the Face character and shortcuts labelled in English.</figcaption>
           </figure>
         </div>
       </section>
@@ -83,9 +82,9 @@
             <span class="kicker">The problem</span>
             <h2 id="problem-title">Small screens put up specific walls</h2>
             <p>
-              yazd is designed first for one reference user. He is an elderly Farsi speaker with
-              near-total vision loss and limited dexterity. He meets each wall below on an ordinary
-              smartphone.
+              yazd is designed first for one reference user: an elderly Farsi speaker with
+              near-total vision loss and limited dexterity. Each wall below is one he meets on an
+              ordinary smartphone.
             </p>
           </div>
           <ul class="cards">
@@ -96,7 +95,7 @@
               </svg>
               <h3>Vision</h3>
               <p>Icons, small text and on-screen confirmations cannot be read.</p>
-              <p class="answer">yazd confirms every action out loud. At minimal vision the whole screen is one button.</p>
+              <p class="answer">yazd confirms every action out loud, in one short sentence.</p>
             </li>
             <li class="card">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -105,8 +104,8 @@
                 <path d="M16 11V6a2 2 0 1 1 4 0v8a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.4L3.5 14a2 2 0 0 1 3.3-2.2L8 13" />
               </svg>
               <h3>Mobility</h3>
-              <p>Tapping small targets, typing and opening menus need steady hands.</p>
-              <p class="answer">Voice is the main input. Every target he relies on is at least 88px.</p>
+              <p>Tapping small targets, typing and unlocking menus need steady hands.</p>
+              <p class="answer">Voice is the main input. On screen, every target is at least 88px.</p>
             </li>
             <li class="card">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -115,7 +114,7 @@
               </svg>
               <h3>Hearing</h3>
               <p>A spoken reply that is missed is gone.</p>
-              <p class="answer">Every reply is also captioned. The phone vibrates when listening starts and stops.</p>
+              <p class="answer">Every reply is also captioned, in a size and contrast the person can change.</p>
             </li>
             <li class="card">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -131,67 +130,7 @@
         </div>
       </section>
 
-      <section id="welcome" aria-labelledby="welcome-title">
-        <div class="wrap">
-          <div class="split">
-            <div>
-              <div class="section-head">
-                <span class="kicker">First launch</span>
-                <h2 id="welcome-title">It starts with hello</h2>
-                <p>
-                  There is no menu to read. The first screen is one big button. It shows a yellow
-                  orb on black.
-                </p>
-              </div>
-              <ol class="steps">
-                <li>
-                  <h3>Tap once to hear the welcome</h3>
-                  <p>
-                    yazd reads the welcome in Farsi, English, Spanish and Italian, one after
-                    another. The sentence on screen follows the voice. Nothing is recorded yet.
-                  </p>
-                </li>
-                <li>
-                  <h3>Tap again and say hello</h3>
-                  <p>
-                    yazd detects the language from that one word.
-                    <span class="said" lang="fa" dir="rtl">سلام</span> sets Farsi.
-                    <span lang="en">Hello</span>, <span lang="es">hola</span> and
-                    <span lang="it">ciao</span> set English, Spanish and Italian.
-                  </p>
-                </li>
-                <li>
-                  <h3>Answer one question out loud</h3>
-                  <p>
-                    yazd asks how well you see the screen, in your language. Say one, two or three.
-                    The screen reshapes at once.
-                  </p>
-                </li>
-              </ol>
-              <p class="note">
-                If no language is heard, four large language buttons appear. Setup opens again from
-                the personalize sheet. At low vision, holding the companion for two seconds opens it.
-                At minimal vision, holding the screen does the same.
-              </p>
-            </div>
-
-            <figure class="welcome-demo">
-              <div class="welcome-panel">
-                <span class="welcome-orb" aria-hidden="true"></span>
-                <ul class="welcome-lines">
-                  <li lang="fa" dir="rtl">دکمه را فشار بده و بگو «سلام»</li>
-                  <li lang="en" dir="ltr">Press the button and say “hello”</li>
-                  <li lang="es" dir="ltr">Pulsa el botón y di «hola»</li>
-                  <li lang="it" dir="ltr">Premi il pulsante e di' «ciao»</li>
-                </ul>
-              </div>
-              <figcaption>The welcome sentence in all four languages. The app shows one at a time.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <section id="how" class="section-alt" aria-labelledby="how-title">
+      <section id="how" aria-labelledby="how-title">
         <div class="wrap">
           <div class="split">
             <div>
@@ -203,54 +142,9 @@
                 <li>
                   <h3>Ask in your own language</h3>
                   <p>
-                    Tap the companion once and speak. A pause ends the request, so nothing has to be
-                    held down. Space and Enter work too. A text box takes typed requests.
+                    Tap the companion once, or press Space or Enter, and speak. A pause ends the
+                    request, so nothing has to be held down. Shortcuts and a text box work too.
                   </p>
-                </li>
-                <li>
-                  <h3>Or tap a shortcut tile</h3>
-                  <p>
-                    Six large tiles cover daily tasks. Each tile is tinted by kind. Its label is in
-                    your language.
-                  </p>
-                  <ul class="tiles" aria-label="Shortcut tiles">
-                    <li class="tile tile-call">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" />
-                      </svg>
-                      <span>Call Mom</span>
-                    </li>
-                    <li class="tile tile-call">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" />
-                      </svg>
-                      <span>Call Dad</span>
-                    </li>
-                    <li class="tile tile-light">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2zM9 20h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z" />
-                      </svg>
-                      <span>Kitchen light on</span>
-                    </li>
-                    <li class="tile tile-light">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2zM9 20h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z" />
-                      </svg>
-                      <span>Kitchen light off</span>
-                    </li>
-                    <li class="tile tile-tv">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM7 19h10v2H7z" />
-                      </svg>
-                      <span>Play TV</span>
-                    </li>
-                    <li class="tile tile-tv">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM7 19h10v2H7z" />
-                      </svg>
-                      <span>Pause TV</span>
-                    </li>
-                  </ul>
                 </li>
                 <li>
                   <h3>A specialized agent acts</h3>
@@ -268,19 +162,10 @@
                   </ul>
                 </li>
                 <li>
-                  <h3>It asks, then remembers</h3>
+                  <h3>Spoken reply, with captions</h3>
                   <p>
-                    Your answer to a follow-up question finishes the original request. Say “call
-                    Ahmadi” and yazd asks “Hossein Ahmadi or Hassan Ahmadi?” Say “Hossein” and yazd
-                    calls Hossein Ahmadi. An answer counts for 90 seconds.
-                  </p>
-                </li>
-                <li>
-                  <h3>The reply comes in your language</h3>
-                  <p>
-                    yazd replies in the language you spoke. If that is unclear, it uses the language
-                    from setup. The reply is spoken and captioned. Captions add an English line for
-                    helpers.
+                    The answer is spoken back. Captions show what was said and the reply, in the
+                    original language with an English line for helpers.
                   </p>
                 </li>
               </ol>
@@ -289,13 +174,14 @@
             <figure class="shot phone">
               <div class="shot-frame">
                 <img
-                  src="images/yazd-phone-full-vision-fa.png"
-                  width="750"
-                  height="1624"
-                  alt="yazd at full vision on a 375px phone, in Farsi. The layout runs right to left. Six tinted shortcut tiles in two columns carry Farsi labels for calling Mom and Dad, the kitchen light and the TV. Below them, the orange orb with a faint microphone and the Farsi hint for tap to talk. A text box with a round send button sits at the bottom."
+                  class="phone-crop"
+                  src="images/app-phone.png"
+                  width="360"
+                  height="1560"
+                  alt="yazd on a 360px-wide phone. The lower part of the screen: the last shortcut tiles, an orange glowing orb named yazd, and two caption cards in Farsi, the request to call Mom and the reply, above a text box."
                 />
               </div>
-              <figcaption>Full vision at 375px, in Farsi. The layout runs right to left.</figcaption>
+              <figcaption>Phone layout at 360px, with captions under the companion.</figcaption>
             </figure>
           </div>
 
@@ -304,7 +190,7 @@
               <span class="badge">Simulated</span>
               <h3>Actions on the outside world</h3>
               <ul>
-                <li>Phone calls and text messages. Contact names are resolved against a sample contact list. No call or message is sent.</li>
+                <li>Phone calls and text messages. Contact names are resolved against a sample contact list, then no call or message is sent.</li>
                 <li>Turning lights on and off.</li>
                 <li>Playing, pausing and controlling the TV.</li>
               </ul>
@@ -314,159 +200,114 @@
               <span class="badge">Real</span>
               <h3>What actually happens</h3>
               <ul>
-                <li>Setup by voice. The language comes from your hello. The vision mode comes from your answer.</li>
                 <li>Changing yazd's own settings. The change shows on screen right away.</li>
                 <li>Telling the time and day, read from the server clock.</li>
-                <li>Asking one follow-up question and finishing the request with your answer.</li>
-                <li>Speech recognition, caption translation and spoken replies. They run through OpenRouter when the server has an API key.</li>
+                <li>Asking one clarifying question when a request is ambiguous.</li>
+                <li>Speech recognition, translation for captions and spoken replies, through OpenRouter when the server has an API key.</li>
               </ul>
-              <p class="note">Without an API key, the server replays recorded conversations. They only match the exact demo phrases.</p>
+              <p class="note">Without an API key, the server replays recorded conversations, which only match the exact demo phrases.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="adapts" aria-labelledby="adapts-title">
+      <section id="adapts" class="section-alt" aria-labelledby="adapts-title">
         <div class="wrap">
           <div class="section-head">
             <span class="kicker">Adaptation</span>
-            <h2 id="adapts-title">It fits how well you see</h2>
+            <h2 id="adapts-title">Change it by asking</h2>
             <p>
-              Setup picks one of three vision modes. Each mode changes what is on screen. Voice
-              works the same in all three.
+              Four settings change by voice. Relative requests map to clear values: “slower” sets
+              speech to 0.75×, “faster” to 1.25×, “bigger” sets captions to extra large, “smaller”
+              to small. “Go back to normal” resets everything.
             </p>
           </div>
 
-          <div class="split">
-            <ul class="modes">
-              <li class="card mode">
-                <span class="badge">Full</span>
-                <h3>“I see the screen well”</h3>
-                <p>Shortcut tiles, the orange companion, captions and a text box.</p>
-              </li>
-              <li class="card mode">
-                <span class="badge">Low</span>
-                <h3>“I see shapes and colors”</h3>
-                <p>
-                  The same layout with larger labels. The companion is black. It turns bright yellow
-                  while listening, with one short white flash. Hold it for two seconds to change
-                  settings.
-                </p>
-              </li>
-              <li class="card mode mode-minimal">
-                <span class="badge">Minimal</span>
-                <h3>“I barely see the screen”</h3>
-                <p>
-                  The whole screen is one button. Tap to talk. One giant word shows the state: Ready,
-                  Listening, Thinking, Done or Try again. Hold for two seconds to open setup.
-                </p>
-                <p class="status-word" aria-hidden="true">Ready</p>
-              </li>
-            </ul>
+          <div class="table-wrap">
+            <table>
+              <caption>Settings you can change by voice</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Setting</th>
+                  <th scope="col">Range</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">What it changes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Speech rate</th>
+                  <td data-label="Range">0.5× to 1.5×</td>
+                  <td data-label="Default">1.0×</td>
+                  <td data-label="What it changes">How fast replies are spoken. Pitch is preserved.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Caption size</th>
+                  <td data-label="Range">Small, medium, large, extra large</td>
+                  <td data-label="Default">Large</td>
+                  <td data-label="What it changes">Caption text, from 24px up to 48px.</td>
+                </tr>
+                <tr>
+                  <th scope="row">High contrast</th>
+                  <td data-label="Range">On or off</td>
+                  <td data-label="Default">On</td>
+                  <td data-label="What it changes">Captions in light text on black instead of dark text on cream.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Silence wait</th>
+                  <td data-label="Range">0.8 s to 4 s</td>
+                  <td data-label="Default">1.5 s</td>
+                  <td data-label="What it changes">How long yazd waits in silence before it treats the request as finished.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">
+            Demo phrases, in Farsi:
+            <span class="said" lang="fa" dir="rtl">آهسته‌تر صحبت کن</span> (“speak slower”) and
+            <span class="said" lang="fa" dir="rtl">برگرد به حالت عادی</span> (“go back to normal”).
+          </p>
 
+          <div class="split split-reverse spaced-top">
+            <div>
+              <h3 class="h3-spaced">Or make it theirs on screen</h3>
+              <p>
+                A helper can open the personalize sheet from the round button in the corner. It
+                closes with Escape or Done. Choices are saved in the browser.
+              </p>
+              <ul class="profile-list">
+                <li><strong>Name.</strong> What the companion is called, and what the talk button says.</li>
+                <li><strong>Color.</strong> Six warm hues: apricot, coral, rose, terracotta, honey, marigold.</li>
+                <li><strong>Shape.</strong> Circle, blob or ring.</li>
+                <li><strong>Character.</strong> A glowing orb or a face.</li>
+                <li><strong>Language.</strong> Shortcut labels in Farsi or English.</li>
+              </ul>
+            </div>
             <figure class="shot phone">
               <div class="shot-frame">
                 <img
-                  src="images/yazd-phone-low-vision-en.png"
-                  width="750"
-                  height="1624"
-                  alt="yazd at low vision on a 375px phone, in English. Six tinted shortcut tiles in two columns with large labels: Call Mom, Call Dad, two kitchen light tiles, Play TV and Pause TV. Below them, the companion is a solid black circle. Under it: Tap to talk, then Hold to change settings. A text box sits at the bottom."
+                  src="images/app-personalize.png"
+                  width="360"
+                  height="800"
+                  alt="The personalize sheet on a phone. Color choices: Apricot (selected), Coral, Rose, Terracotta, Honey and Marigold. Shape: Circle (selected), Blob, Ring. Character: Glowing orb (selected), Face. A Language heading at the bottom."
                 />
               </div>
-              <figcaption>Low vision at 375px. The companion turns yellow while listening.</figcaption>
+              <figcaption>The personalize sheet at 360px.</figcaption>
             </figure>
-          </div>
-          <p class="note">
-            Brightness carries the signal, not hue. A caregiver can pick other colors. Text stays
-            readable on any of them. With reduced motion, colors change with no flash.
-          </p>
-
-          <div class="spaced-top">
-            <div class="section-head">
-              <h3 class="h3-spaced">Change it by asking</h3>
-              <p>
-                Four settings change by voice. “Slower” sets speech to 0.75×. “Faster” sets it to
-                1.25×. “Bigger” sets captions to extra large. “Smaller” sets them to small. “Go back
-                to normal” resets everything.
-              </p>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <caption>Settings you can change by voice</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Setting</th>
-                    <th scope="col">Range</th>
-                    <th scope="col">Default</th>
-                    <th scope="col">What it changes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Speech rate</th>
-                    <td data-label="Range">0.5× to 1.5×</td>
-                    <td data-label="Default">1.0×</td>
-                    <td data-label="What it changes">How fast replies are spoken. Pitch is preserved.</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Caption size</th>
-                    <td data-label="Range">Small, medium, large, extra large</td>
-                    <td data-label="Default">Large</td>
-                    <td data-label="What it changes">Caption text, from 24px up to 48px.</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">High contrast</th>
-                    <td data-label="Range">On or off</td>
-                    <td data-label="Default">On</td>
-                    <td data-label="What it changes">Captions in light text on black instead of dark text on cream.</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Silence wait</th>
-                    <td data-label="Range">0.8 s to 4 s</td>
-                    <td data-label="Default">1.5 s</td>
-                    <td data-label="What it changes">How long yazd waits in silence before the request counts as finished.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="note">
-              Demo phrases, in Farsi:
-              <span class="said" lang="fa" dir="rtl">آهسته‌تر صحبت کن</span> (“speak slower”) and
-              <span class="said" lang="fa" dir="rtl">برگرد به حالت عادی</span> (“go back to normal”).
-            </p>
-          </div>
-
-          <div class="spaced-top">
-            <h3 class="h3-spaced">Or make it theirs on screen</h3>
-            <p class="measure">
-              A helper opens the personalize sheet from the round button in the header. It closes
-              with Escape or Done. Choices are saved in the browser.
-            </p>
-            <ul class="profile-list">
-              <li><strong>Name.</strong> What the companion is called.</li>
-              <li><strong>Color.</strong> Six warm hues: apricot, coral, rose, terracotta, honey, marigold.</li>
-              <li><strong>Shape.</strong> Circle, blob or ring.</li>
-              <li><strong>Character.</strong> A glowing orb or a face.</li>
-              <li><strong>Language.</strong> Farsi, English, Spanish or Italian. Tiles, hints and setup follow it.</li>
-              <li><strong>View.</strong> Full, low or minimal.</li>
-              <li><strong>Vision and language.</strong> Opens setup again at the spoken vision question.</li>
-              <li><strong>Start over.</strong> Clears the profile and shows the welcome.</li>
-            </ul>
           </div>
         </div>
       </section>
 
-      <section id="extend" class="section-alt" aria-labelledby="extend-title">
+      <section id="extend" aria-labelledby="extend-title">
         <div class="wrap">
           <div class="section-head">
             <span class="kicker">Extensibility</span>
             <h2 id="extend-title">Add the ability your person needs</h2>
             <p>
-              Every ability is a self-contained extension. It has an agent, its tools and an
-              optional screen surface. Developers and caregivers clone the repo and add one. The
-              recipe lives in <code>.kiro/steering/extensions.md</code>. In Kiro you pull it into a
-              chat with <code>#extensions</code>.
+              Every ability is a self-contained extension: an agent, its tools, and an optional
+              screen surface. Developers and caregivers clone the repo and add one. The recipe lives
+              in <code>.kiro/steering/extensions.md</code>, and in Kiro you pull it into a chat with
+              <code>#extensions</code>.
             </p>
           </div>
 
@@ -495,15 +336,15 @@
               <ul class="kiro-list">
                 <li class="card">
                   <h3>Specs</h3>
-                  <p>Requirements, design and tasks live in <code>.kiro/specs/</code>. They cover the clock, the settings agent, friendly failures, conversation context, the TTS voice fix, the companion UI and the vision modes.</p>
+                  <p>Requirements, design and tasks for the clock, settings agent, friendly failures, the TTS voice fix and the companion UI, in <code>.kiro/specs/</code>.</p>
                 </li>
                 <li class="card">
                   <h3>Steering</h3>
-                  <p>Product, structure, tech and UI design rules load into every relevant session. The extensions recipe is a manual steering file.</p>
+                  <p>Product, structure, tech and UI design rules, loaded into every relevant session. The extensions recipe is a manual steering file.</p>
                 </li>
                 <li class="card">
                   <h3>Hook</h3>
-                  <p>After every spec task, a hook runs tests, lint and typecheck. A broken task is caught right away.</p>
+                  <p>After every spec task, a hook runs tests, lint and typecheck, so a broken task is caught right away.</p>
                 </li>
               </ul>
             </div>
