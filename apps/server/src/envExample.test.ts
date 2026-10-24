@@ -6,6 +6,8 @@ const documentedVariables = [
   "LLM_MODEL",
   "STT_MODEL",
   "TTS_MODEL",
+  "TTS_VOICE",
+  "TTS_FORMAT",
   "HA_URL",
   "HA_TOKEN",
   "JELLYFIN_URL",

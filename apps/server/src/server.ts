@@ -74,7 +74,10 @@ export function createServer({
     ]);
     await Promise.all([
       captioner.announce("assistant", spokenText(result)),
-      speaker.speak(result).catch((error: unknown) => app.log.error(error)),
+      speaker.speak(result).catch((error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.error("Speech failed:", message);
+      }),
     ]);
     clearTimeout(idleTimer);
     if (idleAfterMs !== undefined) {

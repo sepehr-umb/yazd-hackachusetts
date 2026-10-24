@@ -1,0 +1,205 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration tests": {
+      "status": "passed",
+      "failingExample": "selectTts voice: counterexample [\"\"] (whitespace-only voice) returns a client instead of throwing; voice property [\"\",\"a\",\"\"] sends \"alloy\" not \"a\"; format property [\"!\"] and \" pcm \" not rejected/sent (mp3 sent); pcmToWav module missing; console.error never called; .env.example lacks TTS_VOICE/TTS_FORMAT",
+      "lastRunTimestamp": 1792871091677
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration tests": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871023957
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871027180
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871103593
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871023984
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871107699
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871166538
+      }
+    ],
+    "3.1 Add `pcmToWav.ts`": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024006
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871167154
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871194306
+      }
+    ],
+    "3.2 Require voice and add format option in `openRouterTts.ts`": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024027
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871199108
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871238023
+      }
+    ],
+    "3.3 Read and validate `TTS_VOICE` and `TTS_FORMAT` in `selectTts.ts`": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024051
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871242401
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871278187
+      }
+    ],
+    "3.4 Log speech failures in `server.ts`": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024071
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871282378
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871304595
+      }
+    ],
+    "3.5 Document `TTS_VOICE` and `TTS_FORMAT`": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024091
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871309622
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871329561
+      }
+    ],
+    "3.6 Update existing tests that would now throw or mismatch": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024111
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871330288
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871378890
+      }
+    ],
+    "3.7 Verify bug condition exploration tests now pass": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024133
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871379648
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871399409
+      }
+    ],
+    "3.8 Verify preservation tests still pass": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024153
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871400059
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871419884
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871024176
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871420464
+      },
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871594240
+      }
+    ],
+    "3. Fix for silent TTS caused by missing TTS_VOICE and unsupported TTS format": [
+      {
+        "executionId": "0f2e25fb-f888-479e-a390-f55d4408f95e",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792871419910
+      }
+    ]
+  }
+}

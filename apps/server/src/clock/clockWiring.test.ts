@@ -12,6 +12,7 @@ const env = {
   LLM_MODEL: "test/model",
   STT_MODEL: "test/stt",
   TTS_MODEL: "test/tts",
+  TTS_VOICE: "test-voice",
 };
 
 const openApps: FastifyInstance[] = [];
