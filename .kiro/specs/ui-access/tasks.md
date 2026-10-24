@@ -79,3 +79,15 @@ because the requirement changed. 3b.7 is the one exception to the file list, as 
 - [x] 4.3 Screenshots at 390×844
 - [x] 4.4 Screenshots at 360×800 and 412×915 for every vision level and both setup steps, no
   horizontal scroll at either width
+
+## Phase 5: voice-first onboarding
+
+- [x] 5.1 Server `detectLanguage`: Arabic script → fa, Latin greetings table for en, es, it
+- [x] 5.2 Server LLM language detector with one `detect_language` tool; transcriber selected by key
+- [x] 5.3 `POST /transcribe` returns `{ text, language }`, no orchestrator, no events
+- [x] 5.4 Web transcribe client and `/transcribe` dev proxy
+- [x] 5.5 Voice session `capture()`, `listen()` and `cancel()`
+- [x] 5.6 Welcome: yellow orb and a sentence rotating through four languages
+- [x] 5.7 Hello sets the language; the vision question is spoken and answered aloud
+- [x] 5.8 No language heard → four lines saying so and the four language buttons
+- [x] 5.9 Reopening setup starts at the spoken vision question

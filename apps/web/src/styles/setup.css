@@ -35,10 +35,6 @@
   box-shadow: 0 0 0 12px color-mix(in srgb, var(--flip-listening) 45%, transparent);
 }
 
-[data-surface="setup"] h2 {
-  transition: opacity 300ms var(--ease);
-}
-
 [data-surface="setup"] h2[data-fading="true"] {
   opacity: 0;
 }
@@ -55,6 +51,7 @@
   line-height: 1.25;
   letter-spacing: -0.01em;
   text-align: center;
+  transition: opacity 300ms var(--ease);
 }
 
 [data-surface="setup"] h2:focus {
@@ -134,6 +131,11 @@
 
 [data-surface="setup"] h2 [data-role="line"] {
   display: block;
+  font-size: 22px;
+}
+
+[data-surface="setup"] [data-role="title"]:last-child {
+  grid-row: 1 / span 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
