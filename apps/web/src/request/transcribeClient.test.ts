@@ -53,4 +53,18 @@ describe("transcribe client", () => {
       createTranscribeClient(fakeFetch(200, { nope: 1 })).transcribe(recording),
     ).rejects.toThrow("Unexpected response from the server");
   });
+
+  it("sends the language it is told to listen for in the x-yazd-language header", async () => {
+    const { fetch, sent } = fakeFetch(200, { text: "tre", language: "it" });
+    const client = createTranscribeClient({ fetch });
+
+    await client.transcribe(recording, "it");
+    await client.transcribe(recording);
+
+    expect(sent[0]?.init?.headers).toEqual({
+      "content-type": "audio/webm",
+      "x-yazd-language": "it",
+    });
+    expect(sent[1]?.init?.headers).toEqual({ "content-type": "audio/webm" });
+  });
 });

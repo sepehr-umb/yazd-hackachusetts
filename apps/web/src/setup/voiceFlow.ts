@@ -31,10 +31,13 @@ export function createVoiceFlow({
 }: VoiceFlowDeps): VoiceFlow {
   let turn = 0;
 
-  const hear = async (recording: Promise<Blob | undefined>): Promise<Transcription | undefined> => {
+  const hear = async (
+    recording: Promise<Blob | undefined>,
+    language?: Language,
+  ): Promise<Transcription | undefined> => {
     const blob = await recording;
     if (!blob) return undefined;
-    return transcribe.transcribe(blob).catch(() => undefined);
+    return transcribe.transcribe(blob, language).catch(() => undefined);
   };
 
   const listenFor = async (
@@ -43,7 +46,7 @@ export function createVoiceFlow({
     recording: Promise<Blob | undefined>,
   ) => {
     const mine = ++turn;
-    const heard = await hear(recording);
+    const heard = await hear(recording, language);
     if (mine !== turn) return;
     const vision = heard ? classifyVisionAnswer(heard.text, language) : undefined;
     if (vision) return on.onVision(language, vision);

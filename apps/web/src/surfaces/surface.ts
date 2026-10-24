@@ -6,6 +6,7 @@ import type { RecordingClient } from "../request/recordingClient";
 import type { RequestClient } from "../request/requestClient";
 import type { Narrator } from "../setup/narrator";
 import type { SetupControl } from "../setup/setupControl";
+import type { SettingsStore } from "../settings/settingsStore";
 import type { Chime } from "../voice/chime";
 import type { Microphone } from "../voice/microphone";
 
@@ -20,6 +21,7 @@ export type SurfaceContext = {
   profile: ProfileStore;
   setup: SetupControl;
   narrator: Narrator;
+  settings: SettingsStore;
 };
 
 export type Unmount = () => void;

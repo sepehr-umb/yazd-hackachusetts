@@ -80,6 +80,46 @@ describe("captionsSurface", () => {
     expect(host.querySelectorAll("[data-speaker]")).toHaveLength(0);
   });
 
+  it("marks the host with the stored caption size and contrast at mount", () => {
+    const { host } = mounted();
+
+    expect(host.dataset.captionSize).toBe("large");
+    expect(host.dataset.contrast).toBe("high");
+  });
+
+  it("restyles captions already on screen when size or contrast changes", () => {
+    const { context, host } = mounted();
+    context.emit({ type: "caption", speaker: "user", text: "سلام", english: "Hello" });
+
+    context.emit({ type: "setting_changed", name: "captionSize", value: "extra-large" });
+    context.emit({ type: "setting_changed", name: "highContrast", value: false });
+
+    expect(host.dataset.captionSize).toBe("extra-large");
+    expect(host.dataset.contrast).toBe("normal");
+    expect(host.querySelectorAll("[data-speaker]")).toHaveLength(1);
+  });
+
+  it("renders later captions under the new attributes", () => {
+    const { context, host } = mounted();
+    context.emit({ type: "setting_changed", name: "captionSize", value: "small" });
+
+    context.emit({ type: "caption", speaker: "user", text: "سلام", english: "Hello" });
+
+    expect(host.dataset.captionSize).toBe("small");
+    expect(host.querySelectorAll("[data-speaker]")).toHaveLength(1);
+  });
+
+  it("returns to the defaults on reset", () => {
+    const { context, host } = mounted();
+    context.emit({ type: "setting_changed", name: "captionSize", value: "small" });
+    context.emit({ type: "setting_changed", name: "highContrast", value: false });
+
+    context.emit({ type: "settings_reset" });
+
+    expect(host.dataset.captionSize).toBe("large");
+    expect(host.dataset.contrast).toBe("high");
+  });
+
   it("stops listening and clears itself when unmounted", () => {
     const { context, host, unmount } = mounted();
     context.emit({ type: "caption", speaker: "user", text: "سلام", english: "Hello" });

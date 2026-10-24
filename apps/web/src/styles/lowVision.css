@@ -1,9 +1,52 @@
-:root[data-vision="low"] [data-surface="captions"] [data-role="original"] {
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="small"]
+  [data-role="original"] {
+  font-size: 30px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="small"]
+  [data-role="english"] {
+  font-size: 22px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="medium"]
+  [data-role="original"] {
+  font-size: 36px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="medium"]
+  [data-role="english"] {
+  font-size: 28px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="large"]
+  [data-role="original"] {
   font-size: 48px;
 }
 
-:root[data-vision="low"] [data-surface="captions"] [data-role="english"] {
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="large"]
+  [data-role="english"] {
   font-size: 36px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="extra-large"]
+  [data-role="original"] {
+  font-size: 60px;
+}
+
+:root[data-vision="low"]
+  [data-surface="captions"][data-caption-size="extra-large"]
+  [data-role="english"] {
+  font-size: 44px;
+}
+
+:root[data-vision="low"] [data-surface="captions"] [data-role="english"] {
   color: var(--ink);
 }
 

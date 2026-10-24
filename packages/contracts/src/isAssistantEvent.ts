@@ -1,5 +1,6 @@
 import { agentNames, captionSpeakers, assistantStates, toolCallStatuses } from "./events";
 import type { AssistantEvent } from "./events";
+import { isSettingName, isSettingValue } from "./isSetting";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -28,6 +29,10 @@ export function isAssistantEvent(value: unknown): value is AssistantEvent {
         typeof value.text === "string" &&
         typeof value.english === "string"
       );
+    case "setting_changed":
+      return isSettingName(value.name) && isSettingValue(value.name, value.value);
+    case "settings_reset":
+      return true;
     default:
       return false;
   }

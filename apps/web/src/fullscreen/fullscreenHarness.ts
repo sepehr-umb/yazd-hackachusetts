@@ -3,7 +3,7 @@ import type { Language } from "../profile/languages";
 import { createTestContext } from "../testing/testContext";
 import { createFullscreenSurface } from "./fullscreenSurface";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 export function mountFullscreen({ language = "en" as Language, reduced = false } = {}) {
   const context = createTestContext();

@@ -16,12 +16,12 @@ const throwing: KeyValueStorage = {
 };
 
 describe("profile store", () => {
-  it("starts from the defaults: yazd, the accent hue, a circle orb, Farsi", () => {
+  it("starts from the defaults: yazd, the accent hue, a circle, the face, Farsi", () => {
     expect(createProfileStore(new Map()).get()).toEqual({
       name: "yazd",
       hue: 30,
       shape: "circle",
-      character: "orb",
+      character: "face",
       language: "fa",
       flipIdle: "#000000",
       flipListening: "#FFE600",

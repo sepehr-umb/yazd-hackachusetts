@@ -5,6 +5,13 @@ export type Tone = "neutral" | "success" | "error";
 
 export type EventDescription = { text: string; tone: Tone };
 
+function describeValue(value: string | number | boolean): string {
+  if (typeof value === "boolean") {
+    return value ? strings.settings.valueLabels.on : strings.settings.valueLabels.off;
+  }
+  return String(value);
+}
+
 export function describeEvent(event: AssistantEvent): EventDescription {
   switch (event.type) {
     case "transcript":
@@ -31,5 +38,15 @@ export function describeEvent(event: AssistantEvent): EventDescription {
             : strings.activity.assistantCaption(event.text, event.english),
         tone: "neutral",
       };
+    case "setting_changed":
+      return {
+        text: strings.settings.changed(
+          strings.settings.names[event.name],
+          describeValue(event.value),
+        ),
+        tone: "neutral",
+      };
+    case "settings_reset":
+      return { text: strings.settings.reset, tone: "neutral" };
   }
 }

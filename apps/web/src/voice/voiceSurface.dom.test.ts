@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTestContext } from "../testing/testContext";
 import { createVoiceSurface } from "./voiceSurface";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -78,13 +78,61 @@ describe("voice surface", () => {
     await vi.advanceTimersByTimeAsync(300);
     context.mic.level = 0;
 
-    await vi.advanceTimersByTimeAsync(900);
+    await vi.advanceTimersByTimeAsync(1400);
     expect(context.mic.stops).toBe(0);
     await vi.advanceTimersByTimeAsync(200);
 
     expect(context.mic.stops).toBe(1);
     expect(context.chimes).toEqual(["start", "stop"]);
     expect(context.recorded).toHaveLength(1);
+  });
+
+  async function speakThenFall(context: ReturnType<typeof mounted>["context"]) {
+    context.mic.level = 0.5;
+    await vi.advanceTimersByTimeAsync(300);
+    context.mic.level = 0;
+  }
+
+  it("uses the silence wait that was set before the utterance began", async () => {
+    const { context, click } = mounted();
+    context.emit({ type: "setting_changed", name: "silenceWaitMs", value: 3000 });
+    await click();
+    await speakThenFall(context);
+
+    await vi.advanceTimersByTimeAsync(2900);
+    expect(context.mic.stops).toBe(0);
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(context.mic.stops).toBe(1);
+  });
+
+  it("keeps the previous silence wait for the utterance in progress and applies the change to the next", async () => {
+    const { context, click } = mounted();
+    await click();
+    context.emit({ type: "setting_changed", name: "silenceWaitMs", value: 3000 });
+    await speakThenFall(context);
+
+    await vi.advanceTimersByTimeAsync(1600);
+    expect(context.mic.stops).toBe(1);
+
+    await click();
+    await speakThenFall(context);
+    await vi.advanceTimersByTimeAsync(2900);
+    expect(context.mic.stops).toBe(1);
+    await vi.advanceTimersByTimeAsync(200);
+    expect(context.mic.stops).toBe(2);
+  });
+
+  it("applies the default silence wait to the utterance after a reset", async () => {
+    const { context, click } = mounted();
+    context.emit({ type: "setting_changed", name: "silenceWaitMs", value: 3000 });
+    context.emit({ type: "settings_reset" });
+    await click();
+    await speakThenFall(context);
+
+    await vi.advanceTimersByTimeAsync(1600);
+
+    expect(context.mic.stops).toBe(1);
   });
 
   it("keeps recording through silence before the user starts speaking", async () => {
@@ -121,7 +169,7 @@ describe("voice surface", () => {
     await vi.advanceTimersByTimeAsync(100);
     context.mic.level = 0;
 
-    await vi.advanceTimersByTimeAsync(1100);
+    await vi.advanceTimersByTimeAsync(1600);
 
     expect(context.recorded).toHaveLength(1);
   });

@@ -11,7 +11,7 @@ export type VoicePhase = "idle" | "starting" | "recording" | "sending";
 export type VoiceNotice = EventDescription;
 
 export type VoiceSessionDeps = {
-  context: Pick<SurfaceContext, "microphone" | "chime" | "haptic" | "recordings">;
+  context: Pick<SurfaceContext, "microphone" | "chime" | "haptic" | "recordings" | "settings">;
   config?: VoiceConfig;
   onPhase?: (phase: VoicePhase) => void;
   onNotice?: (notice: VoiceNotice) => void;
@@ -79,15 +79,6 @@ export function createVoiceSession({
     enter("idle");
   };
 
-  const listen = () => {
-    const detector = createSilenceDetector(config, Date.now());
-    poll = setInterval(() => {
-      if (!recording) return;
-      const outcome = detector.update(recording.level(), Date.now());
-      if (outcome !== "listening") void end(outcome === "silence");
-    }, POLL_MS);
-  };
-
   const begin = async () => {
     enter("starting");
     try {
@@ -106,7 +97,13 @@ export function createVoiceSession({
     context.haptic("start");
     enter("recording");
     onNotice({ text: strings.voice.listening, tone: "neutral" });
-    listen();
+    const wait = { ...config, silenceTimeoutMs: context.settings.get().silenceWaitMs };
+    const detector = createSilenceDetector(wait, Date.now());
+    poll = setInterval(() => {
+      if (!recording) return;
+      const outcome = detector.update(recording.level(), Date.now());
+      if (outcome !== "listening") void end(outcome === "silence");
+    }, POLL_MS);
   };
 
   const startCapture = () => {

@@ -5,7 +5,7 @@ import type { Transcription } from "../request/transcribeClient";
 import { createTestContext } from "../testing/testContext";
 import { createSetupSurface } from "./setupSurface";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 export type SetupHarnessOptions = { vision?: Vision; reduced?: boolean; voices?: Language[] };
 
@@ -26,9 +26,11 @@ export function mountSetup({ vision, reduced = false, voices }: SetupHarnessOpti
   };
   const answers: Array<Transcription | Error> = [];
   const heard: Blob[] = [];
+  const hints: Array<string | undefined> = [];
   const transcribe = {
-    async transcribe(recording: Blob) {
+    async transcribe(recording: Blob, language?: string) {
       heard.push(recording);
+      hints.push(language);
       const next = answers.shift() ?? { text: "", language: undefined };
       if (next instanceof Error) throw next;
       return next;
@@ -66,7 +68,7 @@ export function mountSetup({ vision, reduced = false, voices }: SetupHarnessOpti
     context.mic.level = 0.5;
     await vi.advanceTimersByTimeAsync(300);
     context.mic.level = 0;
-    await vi.advanceTimersByTimeAsync(1100);
+    await vi.advanceTimersByTimeAsync(1600);
   };
   const fallBack = async () => {
     answers.push({ text: "", language: undefined });
@@ -92,6 +94,7 @@ export function mountSetup({ vision, reduced = false, voices }: SetupHarnessOpti
     spoken,
     answers,
     heard,
+    hints,
     endSpeech,
   };
 }

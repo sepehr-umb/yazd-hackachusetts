@@ -1,0 +1,141 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Contracts: language on typed requests": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641116
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874644900
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874679724
+      }
+    ],
+    "2. Strings: apology fallback for letterless text": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641159
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874680274
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874717923
+      }
+    ],
+    "3. Orchestrator: seed, choices signal, language rule": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641183
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874717226
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874832502
+      }
+    ],
+    "4. Replay: follow-up fixture and keying": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641209
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874831824
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874910938
+      }
+    ],
+    "5. Conversation module: pending question with injected clock": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641236
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874911396
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874975469
+      }
+    ],
+    "6. Failure and STT: language through the replier and speech-to-text": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641277
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874974940
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792875038830
+      }
+    ],
+    "7. Server wiring: pipeline, language input, clock": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641308
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792875039472
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792875168514
+      }
+    ],
+    "8. Web: send the profile language, then final verification": [
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792874641327
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792875169053
+      },
+      {
+        "executionId": "dffcfc78-b8ef-4f9c-9a37-5f0d3fedd0eb",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792875247293
+      }
+    ]
+  }
+}

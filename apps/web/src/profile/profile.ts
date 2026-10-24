@@ -22,7 +22,7 @@ export const defaultProfile: Profile = {
   name: "yazd",
   hue: 30,
   shape: "circle",
-  character: "orb",
+  character: "face",
   language: "fa",
   flipIdle: "#000000",
   flipListening: "#FFE600",

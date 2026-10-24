@@ -37,11 +37,11 @@ function setup(transcriber?: Transcriber) {
     transcriber,
   });
   openServers.push(app);
-  const post = (payload: Buffer | string, contentType = "audio/webm") =>
+  const post = (payload: Buffer | string, extraHeaders: Record<string, string> = {}) =>
     app.inject({
       method: "POST",
       url: "/transcribe",
-      headers: { "content-type": contentType },
+      headers: { "content-type": "audio/webm", ...extraHeaders },
       payload,
     });
   return { post, events, calls: stub.calls };
@@ -49,13 +49,15 @@ function setup(transcriber?: Transcriber) {
 
 const fakeStt = (text: string) => {
   const heard: string[] = [];
+  const hints: Array<string | undefined> = [];
   const stt: Stt = {
-    async transcribe(recording) {
+    async transcribe(recording, options) {
       heard.push(recording.mimeType);
+      hints.push(options?.language);
       return text;
     },
   };
-  return { stt, heard };
+  return { stt, heard, hints };
 };
 
 const neverAsked = { detect: async () => undefined };
@@ -104,5 +106,16 @@ describe("POST /transcribe", () => {
 
     expect(response.statusCode).toBe(502);
     expect(response.json().error).toContain("timeout");
+  });
+
+  it("passes the preferred language from x-yazd-language to speech-to-text as a hint", async () => {
+    const { stt, hints } = fakeStt("ciao");
+    const { post } = setup(createTranscriber(stt, neverAsked));
+
+    await post(Buffer.from("voice"), { "x-yazd-language": "it" });
+    await post(Buffer.from("voice"), { "x-yazd-language": "not a language" });
+    await post(Buffer.from("voice"));
+
+    expect(hints).toEqual(["it", undefined, undefined]);
   });
 });

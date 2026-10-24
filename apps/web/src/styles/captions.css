@@ -11,10 +11,89 @@
 [data-surface="captions"] [data-speaker] {
   padding: var(--gap) calc(var(--gap) * 1.5);
   border-radius: var(--radius-card);
-  border-inline-start: 6px solid var(--accent);
+  border: 4px solid transparent;
+  border-inline-start-width: 8px;
   background: var(--surface);
   box-shadow: var(--shadow-soft);
   animation: caption-in var(--dur-state) var(--ease) both;
+}
+
+[data-surface="captions"] [data-role="original"] {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+[data-surface="captions"] [data-role="english"] {
+  margin-block-start: 8px;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+[data-surface="captions"] [data-role="english"][hidden] {
+  display: none;
+}
+
+[data-surface="captions"][data-caption-size="small"] [data-role="original"] {
+  font-size: 24px;
+}
+
+[data-surface="captions"][data-caption-size="small"] [data-role="english"] {
+  font-size: 18px;
+}
+
+[data-surface="captions"][data-caption-size="medium"] [data-role="original"] {
+  font-size: 30px;
+}
+
+[data-surface="captions"][data-caption-size="medium"] [data-role="english"] {
+  font-size: 22px;
+}
+
+[data-surface="captions"][data-caption-size="large"] [data-role="original"] {
+  font-size: 36px;
+}
+
+[data-surface="captions"][data-caption-size="large"] [data-role="english"] {
+  font-size: 28px;
+}
+
+[data-surface="captions"][data-caption-size="extra-large"] [data-role="original"] {
+  font-size: 48px;
+}
+
+[data-surface="captions"][data-caption-size="extra-large"] [data-role="english"] {
+  font-size: 36px;
+}
+
+[data-surface="captions"][data-contrast="normal"] [data-speaker] {
+  border-color: transparent;
+  border-inline-start-color: var(--accent);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+[data-surface="captions"][data-contrast="normal"] [data-speaker="assistant"] {
+  border-inline-start-color: var(--thinking);
+}
+
+[data-surface="captions"][data-contrast="normal"] [data-role="english"] {
+  color: var(--ink-muted);
+}
+
+[data-surface="captions"][data-contrast="high"] [data-speaker] {
+  background: #000;
+  border-color: #ffd28a;
+  color: #fff;
+  box-shadow: none;
+}
+
+[data-surface="captions"][data-contrast="high"] [data-speaker="assistant"] {
+  border-color: #8fe3a2;
+}
+
+[data-surface="captions"][data-contrast="high"] [data-role="english"] {
+  color: #ffe6a8;
 }
 
 @keyframes caption-in {
@@ -34,21 +113,4 @@
   [data-surface="captions"] [data-speaker] {
     animation-name: caption-fade;
   }
-}
-
-[data-surface="captions"] [data-speaker="assistant"] {
-  border-inline-start-color: var(--thinking);
-}
-
-[data-surface="captions"] [data-role="original"] {
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-[data-surface="captions"] [data-role="english"] {
-  margin-block-start: 8px;
-  font-size: 26px;
-  line-height: 1.3;
-  color: var(--ink-muted);
 }

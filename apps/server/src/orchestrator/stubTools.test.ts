@@ -9,10 +9,13 @@ const sampleInputs: ToolInputs = {
   set_light: { room: "اتاق خواب", on: true },
   media_control: { action: "pause" },
   ask_for_clarification: { question: "کدام چراغ؟" },
+  update_setting: { name: "speechRate", value: 0.8 },
+  reset_settings: {},
+  get_time: {},
 };
 
 describe("stub tools", () => {
-  it("provides all five tools", () => {
+  it("provides every tool", () => {
     const { tools } = createStubTools();
     expect(Object.keys(tools).sort()).toEqual([...toolNames].sort());
   });

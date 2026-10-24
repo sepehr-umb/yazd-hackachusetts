@@ -39,10 +39,10 @@ describe("companion surface and the profile", () => {
     });
     const { context, button } = mounted([fake("orb"), fake("face")]);
 
-    context.profile.update({ character: "face" });
+    context.profile.update({ character: "orb" });
     context.profile.update({ hue: 12 });
 
-    expect(log).toEqual(["mount orb", "unmount orb", "mount face"]);
-    expect(button.querySelector("[data-character]")?.getAttribute("data-character")).toBe("face");
+    expect(log).toEqual(["mount face", "unmount face", "mount orb"]);
+    expect(button.querySelector("[data-character]")?.getAttribute("data-character")).toBe("orb");
   });
 });

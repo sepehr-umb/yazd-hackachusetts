@@ -7,7 +7,7 @@ function fakeFetch(response: Response) {
   const calls: Array<{ url: string; init: RequestInit }> = [];
   const fetchImpl: typeof fetch = async (input, init) => {
     calls.push({ url: String(input), init: init ?? {} });
-    return response;
+    return response.clone();
   };
   return { fetchImpl, calls };
 }
@@ -24,6 +24,48 @@ describe("createRecordingClient", () => {
     expect(calls[0]?.init.method).toBe("POST");
     expect(calls[0]?.init.headers).toEqual({ "content-type": "audio/webm" });
     expect(calls[0]?.init.body).toBe(recording);
+  });
+
+  it("adds the language header when getLanguage returns one", async () => {
+    const result = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch(new Response(JSON.stringify(result)));
+
+    await createRecordingClient({ fetch: fetchImpl, getLanguage: () => "fa" }).submit(recording);
+
+    expect(calls[0]?.init.headers).toEqual({
+      "content-type": "audio/webm",
+      "x-yazd-language": "fa",
+    });
+  });
+
+  it("adds no header when getLanguage is missing or returns undefined", async () => {
+    const result = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch(new Response(JSON.stringify(result)));
+
+    await createRecordingClient({ fetch: fetchImpl }).submit(recording);
+    await createRecordingClient({ fetch: fetchImpl, getLanguage: () => undefined }).submit(
+      recording,
+    );
+
+    expect(calls[0]?.init.headers).toEqual({ "content-type": "audio/webm" });
+    expect(calls[1]?.init.headers).toEqual({ "content-type": "audio/webm" });
+  });
+
+  it("reads getLanguage on each submit", async () => {
+    const result = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch(new Response(JSON.stringify(result)));
+    let language: string | undefined = "fa";
+    const client = createRecordingClient({ fetch: fetchImpl, getLanguage: () => language });
+
+    await client.submit(recording);
+    language = undefined;
+    await client.submit(recording);
+
+    expect(calls[0]?.init.headers).toEqual({
+      "content-type": "audio/webm",
+      "x-yazd-language": "fa",
+    });
+    expect(calls[1]?.init.headers).toEqual({ "content-type": "audio/webm" });
   });
 
   it("throws the server's error message when the request fails", async () => {

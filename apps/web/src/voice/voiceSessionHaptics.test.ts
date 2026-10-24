@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTestContext } from "../testing/testContext";
 import { createVoiceSession } from "./voiceSession";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -41,7 +41,7 @@ describe("voice session haptics", () => {
     await vi.advanceTimersByTimeAsync(300);
     context.mic.level = 0;
 
-    await vi.advanceTimersByTimeAsync(1100);
+    await vi.advanceTimersByTimeAsync(1600);
 
     expect(context.haptics).toEqual(["start", "stop"]);
   });

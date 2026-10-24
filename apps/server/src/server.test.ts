@@ -1,4 +1,5 @@
 import type { AssistantEvent } from "@mahmood/contracts";
+import { friendlyApology } from "@mahmood/strings";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { createEventHub } from "./events/eventHub";
@@ -192,7 +193,7 @@ describe("speaking results", () => {
 
     await app.inject({ method: "POST", url: "/request", payload: { text: "هوا فردا چطور است؟" } });
 
-    expect(spoken).toEqual(["The assistant does not know how to help with that"]);
+    expect(spoken).toEqual([friendlyApology({ reason: "unroutable" }, "هوا فردا چطور است؟")]);
   });
 
   it("still returns the result and emits no speech event when synthesis fails", async () => {
@@ -386,7 +387,7 @@ describe("captions", () => {
 
     expect(captionsIn(events)[1]).toMatchObject({
       speaker: "assistant",
-      text: "The assistant does not know how to help with that",
+      text: friendlyApology({ reason: "unroutable" }, "هوا فردا چطور است؟"),
     });
   });
 

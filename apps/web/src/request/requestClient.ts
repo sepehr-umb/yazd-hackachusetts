@@ -5,15 +5,21 @@ import { errorMessageOf } from "./errorMessageOf";
 
 export type RequestClient = { submit(text: string): Promise<RequestResult> };
 
-export type RequestClientConfig = { fetch?: typeof fetch; url?: string };
+export type RequestClientConfig = {
+  fetch?: typeof fetch;
+  url?: string;
+  getLanguage?: () => string | undefined;
+};
 
 export function createRequestClient({
   fetch: fetchImpl = (input, init) => fetch(input, init),
   url = "/request",
+  getLanguage = () => undefined,
 }: RequestClientConfig = {}): RequestClient {
   return {
     async submit(text) {
-      const body: TypedRequest = { text };
+      const language = getLanguage();
+      const body: TypedRequest = language === undefined ? { text } : { text, language };
       const response = await fetchImpl(url, {
         method: "POST",
         headers: { "content-type": "application/json" },

@@ -19,7 +19,7 @@ function started() {
     setup.context.mic.level = 0.5;
     await vi.advanceTimersByTimeAsync(300);
     setup.context.mic.level = 0;
-    await vi.advanceTimersByTimeAsync(1100);
+    await vi.advanceTimersByTimeAsync(1600);
   };
   const greet = async (answer: { text: string; language?: "fa" | "en" | "es" | "it" }) => {
     setup.answers.push({ text: answer.text, language: answer.language });

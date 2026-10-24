@@ -71,7 +71,7 @@ Rules:
 
 - Keys live in `.env`, which is gitignored. Never commit keys. Never print them in logs or output.
 - `.env.example` lists every variable with an empty value.
-- Variables: `OPENROUTER_API_KEY`, `LLM_MODEL`, `STT_MODEL`, `TTS_MODEL`, `HA_URL`, `HA_TOKEN`, `JELLYFIN_URL`, `JELLYFIN_TOKEN`.
+- Variables: `OPENROUTER_API_KEY`, `LLM_MODEL`, `STT_MODEL`, `TTS_MODEL`, `TTS_VOICE`, `TTS_FORMAT`, `HA_URL`, `HA_TOKEN`, `JELLYFIN_URL`, `JELLYFIN_TOKEN`.
 - Every OpenRouter client is used only when `OPENROUTER_API_KEY` is set. Without it, the app runs on stubs and replay fixtures.
 
 ## Do not

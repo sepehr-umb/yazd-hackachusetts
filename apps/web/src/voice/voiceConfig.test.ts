@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { voiceConfig } from "./voiceConfig";
+import * as voiceConfigModule from "./voiceConfig";
 
 describe("voiceConfig", () => {
-  it("holds the silence threshold and both timeouts in one place", () => {
-    expect(voiceConfig).toEqual({
+  it("holds the silence threshold and the no-speech timeout", () => {
+    expect(voiceConfigModule.voiceConfig).toEqual({
       silenceThreshold: 0.02,
-      silenceTimeoutMs: 2000,
       noSpeechTimeoutMs: 8000,
     });
+  });
+
+  it("no longer carries a silence timeout", () => {
+    expect(voiceConfigModule.voiceConfig).not.toHaveProperty("silenceTimeoutMs");
   });
 });

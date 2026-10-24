@@ -1,125 +1,86 @@
 import { describe, expect, it } from "vitest";
-import type { AssistantEvent } from "@mahmood/contracts";
-import { createSpeechPlayer } from "./speechPlayer";
-import type { PlaybackContext } from "./speechPlayer";
-
-function setup() {
-  const log: string[] = [];
-  const sources: Array<{ ended(): void; stopped: boolean; connectedTo: unknown[] }> = [];
-  const destination = { name: "destination" };
-  const analyser = {
-    fftSize: 1024,
-    frequencyBinCount: 4,
-    connectedTo: [] as unknown[],
-    connect(node: unknown) {
-      analyser.connectedTo.push(node);
-      return node;
-    },
-    getByteFrequencyData(bins: Uint8Array) {
-      bins.set([10, 20, 30, 40]);
-    },
-  };
-  const context = {
-    sampleRate: 48000,
-    destination,
-    resume: async () => {
-      log.push("resume");
-    },
-    decodeAudioData: async (bytes: ArrayBuffer) => ({ length: bytes.byteLength }),
-    createAnalyser: () => analyser,
-    createBufferSource: () => {
-      const source = {
-        buffer: null as unknown,
-        stopped: false,
-        connectedTo: [] as unknown[],
-        onended: null as null | (() => void),
-        connect(node: unknown) {
-          source.connectedTo.push(node);
-          return node;
-        },
-        start: () => log.push("start"),
-        stop: () => {
-          source.stopped = true;
-        },
-        ended: () => source.onended?.(),
-      };
-      sources.push(source);
-      return source;
-    },
-  } as unknown as PlaybackContext;
-  const fetched: string[] = [];
-  const fetchImpl: typeof fetch = async (input) => {
-    fetched.push(String(input));
-    return new Response(new Uint8Array([1, 2, 3]));
-  };
-  const listeners = new Set<(event: AssistantEvent) => void>();
-  const events = {
-    subscribe(listener: (event: AssistantEvent) => void) {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-  };
-  const player = createSpeechPlayer({ events, context, fetch: fetchImpl });
-  const emit = (event: AssistantEvent) => listeners.forEach((listener) => listener(event));
-  const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
-  return { player, emit, settle, fetched, log, sources, analyser, destination, listeners };
-}
+import { defaultSettings } from "@mahmood/contracts";
+import { setupSpeechPlayer as setup } from "./speechPlayerFixture";
 
 describe("createSpeechPlayer", () => {
   it("has no audio frame before anything is spoken", () => {
     expect(setup().player.frame()).toBeNull();
   });
 
-  it("fetches a speech event's audio and plays it through the analyser to the speakers", async () => {
-    const { player, emit, settle, fetched, log, sources, analyser, destination } = setup();
+  it("creates one audio element and one source node wired to the analyser", async () => {
+    const { emit, settle, audios, sourceNodes, analyser, destination } = setup();
 
-    emit({ type: "speech", audioUrl: "/speech/abc" });
-    await settle();
-
-    expect(fetched).toEqual(["/speech/abc"]);
-    expect(log).toEqual(["resume", "start"]);
-    expect(sources[0]?.connectedTo).toEqual([analyser]);
-    expect(analyser.connectedTo).toEqual([destination]);
-    expect(player.frame()).toEqual({
-      bins: new Uint8Array([10, 20, 30, 40]),
-      hzPerBin: 48000 / 1024,
-    });
-  });
-
-  it("has no audio frame again once playback ends", async () => {
-    const { player, emit, settle, sources } = setup();
-    emit({ type: "speech", audioUrl: "/speech/abc" });
-    await settle();
-
-    sources[0]?.ended();
-
-    expect(player.frame()).toBeNull();
-  });
-
-  it("stops the previous clip when a new one arrives", async () => {
-    const { emit, settle, sources } = setup();
     emit({ type: "speech", audioUrl: "/speech/one" });
     await settle();
     emit({ type: "speech", audioUrl: "/speech/two" });
     await settle();
 
-    expect(sources.map((source) => source.stopped)).toEqual([true, false]);
+    expect(audios).toHaveLength(1);
+    expect(sourceNodes).toHaveLength(1);
+    expect(sourceNodes[0]?.element).toBe(audios[0]);
+    expect(sourceNodes[0]?.connectedTo).toEqual([analyser]);
+    expect(analyser.connectedTo).toEqual([destination]);
+    expect(audios[0]?.src).toBe("/speech/two");
+    expect(audios[0]?.plays).toBe(2);
+  });
+
+  it("reports an audio frame while a clip plays and none once it ends", async () => {
+    const { player, emit, settle, audios } = setup();
+    emit({ type: "speech", audioUrl: "/speech/abc" });
+    await settle();
+
+    expect(player.frame()).toEqual({
+      bins: new Uint8Array([10, 20, 30, 40]),
+      hzPerBin: 48000 / 1024,
+    });
+
+    audios[0]?.onended?.();
+
+    expect(player.frame()).toBeNull();
+  });
+
+  it("keeps pitch and uses the speech rate setting for each clip", async () => {
+    const { emit, settle, audios } = setup();
+
+    emit({ type: "speech", audioUrl: "/speech/one" });
+    await settle();
+    emit({ type: "setting_changed", name: "speechRate", value: 0.8 });
+    expect(audios[0]?.playbackRate).toBe(defaultSettings.speechRate);
+    emit({ type: "speech", audioUrl: "/speech/two" });
+    await settle();
+
+    expect(audios[0]?.preservesPitch).toBe(true);
+    expect(audios[0]?.rateAtPlay).toEqual([defaultSettings.speechRate, 0.8]);
+  });
+
+  it("returns to the default rate for the next clip after a reset", async () => {
+    const { emit, settle, audios } = setup();
+    emit({ type: "setting_changed", name: "speechRate", value: 0.8 });
+    emit({ type: "speech", audioUrl: "/speech/one" });
+    await settle();
+    emit({ type: "settings_reset" });
+    expect(audios[0]?.playbackRate).toBe(0.8);
+    emit({ type: "speech", audioUrl: "/speech/two" });
+    await settle();
+
+    expect(audios[0]?.rateAtPlay).toEqual([0.8, defaultSettings.speechRate]);
   });
 
   it("ignores events that are not speech", async () => {
-    const { emit, settle, fetched } = setup();
+    const { emit, settle, audios } = setup();
 
     emit({ type: "state", state: "thinking" });
     await settle();
 
-    expect(fetched).toEqual([]);
+    expect(audios[0]?.plays ?? 0).toBe(0);
   });
 
   it("stops listening when disposed", () => {
     const { player, listeners } = setup();
+    const before = listeners.size;
 
     player.dispose();
 
-    expect(listeners.size).toBe(0);
+    expect(listeners.size).toBe(before - 1);
   });
 });

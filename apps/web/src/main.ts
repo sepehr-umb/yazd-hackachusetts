@@ -6,6 +6,7 @@ import { applyResetParam } from "./profile/resetParam";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
+import { createSettingsStore } from "./settings/settingsStore";
 import { createNarrator } from "./setup/narrator";
 import { createSetupControl } from "./setup/setupControl";
 import { applyVisionParam } from "./setup/visionParam";
@@ -25,7 +26,8 @@ const debug =
   (import.meta as ViteMeta).env.DEV || new URLSearchParams(location.search).has("debug");
 const audioContext = new AudioContext();
 const events = createLiveEventSource({ url: eventsUrl(location) });
-const speech = createSpeechPlayer({ events, context: audioContext });
+const settings = createSettingsStore({ events, storage: localStorage });
+const speech = createSpeechPlayer({ events, context: audioContext, settings });
 const microphone = createMicrophone({
   context: audioContext,
   getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints),
@@ -37,14 +39,16 @@ applyVisionParam(location.href, profile, (url) => history.replaceState(history.s
 applyProfile(document, profile.get());
 profile.subscribe((next) => applyProfile(document, next));
 
+const getLanguage = () => profile.get().language;
+
 mountForProfile({
   registry: surfaceRegistry,
   settingsFor: (current) => settingsFor(current, { debug }),
   root,
   context: {
     events,
-    requests: createRequestClient(),
-    recordings: createRecordingClient(),
+    requests: createRequestClient({ getLanguage }),
+    recordings: createRecordingClient({ getLanguage }),
     microphone,
     chime: (kind) => playChime(audioContext, kind),
     haptic: createHaptics({
@@ -57,6 +61,7 @@ mountForProfile({
     }),
     speech,
     profile,
+    settings,
     setup: createSetupControl({
       push: () => history.pushState({ yazdSetup: true }, ""),
       back: () => history.back(),

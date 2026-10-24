@@ -1,5 +1,5 @@
 import type { SpeechAudio } from "../speech/speechAudio";
 
 export interface Stt {
-  transcribe(recording: SpeechAudio): Promise<string>;
+  transcribe(recording: SpeechAudio, options?: { language?: string }): Promise<string>;
 }
