@@ -53,7 +53,13 @@ function postRequest(port: number, text: string) {
   });
 }
 
-const reachedSpeech = (events: AssistantEvent[]) => events.some((event) => event.type === "speech");
+const captionsOf = (events: AssistantEvent[]) => events.filter((event) => event.type === "caption");
+
+const withoutCaptions = (events: AssistantEvent[]) =>
+  events.filter((event) => event.type !== "caption");
+
+const reachedSpeech = (events: AssistantEvent[]) =>
+  events.some((event) => event.type === "speech") && captionsOf(events).length === 2;
 
 const speechEvent = { type: "speech", audioUrl: expect.stringMatching(/^\/speech\/.+/) };
 
@@ -70,7 +76,21 @@ describe("typed request end to end", () => {
       agent: "comms",
       reply: "دارم به مامان زنگ می‌زنم",
     });
-    expect(events).toEqual([
+    expect(captionsOf(events)).toEqual([
+      {
+        type: "caption",
+        speaker: "user",
+        text: "به مامان زنگ بزن",
+        english: "به مامان زنگ بزن",
+      },
+      {
+        type: "caption",
+        speaker: "assistant",
+        text: "دارم به مامان زنگ می‌زنم",
+        english: "دارم به مامان زنگ می‌زنم",
+      },
+    ]);
+    expect(withoutCaptions(events)).toEqual([
       { type: "transcript", text: "به مامان زنگ بزن" },
       { type: "state", state: "thinking" },
       { type: "agent", agent: "orchestrator" },
@@ -98,7 +118,8 @@ describe("typed request end to end", () => {
         error: 'Several contacts match "احمدی": حسین احمدی, حسن احمدی',
       },
     });
-    expect(events).toEqual([
+    expect(captionsOf(events).map((event) => event.speaker)).toEqual(["user", "assistant"]);
+    expect(withoutCaptions(events)).toEqual([
       { type: "transcript", text: "به احمدی زنگ بزن" },
       { type: "state", state: "thinking" },
       { type: "agent", agent: "orchestrator" },

@@ -5,9 +5,12 @@ import type { FastifyInstance } from "fastify";
 import type { EventHub } from "./events/eventHub";
 import type { Orchestrator } from "./orchestrator";
 import { createSpeaker } from "./speech/speaker";
+import { spokenText } from "./speech/spokenText";
 import { createSpeechStore } from "./speech/speechStore";
 import type { SpeechStore } from "./speech/speechStore";
 import type { Stt } from "./stt/stt";
+import { createCaptioner } from "./translation/captioner";
+import type { Translator } from "./translation/translator";
 import type { Tts } from "./tts/tts";
 
 export type ServerDeps = {
@@ -15,6 +18,7 @@ export type ServerDeps = {
   hub: EventHub;
   stt: Stt;
   tts: Tts;
+  translator: Translator;
   speech?: SpeechStore;
   idleAfterMs?: number;
 };
@@ -31,11 +35,13 @@ export function createServer({
   hub,
   stt,
   tts,
+  translator,
   speech = createSpeechStore(),
   idleAfterMs,
 }: ServerDeps): FastifyInstance {
   const app = Fastify();
   const speaker = createSpeaker({ tts, store: speech, bus: hub });
+  const captioner = createCaptioner({ translator, bus: hub });
   let idleTimer: ReturnType<typeof setTimeout> | undefined;
   const sockets = new WebSocketServer({ server: app.server, path: "/events" });
 
@@ -59,12 +65,14 @@ export function createServer({
   const runPipeline = async (text: string) => {
     clearTimeout(idleTimer);
     hub.emit({ type: "transcript", text });
-    const result = await orchestrator.handle(text);
-    try {
-      await speaker.speak(result);
-    } catch (error) {
-      app.log.error(error);
-    }
+    const [, result] = await Promise.all([
+      captioner.announce("user", text),
+      orchestrator.handle(text),
+    ]);
+    await Promise.all([
+      captioner.announce("assistant", spokenText(result)),
+      speaker.speak(result).catch((error: unknown) => app.log.error(error)),
+    ]);
     clearTimeout(idleTimer);
     if (idleAfterMs !== undefined) {
       idleTimer = setTimeout(() => hub.emit({ type: "state", state: "idle" }), idleAfterMs);

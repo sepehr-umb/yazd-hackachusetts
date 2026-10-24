@@ -10,12 +10,20 @@ import { createSpeechStore } from "./speech/speechStore";
 import type { SpeechAudio } from "./speech/speechStore";
 import { createStubStt } from "./stt/stubStt";
 import type { Stt } from "./stt/stt";
+import { createStubTranslator } from "./translation/stubTranslator";
+import type { Translator } from "./translation/translator";
 import { createStubTts } from "./tts/stubTts";
 import type { Tts } from "./tts/tts";
 
 const openServers: FastifyInstance[] = [];
 
-type SetupOptions = { idleAfterMs?: number; stt?: Stt; tts?: Tts; now?: () => number };
+type SetupOptions = {
+  idleAfterMs?: number;
+  stt?: Stt;
+  tts?: Tts;
+  translator?: Translator;
+  now?: () => number;
+};
 
 function setup(options: SetupOptions = {}) {
   const hub = createEventHub();
@@ -30,6 +38,7 @@ function setup(options: SetupOptions = {}) {
     hub,
     stt: options.stt ?? createStubStt(),
     tts: options.tts ?? createStubTts(),
+    translator: options.translator ?? createStubTranslator(),
     speech: createSpeechStore({ now: options.now }),
     idleAfterMs: options.idleAfterMs,
   });
@@ -298,5 +307,136 @@ describe("POST /audio", () => {
 
     expect(response.statusCode).toBe(502);
     expect(response.json()).toEqual({ error: "The recording could not be transcribed: bad key" });
+  });
+});
+
+const callMom = "به مامان زنگ بزن";
+const callingMom = "دارم به مامان زنگ می‌زنم";
+const englishOf: Record<string, string> = {
+  [callMom]: "Call mom",
+  [callingMom]: "Calling mom",
+};
+
+const dictionaryTranslator: Translator = { toEnglish: async (text) => englishOf[text] ?? text };
+
+function captionsIn(events: AssistantEvent[]) {
+  return events.filter((event) => event.type === "caption");
+}
+
+function gatedTranslator(gatedText: string) {
+  let open: () => void = () => {};
+  const gate = new Promise<void>((resolve) => {
+    open = resolve;
+  });
+  const translator: Translator = {
+    async toEnglish(text) {
+      if (text === gatedText) await gate;
+      return englishOf[text] ?? text;
+    },
+  };
+  return { translator, open };
+}
+
+async function until(done: () => boolean) {
+  const deadline = Date.now() + 2000;
+  while (!done()) {
+    if (Date.now() > deadline) throw new Error("Timed out waiting for events");
+    await new Promise((resolve) => setTimeout(resolve, 1));
+  }
+}
+
+describe("captions", () => {
+  it("announces a user caption and an assistant caption, each with an English translation", async () => {
+    const { app, hub } = setup({ translator: dictionaryTranslator });
+    const events = collect(hub);
+
+    await app.inject({ method: "POST", url: "/request", payload: { text: callMom } });
+
+    expect(captionsIn(events)).toEqual([
+      { type: "caption", speaker: "user", text: callMom, english: "Call mom" },
+      { type: "caption", speaker: "assistant", text: callingMom, english: "Calling mom" },
+    ]);
+  });
+
+  it("captions the transcript of a recording", async () => {
+    const stt: Stt = { transcribe: async () => callMom };
+    const { app, hub } = setup({ stt, translator: dictionaryTranslator });
+    const events = collect(hub);
+
+    await app.inject({
+      method: "POST",
+      url: "/audio",
+      headers: { "content-type": "audio/webm" },
+      payload: Buffer.from([1]),
+    });
+
+    expect(captionsIn(events)[0]).toEqual({
+      type: "caption",
+      speaker: "user",
+      text: callMom,
+      english: "Call mom",
+    });
+  });
+
+  it("captions the spoken text of a failure", async () => {
+    const { app, hub } = setup({ translator: dictionaryTranslator });
+    const events = collect(hub);
+
+    await app.inject({ method: "POST", url: "/request", payload: { text: "هوا فردا چطور است؟" } });
+
+    expect(captionsIn(events)[1]).toMatchObject({
+      speaker: "assistant",
+      text: "The assistant does not know how to help with that",
+    });
+  });
+
+  it("does not wait for the user caption's translation before running the orchestrator", async () => {
+    const { translator, open } = gatedTranslator(callMom);
+    const { app, hub, calls } = setup({ translator });
+    const events = collect(hub);
+
+    const response = app.inject({ method: "POST", url: "/request", payload: { text: callMom } });
+    await until(() => calls.length === 1);
+
+    expect(captionsIn(events)).toEqual([]);
+    open();
+    await response;
+    expect(captionsIn(events)).toHaveLength(2);
+  });
+
+  it("does not wait for the assistant caption's translation before speaking", async () => {
+    const { translator, open } = gatedTranslator(callingMom);
+    const { app, hub } = setup({ translator });
+    const events = collect(hub);
+
+    const response = app.inject({ method: "POST", url: "/request", payload: { text: callMom } });
+    await until(() => speechUrlIn(events) !== undefined);
+
+    expect(captionsIn(events).map((event) => event.speaker)).toEqual(["user"]);
+    open();
+    await response;
+    expect(captionsIn(events).map((event) => event.speaker)).toEqual(["user", "assistant"]);
+  });
+
+  it("still answers when translation fails, captioning with the unavailable text", async () => {
+    const translator: Translator = {
+      toEnglish: async () => {
+        throw new Error("down");
+      },
+    };
+    const { app, hub } = setup({ translator });
+    const events = collect(hub);
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/request",
+      payload: { text: callMom },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(captionsIn(events).map((event) => event.english)).toEqual([
+      "Translation unavailable",
+      "Translation unavailable",
+    ]);
   });
 });
