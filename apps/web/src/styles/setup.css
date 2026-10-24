@@ -19,9 +19,38 @@
   align-self: center;
   inline-size: 120px;
   block-size: 120px;
+  min-block-size: 0;
+  padding: 0;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff6b8, var(--flip-listening) 55%, #e8b04b);
   box-shadow: 0 0 48px 8px color-mix(in srgb, var(--flip-listening) 35%, transparent);
+}
+
+[data-surface="setup"] [data-role="orb"]::after {
+  content: none;
+}
+
+[data-surface="setup"] [data-step="welcome"] [data-role="orb"] {
+  inline-size: 56vmin;
+  block-size: 56vmin;
+}
+
+[data-surface="setup"] [data-role="orb"][data-listening="true"] {
+  box-shadow: 0 0 0 12px color-mix(in srgb, var(--flip-listening) 45%, transparent);
+}
+
+[data-surface="setup"] h2 {
+  transition: opacity 300ms var(--ease);
+}
+
+[data-surface="setup"] h2[data-fading="true"] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="setup"] h2 {
+    transition: none;
+  }
 }
 
 [data-surface="setup"] [hidden] {

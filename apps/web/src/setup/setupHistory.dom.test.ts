@@ -15,7 +15,7 @@ function mounted(vision?: Vision) {
   const unmount = setupSurface.mount(host, context);
   const sheet = host.querySelector("[role=dialog]") as HTMLElement;
   const pick = (text: string) =>
-    [...sheet.querySelectorAll("button")]
+    [...sheet.querySelectorAll<HTMLButtonElement>("[data-role=options] button")]
       .find(
         (button) =>
           (button.querySelector("[data-role=title]")?.textContent ?? button.textContent) === text,

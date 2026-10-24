@@ -57,6 +57,7 @@ export const strings = {
   setup: {
     fa: {
       languageName: "فارسی",
+      sayHello: "دکمه را فشار بده و بگو «سلام»",
       title: "راه‌اندازی",
       chooseLanguage: "زبان خود را انتخاب کنید",
       visionQuestion: "صفحه را چقدر خوب می‌بینید؟",
@@ -77,6 +78,7 @@ export const strings = {
     },
     en: {
       languageName: "English",
+      sayHello: 'Press the button and say "hello"',
       title: "Setup",
       chooseLanguage: "Choose your language",
       visionQuestion: "How well do you see the screen?",
@@ -97,6 +99,7 @@ export const strings = {
     },
     es: {
       languageName: "Español",
+      sayHello: "Pulsa el botón y di «hola»",
       title: "Configuración",
       chooseLanguage: "Elige tu idioma",
       visionQuestion: "¿Qué tan bien ves la pantalla?",
@@ -117,6 +120,7 @@ export const strings = {
     },
     it: {
       languageName: "Italiano",
+      sayHello: "Premi il pulsante e di' «ciao»",
       title: "Configurazione",
       chooseLanguage: "Scegli la tua lingua",
       visionQuestion: "Quanto bene vedi lo schermo?",

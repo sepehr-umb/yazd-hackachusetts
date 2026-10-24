@@ -17,7 +17,9 @@ describe("setup sheet on a long press", () => {
     const host = document.createElement("section");
     document.body.append(host);
     setupSurface.mount(host, createTestContext());
-    const buttons = () => [...host.querySelectorAll<HTMLButtonElement>("[role=dialog] button")];
+    const buttons = () => [
+      ...host.querySelectorAll<HTMLButtonElement>("[role=dialog] [data-role=options] button"),
+    ];
 
     expect(menuOn(buttons()[0])).toBe(true);
     buttons()[1]?.click();

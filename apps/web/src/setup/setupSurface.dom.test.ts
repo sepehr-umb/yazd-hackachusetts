@@ -15,7 +15,9 @@ function mounted(vision?: Vision) {
   const unmount = setupSurface.mount(host, context);
   const sheet = host.querySelector("[role=dialog]") as HTMLElement;
   const heading = () => sheet.querySelector("h2") as HTMLElement;
-  const options = () => [...sheet.querySelectorAll<HTMLButtonElement>("button")];
+  const options = () => [
+    ...sheet.querySelectorAll<HTMLButtonElement>("[data-role=options] button"),
+  ];
   const pick = (text: string) =>
     options()
       .find(
@@ -36,7 +38,7 @@ describe("setup surface", () => {
 
     expect(sheet.hidden).toBe(false);
     expect(sheet.getAttribute("aria-modal")).toBe("true");
-    expect(heading().textContent).toBe("زبان خود را انتخاب کنید");
+    expect(heading().textContent).toBe("دکمه را فشار بده و بگو «سلام»");
     expect(options().map((button) => [button.textContent, button.lang, button.type])).toEqual([
       ["فارسی", "fa", "button"],
       ["English", "en", "button"],
@@ -104,7 +106,7 @@ describe("setup surface", () => {
 
     context.setup.open();
 
-    expect(heading().textContent).toBe("زبان خود را انتخاب کنید");
+    expect(heading().textContent).toBe("دکمه را فشار بده و بگو «سلام»");
   });
 
   it("closes on Escape once setup has run, but not before", () => {

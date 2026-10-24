@@ -11,19 +11,13 @@ function mounted() {
   document.body.append(host);
   setupSurface.mount(host, createTestContext());
   const sheet = host.querySelector("[role=dialog]") as HTMLElement;
-  const buttons = () => [...sheet.querySelectorAll("button")];
+  const buttons = () => [
+    ...sheet.querySelectorAll<HTMLButtonElement>("[data-role=options] button"),
+  ];
   return { sheet, buttons };
 }
 
 describe("setup sheet look", () => {
-  it("shows a decorative orb above the question", () => {
-    const { sheet } = mounted();
-    const orb = sheet.querySelector("[data-role=orb]");
-
-    expect(orb?.getAttribute("aria-hidden")).toBe("true");
-    expect(orb?.nextElementSibling).toBe(sheet.querySelector("h2"));
-  });
-
   it("gives each vision option a title and a one-line description in the chosen language", () => {
     const { buttons } = mounted();
     expect(buttons()[1]?.querySelector("[data-role=detail]")).toBeNull();
