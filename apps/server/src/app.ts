@@ -6,6 +6,7 @@ import { selectLlmClient } from "./llm/selectLlmClient";
 import type { Env, LlmClientOptions } from "./llm/selectLlmClient";
 import { createOrchestrator, createStubTools } from "./orchestrator";
 import { createServer } from "./server";
+import { withSettings } from "./settings/withSettings";
 import { selectStt } from "./stt/selectStt";
 import { selectTranslator } from "./translation/selectTranslator";
 import { selectTts } from "./tts/selectTts";
@@ -16,7 +17,7 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
   const hub = createEventHub();
   const orchestrator = createOrchestrator({
     llm: selectLlmClient(env, options),
-    tools: withContactResolution(createStubTools().tools, fixtureContacts),
+    tools: withSettings(withContactResolution(createStubTools().tools, fixtureContacts), hub),
     bus: hub,
   });
   return createServer({

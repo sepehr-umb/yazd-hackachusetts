@@ -21,6 +21,24 @@ describe("agent prompts", () => {
   );
 });
 
+describe("settings agent", () => {
+  it("has a definition", () => {
+    expect(agentDefinitions.settings).toBeDefined();
+  });
+
+  it("uses the update and reset tools", () => {
+    expect(agentDefinitions.settings.tools).toEqual(["update_setting", "reset_settings"]);
+  });
+
+  it("asks for absolute values and a question when details are missing", () => {
+    const { system } = agentDefinitions.settings;
+
+    expect(system).toMatch(/absolute/i);
+    expect(system).toMatch(/question/i);
+    expect(system).toMatch(/current value/i);
+  });
+});
+
 describe("router prompt and tool descriptions", () => {
   it("never name Farsi", async () => {
     const conversation = callMom as RecordedConversation;

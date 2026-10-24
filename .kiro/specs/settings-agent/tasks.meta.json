@@ -1,0 +1,671 @@
+{
+  "pbtResults": {
+    "4.2 settingsStorage loadSettings and saveSettings with Properties 7 and 6": {
+      "status": "passed",
+      "lastRunTimestamp": 1792860859844
+    }
+  },
+  "executionHistory": {
+    "1.1 Fold in fast-check and the \"settings\" agent name": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261248
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859266014
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859495105
+      }
+    ],
+    "1.2 Add the minimal settings entry to agentDefinitions (restores typecheck green; ends the exception)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261290
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859496890
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859583074
+      }
+    ],
+    "1.3 Add the settingSchemas registry, defaultSettings, and types": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261335
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859584903
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859662117
+      }
+    ],
+    "1.4 Add isSettingName and isSettingValue with Property 1": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261362
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859664140
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859789870
+      }
+    ],
+    "1.5 Add the setting_changed event and its guard behavior": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261389
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859793835
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859881952
+      }
+    ],
+    "1.6 Add the settings_reset event and its guard behavior": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261420
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859883911
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859934671
+      }
+    ],
+    "1.7 Add the event JSON round-trip property (Property 2)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261452
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859936821
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860007695
+      }
+    ],
+    "1.8 Add update_setting and reset_settings tool names, inputs, and the minimal orchestrator wiring": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261478
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860009711
+      },
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860069425
+      }
+    ],
+    "2. CHECKPOINT: contract change ready to merge": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261515
+      }
+    ],
+    "3.1 Derive per-setting schemas with settingToolSchema": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261549
+      }
+    ],
+    "3.2 withSettings: valid update_setting emits one setting_changed": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261582
+      }
+    ],
+    "3.3 withSettings: unknown name returns applied:false": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261614
+      }
+    ],
+    "3.4 withSettings: out-of-range value returns applied:false with the range": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261645
+      }
+    ],
+    "3.5 withSettings: wrong type or enum value returns applied:false": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261676
+      }
+    ],
+    "3.6 Update tool property: event if and only if valid (Property 8)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261707
+      }
+    ],
+    "3.7 withSettings: reset_settings emits one settings_reset": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261740
+      }
+    ],
+    "3.8 Reset tool ignores input (Property 9)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261771
+      }
+    ],
+    "3.9 Compose withSettings in app.ts": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261804
+      }
+    ],
+    "3.10 Router: settings description and clarifier sentence": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261852
+      }
+    ],
+    "3.11 runSubAgent: applied:false does not fail the run": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261875
+      }
+    ],
+    "4.1 applyEvent: a valid setting_changed updates only that field": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261900
+      }
+    ],
+    "4.2 applyEvent: settings_reset returns the defaults": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261926
+      }
+    ],
+    "4.3 applyEvent: invalid or unrelated events return the same reference": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261950
+      }
+    ],
+    "4.4 Bounds under any event sequence (Property 3)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859261977
+      }
+    ],
+    "4.5 Invalid events leave state unchanged (Property 4)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262008
+      }
+    ],
+    "4.6 Reset yields defaults and is idempotent (Property 5)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262042
+      }
+    ],
+    "4.7 loadSettings with per-field fallback": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262072
+      }
+    ],
+    "4.8 Load falls back per field (Property 7)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262103
+      }
+    ],
+    "4.9 saveSettings returns false when the write throws": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262134
+      }
+    ],
+    "4.10 Persistence round trip (Property 6)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262165
+      }
+    ],
+    "4.11 createSettingsStore: initial state from storage": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262194
+      }
+    ],
+    "4.12 createSettingsStore: subscribes to the event source itself": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262223
+      }
+    ],
+    "4.13 createSettingsStore: notify once per change, never on invalid": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262252
+      }
+    ],
+    "4.14 createSettingsStore: persists on every change": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262312
+      }
+    ],
+    "4.15 createSettingsStore: keeps state when a write throws and retries on the next change": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262391
+      }
+    ],
+    "4.16 Add the strings.settings group": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262432
+      }
+    ],
+    "4.17 describeEvent: setting_changed": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262463
+      }
+    ],
+    "4.18 describeEvent: settings_reset": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262494
+      }
+    ],
+    "4.19 Activity description names the change (Property 10)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262521
+      }
+    ],
+    "5.1 Provide the settings store through SurfaceContext (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262551
+      }
+    ],
+    "5.2 Speech player plays through one audio element and the analyser (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262584
+      }
+    ],
+    "5.3 Speech player applies preservesPitch and the rate before each clip (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262610
+      }
+    ],
+    "5.4 Reset applies the default rate to the next clip (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262636
+      }
+    ],
+    "5.5 Captions follow caption size and contrast live (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262661
+      }
+    ],
+    "5.6 CSS for four caption sizes and two contrast modes (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262687
+      }
+    ],
+    "5.7 Voice surface reads silenceWaitMs at utterance start (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262718
+      }
+    ],
+    "5.8 Remove silenceTimeoutMs from voiceConfig (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262758
+      }
+    ],
+    "6.1 Replay the Farsi \"speak slower\" fixture": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262783
+      }
+    ],
+    "6.2 Replay the Farsi \"go back to normal\" fixture": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262808
+      }
+    ],
+    "6.3 Register \"speak slower\" and prove it end to end without an API key": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262832
+      }
+    ],
+    "6.4 Register \"go back to normal\" and prove it end to end without an API key": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262858
+      }
+    ],
+    "7.1 Run the full checks and the comment audit": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262886
+      }
+    ],
+    "7.2 Produce the final summary": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792859262919
+      }
+    ],
+    "1. Contracts": [
+      {
+        "executionId": "2a53c210-8403-4091-9014-0c03d35f2d83",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860069471
+      }
+    ],
+    "3.1 settingToolSchema and withSettings update_setting": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860543973
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860640857
+      }
+    ],
+    "3.2 withSettings reset_settings and composition in app.ts": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860642998
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860717654
+      }
+    ],
+    "3.3 Router prompt and runSubAgent regression": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860720221
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860760257
+      }
+    ],
+    "3. Server": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860760296
+      }
+    ],
+    "4.1 applyEvent reducer with Properties 3, 4, 5": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860762278
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860810032
+      }
+    ],
+    "4.2 settingsStorage loadSettings and saveSettings with Properties 7 and 6": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860811976
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860874842
+      }
+    ],
+    "4.3 createSettingsStore": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860875394
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860928394
+      }
+    ],
+    "4.4 strings.settings and describeEvent with Property 10": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860928892
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860987686
+      }
+    ],
+    "4. Web store": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860987727
+      }
+    ],
+    "5.1 SurfaceContext settings store (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792860988259
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861041244
+      }
+    ],
+    "5.2 Speech player: one audio element, preservesPitch and rate per clip (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861041953
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861096762
+      }
+    ],
+    "5.3 Captions follow size and contrast live, with CSS (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861097665
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861160525
+      }
+    ],
+    "5.4 Voice surface reads silenceWaitMs at utterance start; remove silenceTimeoutMs (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861161286
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861209378
+      }
+    ],
+    "5. Surfaces (Teammate 1 area, minimal wiring)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861209435
+      }
+    ],
+    "6.1 \"speak slower\" Farsi fixture, registration, and end to end without an API key": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861211041
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861259937
+      }
+    ],
+    "6.2 \"go back to normal\" Farsi fixture, registration, and end to end without an API key": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861260563
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861301928
+      }
+    ],
+    "6. Fixtures (required for the demo)": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861301973
+      }
+    ],
+    "7.1 Full checks, audits, and final summary": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861302494
+      },
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861367762
+      }
+    ],
+    "7. Final verification": [
+      {
+        "executionId": "f7b655c7-35d0-45f5-a946-83235e88d2e3",
+        "chatSessionId": "sess_fd071bab-398d-4f45-bebb-de0a5a589cce",
+        "timestamp": 1792861367801
+      }
+    ]
+  }
+}

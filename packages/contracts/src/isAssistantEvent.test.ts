@@ -96,4 +96,41 @@ describe("isAssistantEvent", () => {
   it("rejects a caption event with no english", () => {
     expect(isAssistantEvent({ type: "caption", speaker: "user", text: "سلام" })).toBe(false);
   });
+
+  it.each([
+    ["speechRate", 0.75],
+    ["captionSize", "extra-large"],
+    ["highContrast", false],
+    ["silenceWaitMs", 2000],
+  ])("accepts a setting_changed event for %s", (name, value) => {
+    expect(isAssistantEvent({ type: "setting_changed", name, value })).toBe(true);
+  });
+
+  it.each([
+    ["unknown name", { type: "setting_changed", name: "volume", value: 1 }],
+    ["prototype name", { type: "setting_changed", name: "toString", value: 1 }],
+    ["missing value", { type: "setting_changed", name: "speechRate" }],
+    ["wrong type", { type: "setting_changed", name: "speechRate", value: "fast" }],
+    ["out of bounds", { type: "setting_changed", name: "speechRate", value: 2 }],
+    ["NaN", { type: "setting_changed", name: "speechRate", value: Number.NaN }],
+    ["bad enum", { type: "setting_changed", name: "captionSize", value: "huge" }],
+    ["non-integer", { type: "setting_changed", name: "silenceWaitMs", value: 1500.5 }],
+  ])("rejects a setting_changed event with %s", (_label, candidate) => {
+    expect(isAssistantEvent(candidate)).toBe(false);
+  });
+
+  it.each([null, undefined, "setting_changed", 7, [], {}, { type: "nope" }, { type: 3 }])(
+    "rejects candidate %j without throwing",
+    (candidate) => {
+      expect(() => isAssistantEvent(candidate)).not.toThrow();
+      expect(isAssistantEvent(candidate)).toBe(false);
+    },
+  );
+
+  it("does not modify a rejected setting_changed candidate", () => {
+    const candidate = { type: "setting_changed", name: "speechRate", value: 9 };
+    const copy = structuredClone(candidate);
+    isAssistantEvent(candidate);
+    expect(candidate).toEqual(copy);
+  });
 });
