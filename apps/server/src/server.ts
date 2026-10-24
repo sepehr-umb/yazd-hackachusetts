@@ -3,6 +3,8 @@ import Fastify from "fastify";
 import { WebSocketServer } from "ws";
 import type { FastifyInstance } from "fastify";
 import type { EventHub } from "./events/eventHub";
+import { createStubTranscriber } from "./language/transcriber";
+import type { Transcriber } from "./language/transcriber";
 import type { Orchestrator } from "./orchestrator";
 import { createSpeaker } from "./speech/speaker";
 import { spokenText } from "./speech/spokenText";
@@ -19,6 +21,7 @@ export type ServerDeps = {
   stt: Stt;
   tts: Tts;
   translator: Translator;
+  transcriber?: Transcriber;
   speech?: SpeechStore;
   idleAfterMs?: number;
 };
@@ -36,6 +39,7 @@ export function createServer({
   stt,
   tts,
   translator,
+  transcriber = createStubTranscriber(),
   speech = createSpeechStore(),
   idleAfterMs,
 }: ServerDeps): FastifyInstance {
@@ -104,6 +108,22 @@ export function createServer({
     }
     if (text === "") return reply.code(422).send({ error: strings.audio.nothingHeard });
     return runPipeline(text);
+  });
+
+  app.post("/transcribe", async (request, reply) => {
+    const data = request.body;
+    if (!Buffer.isBuffer(data) || data.length === 0) {
+      return reply.code(400).send({ error: strings.audio.emptyRecording });
+    }
+    try {
+      return await transcriber.transcribe({
+        data,
+        mimeType: request.headers["content-type"] ?? "",
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return reply.code(502).send({ error: strings.audio.transcriptionFailed(message) });
+    }
   });
 
   app.get<{ Params: { id: string } }>("/speech/:id", async (request, reply) => {
