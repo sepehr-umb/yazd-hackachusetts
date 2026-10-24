@@ -40,7 +40,7 @@ styles/                       tokens and per-surface CSS, linked from index.html
 - Thinking: `spin = (t · 0.1) mod 1` turns, scale 1.
 - Speaking: `scale = 1 + 0.25 · speech`, speech from `mouthFromSpectrum(...).open` through the
   smoother.
-- Error: `tint = max(0, 1 − stateTime)`, so it settles within 1 s.
+- Error: `tint = max(0, 1 − stateTime / 0.8)`, so it has settled before 1 s.
 
 ## Character contract (phase 3)
 
