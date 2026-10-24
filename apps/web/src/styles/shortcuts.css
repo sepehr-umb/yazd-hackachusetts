@@ -71,47 +71,15 @@
   color: var(--tile-icon);
 }
 
-[data-surface="shortcuts"] [data-role="label"],
-[data-surface="shortcuts"] [data-role="sublabel"] {
+[data-surface="shortcuts"] [data-role="label"] {
+  flex: 1;
   min-inline-size: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-[data-surface="shortcuts"] [data-role="label"] {
-  flex: 1;
   font-size: 22px;
   font-weight: 600;
   line-height: 1.2;
-}
-
-[data-surface="shortcuts"] [data-role="sublabel"] {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  [data-surface="shortcuts"] button {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    align-content: center;
-    column-gap: 12px;
-    row-gap: 2px;
-  }
-
-  [data-surface="shortcuts"] svg {
-    grid-row: 1 / span 2;
-  }
-
-  [data-surface="shortcuts"] [data-role="sublabel"] {
-    display: block;
-    justify-self: start;
-    max-inline-size: 100%;
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--ink-muted);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -7,6 +7,7 @@ import { createViewChoices } from "../setup/viewChoices";
 import type { Surface } from "../surfaces/surface";
 import { personalizeIcon } from "./personalizeIcon";
 import { createSheet } from "./sheet";
+import { createStartOver } from "./startOver";
 
 export type PersonalizeSurfaceDeps = { characters?: Character[]; languages?: readonly Language[] };
 
@@ -39,6 +40,11 @@ export function createPersonalizeSurface({
         name.textContent = context.profile.get().name;
       };
       showName();
+      const startOver = createStartOver(document, context.profile, () => {
+        close();
+        context.profile.reset();
+      });
+      sheet.element.append(startOver.element);
       host.append(header, backdrop, sheet.element);
 
       const setOpen = (open: boolean) => {
@@ -81,6 +87,7 @@ export function createPersonalizeSurface({
 
       return () => {
         view.dispose();
+        startOver.dispose();
         unsubscribe();
         document.removeEventListener("keydown", onKeyDown);
         header.remove();

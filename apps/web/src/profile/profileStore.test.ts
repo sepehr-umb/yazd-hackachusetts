@@ -10,6 +10,9 @@ const throwing: KeyValueStorage = {
   set() {
     throw new Error("quota");
   },
+  delete() {
+    throw new Error("blocked");
+  },
 };
 
 describe("profile store", () => {

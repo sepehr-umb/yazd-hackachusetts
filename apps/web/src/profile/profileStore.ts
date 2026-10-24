@@ -4,6 +4,7 @@ import type { Profile } from "./profile";
 export type KeyValueStorage = {
   get(key: string): string | null | undefined;
   set(key: string, value: string): unknown;
+  delete(key: string): unknown;
 };
 
 export type ProfileListener = (profile: Profile) => void;
@@ -11,6 +12,7 @@ export type ProfileListener = (profile: Profile) => void;
 export type ProfileStore = {
   get(): Profile;
   update(patch: Partial<Profile>): void;
+  reset(): void;
   subscribe(listener: ProfileListener): () => void;
 };
 
@@ -34,6 +36,15 @@ function save(storage: KeyValueStorage, profile: Profile): boolean {
   }
 }
 
+function forget(storage: KeyValueStorage): boolean {
+  try {
+    storage.delete(PROFILE_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function createProfileStore(storage: KeyValueStorage): ProfileStore {
   let profile = load(storage);
   const listeners = new Set<ProfileListener>();
@@ -42,6 +53,11 @@ export function createProfileStore(storage: KeyValueStorage): ProfileStore {
     update(patch) {
       profile = mergeProfile(profile, patch);
       save(storage, profile);
+      listeners.forEach((listener) => listener(profile));
+    },
+    reset() {
+      forget(storage);
+      profile = defaultProfile;
       listeners.forEach((listener) => listener(profile));
     },
     subscribe(listener) {
@@ -55,5 +71,6 @@ export function browserStorage(getStorage: () => Storage): KeyValueStorage {
   return {
     get: (key) => getStorage().getItem(key),
     set: (key, value) => getStorage().setItem(key, value),
+    delete: (key) => getStorage().removeItem(key),
   };
 }

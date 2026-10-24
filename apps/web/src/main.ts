@@ -2,6 +2,7 @@ import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
 import { createHaptics } from "./haptics/haptics";
 import { applyProfile } from "./profile/applyProfile";
+import { applyResetParam } from "./profile/resetParam";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
@@ -31,6 +32,7 @@ const microphone = createMicrophone({
   createRecorder: (stream) => new MediaRecorder(stream),
 });
 const profile = createProfileStore(browserStorage(() => localStorage));
+applyResetParam(location.href, profile, (url) => history.replaceState(history.state, "", url));
 applyVisionParam(location.href, profile, (url) => history.replaceState(history.state, "", url));
 applyProfile(document, profile.get());
 profile.subscribe((next) => applyProfile(document, next));
