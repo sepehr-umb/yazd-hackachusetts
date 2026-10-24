@@ -56,6 +56,44 @@ describe("settings agent", () => {
   });
 });
 
+describe("clock agent", () => {
+  it("has a definition", () => {
+    expect(agentDefinitions.clock).toBeDefined();
+  });
+
+  it("uses only the get_time tool", () => {
+    expect(agentDefinitions.clock?.tools).toEqual(["get_time"]);
+  });
+
+  it("answers in the user's language and names no language", () => {
+    const system = agentDefinitions.clock?.system ?? "";
+
+    expect(system).toContain("the user's language");
+    expect(system).not.toMatch(/farsi|persian|english|arabic/i);
+  });
+
+  it("states both time and day in one short sentence", () => {
+    const system = agentDefinitions.clock?.system ?? "";
+
+    expect(system).toMatch(/time and (the )?day/i);
+    expect(system).toContain("one short sentence");
+  });
+
+  it("calls get_time first and takes values only from its result", () => {
+    const system = agentDefinitions.clock?.system ?? "";
+
+    expect(system).toContain("Call get_time first");
+    expect(system).toMatch(/only from its result/i);
+  });
+
+  it("states no time or day when applied is false", () => {
+    const system = agentDefinitions.clock?.system ?? "";
+
+    expect(system).toContain("applied false");
+    expect(system).toMatch(/state no time or day/i);
+  });
+});
+
 describe("router prompt and tool descriptions", () => {
   it("never name Farsi", async () => {
     const conversation = callMom as RecordedConversation;

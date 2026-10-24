@@ -55,4 +55,7 @@ export const strings = {
     changed: (name: string, value: string) => `Setting changed: ${name} is now ${value}`,
     reset: "Settings reset to defaults",
   },
+  clock: {
+    unavailable: "The time is unavailable",
+  },
 };
