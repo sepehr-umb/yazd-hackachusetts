@@ -11,7 +11,7 @@ export type VoicePhase = "idle" | "starting" | "recording" | "sending";
 export type VoiceNotice = EventDescription;
 
 export type VoiceSessionDeps = {
-  context: Pick<SurfaceContext, "microphone" | "chime" | "recordings">;
+  context: Pick<SurfaceContext, "microphone" | "chime" | "recordings" | "settings">;
   config?: VoiceConfig;
   onPhase?: (phase: VoicePhase) => void;
   onNotice?: (notice: VoiceNotice) => void;
@@ -78,7 +78,10 @@ export function createVoiceSession({
   };
 
   const listen = () => {
-    const detector = createSilenceDetector(config, Date.now());
+    const detector = createSilenceDetector(
+      { ...config, silenceTimeoutMs: context.settings.get().silenceWaitMs },
+      Date.now(),
+    );
     poll = setInterval(() => {
       if (!recording) return;
       const outcome = detector.update(recording.level(), Date.now());

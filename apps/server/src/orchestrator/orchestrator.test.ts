@@ -119,7 +119,7 @@ describe("orchestrator", () => {
     const [routing, comms] = llm.requests;
     expect(routing?.tools.map((tool) => tool.name)).toEqual(["route_to_agent"]);
     expect(routing?.tools[0]?.inputSchema).toMatchObject({
-      properties: { agent: { enum: ["comms", "home", "media", "clarifier"] } },
+      properties: { agent: { enum: ["comms", "home", "media", "settings", "clarifier"] } },
     });
     expect(comms?.tools.map((tool) => tool.name)).toEqual(["call_contact", "send_message"]);
   });

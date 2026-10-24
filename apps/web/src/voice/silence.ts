@@ -12,12 +12,14 @@ export function levelOf(samples: ArrayLike<number>): number {
   return Math.sqrt(sumOfSquares / samples.length);
 }
 
+export type SilenceConfig = VoiceConfig & { silenceTimeoutMs: number };
+
 export type ListeningOutcome = "listening" | "silence" | "no_speech";
 
 export type SilenceDetector = { update(level: number, nowMs: number): ListeningOutcome };
 
 export function createSilenceDetector(
-  { silenceThreshold, silenceTimeoutMs, noSpeechTimeoutMs }: VoiceConfig,
+  { silenceThreshold, silenceTimeoutMs, noSpeechTimeoutMs }: SilenceConfig,
   startMs: number,
 ): SilenceDetector {
   let lastLoudMs: number | undefined;

@@ -21,6 +21,41 @@ describe("agent prompts", () => {
   );
 });
 
+describe("settings agent", () => {
+  it("has a definition", () => {
+    expect(agentDefinitions.settings).toBeDefined();
+  });
+
+  it("uses the update and reset tools", () => {
+    expect(agentDefinitions.settings.tools).toEqual(["update_setting", "reset_settings"]);
+  });
+
+  it("asks for absolute values and a question when details are missing", () => {
+    const { system } = agentDefinitions.settings;
+
+    expect(system).toMatch(/absolute/i);
+    expect(system).toMatch(/question/i);
+    expect(system).toMatch(/current value/i);
+  });
+
+  it.each([
+    ["bigger", "extra-large"],
+    ["smaller", "small"],
+    ["slower", "0.75"],
+    ["faster", "1.25"],
+    ["longer wait", "2500"],
+  ])("maps a relative %s request to %s", (phrase, value) => {
+    const { system } = agentDefinitions.settings;
+
+    expect(system).toContain(phrase);
+    expect(system).toContain(value);
+  });
+
+  it("moves relative requests from the default toward the extreme", () => {
+    expect(agentDefinitions.settings.system).toMatch(/default.*extreme|extreme.*default/i);
+  });
+});
+
 describe("router prompt and tool descriptions", () => {
   it("never name Farsi", async () => {
     const conversation = callMom as RecordedConversation;

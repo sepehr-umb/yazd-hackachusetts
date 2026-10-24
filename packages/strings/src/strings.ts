@@ -1,3 +1,5 @@
+import type { SettingName } from "@mahmood/contracts";
+
 export const strings = {
   failure: {
     toolFailed: (tool: string, error: string) => `${tool} failed: ${error}`,
@@ -70,5 +72,19 @@ export const strings = {
     userCaption: (text: string, english: string) => `You said: ${text} · English: ${english}`,
     assistantCaption: (text: string, english: string) =>
       `Assistant said: ${text} · English: ${english}`,
+  },
+  settings: {
+    names: {
+      speechRate: "Speech rate",
+      captionSize: "Caption size",
+      highContrast: "High contrast",
+      silenceWaitMs: "Silence wait",
+    } satisfies Record<SettingName, string>,
+    valueLabels: {
+      on: "on",
+      off: "off",
+    },
+    changed: (name: string, value: string) => `Setting changed: ${name} is now ${value}`,
+    reset: "Settings reset to defaults",
   },
 };

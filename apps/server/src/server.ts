@@ -12,6 +12,7 @@ import type { Stt } from "./stt/stt";
 import { createCaptioner } from "./translation/captioner";
 import type { Translator } from "./translation/translator";
 import type { Tts } from "./tts/tts";
+import { registerStaticSite } from "./web/staticSite";
 
 export type ServerDeps = {
   orchestrator: Orchestrator;
@@ -21,6 +22,7 @@ export type ServerDeps = {
   translator: Translator;
   speech?: SpeechStore;
   idleAfterMs?: number;
+  staticDir?: string;
 };
 
 const MAX_RECORDING_BYTES = 10 * 1024 * 1024;
@@ -38,6 +40,7 @@ export function createServer({
   translator,
   speech = createSpeechStore(),
   idleAfterMs,
+  staticDir,
 }: ServerDeps): FastifyInstance {
   const app = Fastify();
   const speaker = createSpeaker({ tts, store: speech, bus: hub });
@@ -111,6 +114,8 @@ export function createServer({
     if (!audio) return reply.code(404).send();
     return reply.type(audio.mimeType).send(audio.data);
   });
+
+  if (staticDir !== undefined) registerStaticSite(app, staticDir);
 
   return app;
 }

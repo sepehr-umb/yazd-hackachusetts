@@ -4,7 +4,7 @@ import { orbCharacter } from "../characters/orbCharacter";
 import { createTestContext } from "../testing/testContext";
 import { createCompanionSurface } from "./companionSurface";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 export function mountCompanion(characters: Character[] = [orbCharacter]) {
   const context = createTestContext();

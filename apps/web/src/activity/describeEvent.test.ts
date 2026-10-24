@@ -1,4 +1,5 @@
 import type { AssistantEvent } from "@mahmood/contracts";
+import { strings } from "@mahmood/strings";
 import { describe, expect, it } from "vitest";
 import { describeEvent } from "./describeEvent";
 
@@ -36,5 +37,29 @@ describe("describeEvent", () => {
     ],
   ])("describes %j as %j with tone %s", (event, text, tone) => {
     expect(describeEvent(event)).toEqual({ text, tone });
+  });
+
+  it("describes a numeric setting change using the strings package", () => {
+    expect(describeEvent({ type: "setting_changed", name: "speechRate", value: 0.8 })).toEqual({
+      text: strings.settings.changed(strings.settings.names.speechRate, "0.8"),
+      tone: "neutral",
+    });
+  });
+
+  it("describes a boolean setting change with the on and off labels", () => {
+    expect(describeEvent({ type: "setting_changed", name: "highContrast", value: false })).toEqual({
+      text: strings.settings.changed(
+        strings.settings.names.highContrast,
+        strings.settings.valueLabels.off,
+      ),
+      tone: "neutral",
+    });
+  });
+
+  it("describes a settings reset using the strings package", () => {
+    expect(describeEvent({ type: "settings_reset" })).toEqual({
+      text: strings.settings.reset,
+      tone: "neutral",
+    });
   });
 });

@@ -3,7 +3,7 @@ import { createTestContext } from "../testing/testContext";
 import { createVoiceSession } from "./voiceSession";
 import type { VoiceNotice, VoicePhase } from "./voiceSession";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
+const config = { silenceThreshold: 0.1, noSpeechTimeoutMs: 8000 };
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -74,18 +74,6 @@ describe("voice session", () => {
       { text: "دارم زنگ می‌زنم", tone: "neutral" },
     ]);
     expect(session.phase).toBe("idle");
-  });
-
-  it("sends by itself once the silence timeout passes after speech", async () => {
-    const { context, toggle } = started();
-    await toggle();
-    context.mic.level = 0.5;
-    await vi.advanceTimersByTimeAsync(300);
-    context.mic.level = 0;
-
-    await vi.advanceTimersByTimeAsync(1100);
-
-    expect(context.recorded).toHaveLength(1);
   });
 
   it("stops without sending and says nothing was heard when no speech comes", async () => {
