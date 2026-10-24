@@ -81,3 +81,26 @@ Follow the face: pure, tested modules compute parameters; a thin renderer draws 
 take injected `requestFrame`/`cancelFrame`. DOM behavior is tested in `*.dom.test.ts` with the
 fakes in `apps/web/src/testing/testContext.ts`; math in plain unit tests. `apps/web/src/face/**`
 is read-only.
+
+## iPhone
+
+- Design for 390×844 and 430×932 portrait. Landscape must not break but is not optimized.
+- Viewport meta carries `viewport-fit=cover`; pad edges with `env(safe-area-inset-*)`. Use `100dvh`,
+  never `100vh`.
+- `touch-action: manipulation` on everything interactive; `-webkit-tap-highlight-color:
+  transparent`. The full-screen button also gets `user-select: none` and `-webkit-touch-callout:
+  none` so a long press shows no system menu.
+- All audio starts inside the tap. The voice session resumes the AudioContext there;
+  `speechSynthesis` is also called from the gesture.
+- Works with VoiceOver: every control is a real `<button>` with an `aria-label` from strings; state
+  changes go to a `role="status"` live region.
+- Never more than one flash per state change and never more than three flashes in any second.
+
+## Vision levels and the flip
+
+- The profile's `vision` (`full`, `low`, `minimal`) decides which surfaces mount, through the pure
+  `settingsFor(profile)`. Unset means only the setup sheet.
+- Brightness carries the signal, not hue: `--flip-idle` (default `#000000`) when idle,
+  `--flip-listening` (default `#FFE600`) while recording, one 120 ms `--flip-flash` (`#FFFFFF`) frame
+  on each change. Ink is chosen by luminance, so it stays readable on any caregiver color.
+- `prefers-reduced-motion: reduce` changes color instantly with no white frame.
