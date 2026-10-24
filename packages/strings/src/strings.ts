@@ -25,6 +25,12 @@ export const strings = {
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },
+  captions: {
+    translationUnavailable: "Translation unavailable",
+    youSaid: "You said",
+    assistantSaid: "Assistant said",
+    english: "English",
+  },
   activity: {
     title: "Activity",
     request: (text: string) => `Request: ${text}`,
