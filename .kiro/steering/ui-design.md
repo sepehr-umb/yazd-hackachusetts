@@ -26,8 +26,15 @@ hardcode a color, radius or duration elsewhere.
 | `--thinking` | `#C9A66B` | thinking gradient |
 | `--error` | `#C8553D` | error tint and borders, never text |
 | `--ok` | `#6E9F6B` | success borders, never text |
-| `--radius-card` | `24px` | tiles, sheets, caption cards |
-| `--radius-button` | `28px` | buttons, fields |
+| `--radius-card` | `24px` | sheets, caption cards |
+| `--radius-tile` | `20px` | shortcut tiles |
+| `--radius-button` | `28px` | sheet buttons |
+| `--tile-call`, `-pressed`, `-icon` | `#FBE3D0`, `#F6C9A6`, `#C8553D` | call tiles |
+| `--tile-light`, `-pressed`, `-icon` | `#FBEFC6`, `#F4DF94`, `#B8860B` | light tiles |
+| `--tile-tv`, `-pressed`, `-icon` | `#DDEAD9`, `#C3DABD`, `#4F7D4B` | TV tiles |
+| `--shadow-tile` | `0 2px 8px rgb(120 80 40 / .10)` | tiles, header and drawer chips |
+| `--header`, `--field`, `--icon-button` | `56px`, `56px`, `44px` | header bar, text box, round icon buttons |
+| `--line-soft` | `--ink-muted` at 30% | text box border |
 | `--gap` | `16px` | spacing unit |
 | `--dur-press` | `180ms` | press feedback |
 | `--dur-state` | `400ms` | state morphs |
@@ -36,12 +43,20 @@ hardcode a color, radius or duration elsewhere.
 
 ## Type
 
-`system-ui`. Base 22px. Shortcut label 30px/700, sublabel 18px/500 `--ink-muted`. Captions:
-original 36px/700, English 26px. Status line 24px.
+`system-ui`. Base 22px. Weight 600 for every emphasis, never 700; the only exception is the full-screen
+status word at minimal vision (800). Headings and legends take `letter-spacing: -0.01em`.
+
+- Header name 20px/600. Shortcut label 22px/600 `--ink`, one line with ellipsis; sublabel 18px/500
+  `--ink-muted`, from 768px only.
+- Companion hint 18px `--ink-muted`. Status line 24px.
+- Captions: original 36px/600, English 28px (one size larger at low vision: 48 / 36).
+- Setup sheet: question 28px/600, option title 24px/600, description 18px at 70% opacity.
 
 ## Accessibility rules
 
-- Every interactive target is at least 88px on each side.
+- Every interactive target is at least 88px on each side, with two exceptions for sighted helpers:
+  the 44px header control and the 44px send button inside the text box. The 88px shortcut tiles,
+  the companion and the 96px setup buttons are the targets the reference user relies on.
 - Focus ring: 4px solid `--accent-deep`, offset 4px, on `:focus-visible`.
 - Text contrast at least 7:1 on `--bg`. `tokens.test.ts` enforces it for `--ink` and `--ink-muted`.
 - Never color alone for meaning: every state also has text in the status line or a label.
@@ -59,19 +74,35 @@ original 36px/700, English 26px. Status line 24px.
 
 ## Layout
 
-Single column, phone-portrait first, no horizontal scroll at 360px. Top to bottom:
+Single column, phone portrait first, no horizontal scroll at 360px. The companion is the hero: at
+375×812 the header, grid, whole companion with its hint, the status line and the text box all fit
+without scrolling.
 
-1. Shortcut grid: 2 columns, each tile at least 120px tall; 3 columns from 900px.
-2. The companion: about 44vmin, round.
-3. The status line under it.
-4. Captions.
-5. The text box, slim, at the bottom.
+1. Header, 56px: the companion's name at the start, the personalize control as a 44px round icon at
+   the end. It belongs to the personalize surface and sits first with `order: -1`.
+2. Shortcut grid: 2 columns, 12px gap, tiles 88px tall, icon at the start of a single-line label;
+   3 columns from 900px. Tiles are tinted by kind; pressed scales to .96 and deepens the tint.
+3. The companion: `min(56vmin, 300px)` on phones, `min(40vmin, 380px)` from 768px, centered. A 10px
+   halo at 30% of the accent is always visible and breathes with the orb; while listening it turns
+   `--listening` and expands. A filled microphone in `--accent-deep` at 30% shows only when idle.
+4. Directly under it, the hint: "Tap to talk" in the profile's language, replaced by the status word
+   while a session runs. The status line below carries replies and errors; it is visually hidden
+   while a session runs and while empty, and always stays in the accessibility tree.
+5. Captions, when there are any.
+6. The text box: a 56px pill, 1px `--line-soft` border, with a 44px round arrow send button inside at
+   the end; it sits 16px above the safe area.
 
-The personalize button sits bottom-end, round, fixed.
+The Details drawer (debug only) is a 36px chip at the bottom end, above the text box (at the very
+bottom at minimal vision), never full width when closed, growing upward when opened.
+
+The setup sheet stays black and yellow. Content is vertically centered: a 120px yellow orb (no
+behavior), the question centered at max 24ch, then 96px buttons 24px apart with start-aligned text,
+24px padding and a chevron at the end; vision options carry a one-line description.
 
 ## Icons
 
-Simple inline SVG strokes drawn in code (handset, bulb, screen), `stroke="currentColor"`,
+Simple inline SVG drawn in code: filled shapes for the shortcut kinds (handset, bulb, screen), the
+microphone and the send arrow, `fill="currentColor"`; the personalize sliders keep strokes. Always
 `aria-hidden="true"`. No brand logos or brand names anywhere. The word is "Call", never a messaging
 brand.
 

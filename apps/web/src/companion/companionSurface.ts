@@ -33,13 +33,14 @@ export function createCompanionSurface({
       const { profile } = context;
       const button = document.createElement("button");
       button.type = "button";
-      const name = document.createElement("p");
-      name.dataset.role = "name";
-      name.dir = "auto";
+      const hint = document.createElement("p");
+      hint.dataset.role = "hint";
+      hint.dir = "auto";
+      hint.setAttribute("aria-hidden", "true");
       const status = document.createElement("p");
       status.setAttribute("role", "status");
       status.dir = "auto";
-      host.append(button, name, status);
+      host.append(button, hint, status);
 
       let streamState: AssistantState = "idle";
       const unsubscribeEvents = context.events.subscribe((event) => {
@@ -65,7 +66,15 @@ export function createCompanionSurface({
         button.setAttribute("aria-label", label);
         button.dataset.phase = phase;
         button.setAttribute("aria-disabled", String(phase === "sending"));
-        name.textContent = profile.get().name;
+        const { language } = profile.get();
+        const copy = strings.flip[language];
+        hint.lang = language;
+        hint.textContent =
+          phase === "recording"
+            ? copy.status.listening
+            : phase === "sending"
+              ? copy.status.thinking
+              : copy.tapToTalk;
       };
 
       const env = {
@@ -119,7 +128,7 @@ export function createCompanionSurface({
         stopKeys();
         unsubscribeEvents();
         button.remove();
-        name.remove();
+        hint.remove();
         status.remove();
       };
     },

@@ -1,30 +1,86 @@
+[data-surface="activityPanel"] {
+  position: fixed;
+  inset-block-end: calc(var(--gap) + var(--safe-bottom) + var(--field) + 12px);
+  inset-inline-end: max(var(--gap), var(--safe-inline));
+  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  max-inline-size: calc(100vw - var(--gap) * 2);
+  pointer-events: none;
+}
+
+:root[data-vision="minimal"] [data-surface="activityPanel"] {
+  inset-block-end: calc(var(--gap) + var(--safe-bottom));
+}
+
 [data-surface="activityPanel"] details {
-  border-radius: var(--radius-card);
+  max-inline-size: 100%;
+  border-radius: 18px;
   background: var(--surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-tile);
+  pointer-events: auto;
+}
+
+[data-surface="activityPanel"] details[open] {
+  inline-size: min(360px, calc(100vw - var(--gap) * 2));
 }
 
 [data-surface="activityPanel"] summary {
   display: flex;
   align-items: center;
-  min-block-size: var(--target);
-  padding-inline: calc(var(--gap) * 1.5);
-  border-radius: var(--radius-card);
-  font-weight: 700;
+  block-size: 36px;
+  padding-inline: 14px;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  list-style: none;
+}
+
+[data-surface="activityPanel"] summary::-webkit-details-marker {
+  display: none;
+}
+
+[data-surface="activityPanel"] [data-role="view"] {
+  margin: 0;
+  padding: 0 14px 8px;
+  border: none;
+}
+
+[data-surface="activityPanel"] [data-role="view"] legend {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+[data-surface="activityPanel"] [data-role="view"] [data-role="options"] {
+  display: flex;
+  gap: 6px;
+}
+
+[data-surface="activityPanel"] [data-role="view"] button {
+  padding: 6px 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 14px;
+}
+
+[data-surface="activityPanel"] [data-role="view"] button[aria-pressed="true"] {
+  border-color: var(--accent-deep);
+  font-weight: 600;
 }
 
 [data-surface="activityPanel"] ul {
   max-block-size: 40vh;
   margin: 0;
-  padding: 0 calc(var(--gap) * 1.5) var(--gap);
+  padding: 0 14px 12px;
   overflow-y: auto;
   list-style: none;
 }
 
 [data-surface="activityPanel"] li {
   padding-block: 6px;
-  font-size: 18px;
+  font-size: 16px;
   overflow-wrap: anywhere;
 }
 
@@ -36,19 +92,4 @@
 [data-surface="activityPanel"] li[data-tone="error"] {
   border-inline-start: 4px solid var(--error);
   padding-inline-start: 8px;
-}
-
-:root[data-vision="minimal"] [data-surface="activityPanel"] {
-  position: fixed;
-  inset-block-start: max(var(--gap), var(--safe-top));
-  inset-inline: max(var(--gap), var(--safe-inline));
-  z-index: 5;
-  display: flex;
-  justify-content: flex-end;
-  pointer-events: none;
-}
-
-:root[data-vision="minimal"] [data-surface="activityPanel"] details {
-  max-inline-size: 100%;
-  pointer-events: auto;
 }

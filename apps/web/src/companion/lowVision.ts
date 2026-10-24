@@ -21,7 +21,7 @@ export function mountLowVision({
   ...rest
 }: LowVisionDeps): Unmount {
   const hint = host.ownerDocument.createElement("p");
-  hint.dataset.role = "hint";
+  hint.dataset.role = "hold-hint";
   hint.dir = "auto";
   host.append(hint);
   const showHint = () => {

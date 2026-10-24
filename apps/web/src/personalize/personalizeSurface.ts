@@ -30,7 +30,16 @@ export function createPersonalizeSurface({
       const sheet = createSheet(document, { ...context, characters, languages });
       const view = createViewChoices(document, context.profile, () => close());
       sheet.element.querySelector("h2")?.after(view.element);
-      host.append(opener, backdrop, sheet.element);
+      const header = document.createElement("header");
+      const name = document.createElement("p");
+      name.dataset.role = "name";
+      name.dir = "auto";
+      header.append(name, opener);
+      const showName = () => {
+        name.textContent = context.profile.get().name;
+      };
+      showName();
+      host.append(header, backdrop, sheet.element);
 
       const setOpen = (open: boolean) => {
         opener.setAttribute("aria-expanded", String(open));
@@ -62,14 +71,19 @@ export function createPersonalizeSurface({
         context.setup.open();
       });
       document.addEventListener("keydown", onKeyDown);
-      const unsubscribe = context.profile.subscribe(sheet.sync);
+      const stopSync = context.profile.subscribe(sheet.sync);
+      const stopName = context.profile.subscribe(showName);
+      const unsubscribe = () => {
+        stopSync();
+        stopName();
+      };
       setOpen(false);
 
       return () => {
         view.dispose();
         unsubscribe();
         document.removeEventListener("keydown", onKeyDown);
-        opener.remove();
+        header.remove();
         backdrop.remove();
         sheet.element.remove();
       };

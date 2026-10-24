@@ -15,7 +15,12 @@ function mounted(vision?: Vision) {
   const unmount = setupSurface.mount(host, context);
   const sheet = host.querySelector("[role=dialog]") as HTMLElement;
   const pick = (text: string) =>
-    [...sheet.querySelectorAll("button")].find((button) => button.textContent === text)?.click();
+    [...sheet.querySelectorAll("button")]
+      .find(
+        (button) =>
+          (button.querySelector("[data-role=title]")?.textContent ?? button.textContent) === text,
+      )
+      ?.click();
   return { context, unmount, sheet, pick, history: context.history };
 }
 

@@ -23,7 +23,10 @@ export const setupSurface: Surface = {
     sheet.setAttribute("aria-labelledby", heading.id);
     const list = document.createElement("div");
     list.dataset.role = "options";
-    sheet.append(heading, list);
+    const orb = document.createElement("span");
+    orb.dataset.role = "orb";
+    orb.setAttribute("aria-hidden", "true");
+    sheet.append(orb, heading, list);
     host.append(sheet);
 
     const show = (language: Language, title: string) => {
@@ -53,6 +56,7 @@ export const setupSurface: Surface = {
       show(language, copy.visionQuestion);
       const options = visions.map((vision) => ({
         text: copy.vision[vision],
+        detail: copy.visionDetail[vision],
         language,
         onFocus: () => {
           narrator.stop();

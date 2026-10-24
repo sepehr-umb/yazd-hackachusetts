@@ -2,6 +2,7 @@ import { strings } from "@mahmood/strings";
 import type { Tone } from "../activity/describeEvent";
 import type { Surface } from "../surfaces/surface";
 import { describeResult } from "./describeResult";
+import { sendIcon } from "./sendIcon";
 
 export const textInputSurface: Surface = {
   id: "textInput",
@@ -14,7 +15,8 @@ export const textInputSurface: Surface = {
     input.setAttribute("aria-label", strings.textInput.label);
     const button = document.createElement("button");
     button.type = "submit";
-    button.textContent = strings.textInput.send;
+    button.setAttribute("aria-label", strings.textInput.send);
+    button.append(sendIcon(document));
     const status = document.createElement("p");
     status.setAttribute("role", "status");
     status.dir = "auto";

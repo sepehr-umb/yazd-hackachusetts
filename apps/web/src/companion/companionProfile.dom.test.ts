@@ -12,15 +12,12 @@ afterEach(() => {
 });
 
 describe("companion surface and the profile", () => {
-  it("names the companion from the profile, visibly and in its label, and follows changes", () => {
-    const { context, host, button } = mounted();
-    const name = host.querySelector("[data-role=name]") as HTMLElement;
+  it("names the companion from the profile in its label, and follows changes", () => {
+    const { context, button } = mounted();
 
-    expect(name.textContent).toBe("yazd");
-    expect(name.dir).toBe("auto");
+    expect(button.getAttribute("aria-label")).toBe("Tap to talk to yazd");
     context.profile.update({ name: "ماهی" });
 
-    expect(name.textContent).toBe("ماهی");
     expect(button.getAttribute("aria-label")).toBe("Tap to talk to ماهی");
   });
 

@@ -38,9 +38,12 @@
   box-shadow: none;
 }
 
-[data-surface="companion"] [data-role="hint"] {
-  margin-block-start: calc(var(--gap) * -0.5);
-  font-size: 22px;
+[data-surface="companion"] [data-role="hold-hint"] {
+  font-size: 18px;
   color: var(--ink-muted);
   text-align: center;
+}
+
+[data-flip] [data-part="mic"] {
+  display: none;
 }

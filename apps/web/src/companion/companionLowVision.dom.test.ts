@@ -55,7 +55,7 @@ describe("companion at low vision", () => {
 
   it("shows a hint that holding changes settings, in the profile's language", () => {
     const { context, host } = mountCompanion([orbCharacter], "low");
-    const hint = host.querySelector<HTMLElement>("[data-role=hint]");
+    const hint = host.querySelector<HTMLElement>("[data-role=hold-hint]");
 
     expect(hint?.textContent).toBe("برای تغییر تنظیمات نگه دارید");
     expect(hint?.lang).toBe("fa");
@@ -71,7 +71,7 @@ describe("companion at low vision", () => {
 
     expect(button.dataset.flip).toBeUndefined();
     expect(button.style.getPropertyValue("--flip-color")).toBe("");
-    expect(host.querySelector("[data-role=hint]")).toBeNull();
+    expect(host.querySelector("[data-role=hold-hint]")).toBeNull();
     expect(context.haptics).toEqual(["start"]);
   });
 

@@ -71,6 +71,8 @@ describe("shortcuts surface", () => {
 
     expect(icons.map((icon) => icon?.dataset.icon)).toEqual(["call", "tv"]);
     expect(icons.every((icon) => icon?.getAttribute("aria-hidden") === "true")).toBe(true);
+    expect(icons.every((icon) => icon?.getAttribute("fill") === "currentColor")).toBe(true);
+    expect(icons.every((icon) => !icon?.hasAttribute("stroke"))).toBe(true);
   });
 
   it("submits the phrase exactly as written in the data", async () => {

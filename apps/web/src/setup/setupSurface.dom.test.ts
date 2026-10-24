@@ -18,7 +18,10 @@ function mounted(vision?: Vision) {
   const options = () => [...sheet.querySelectorAll<HTMLButtonElement>("button")];
   const pick = (text: string) =>
     options()
-      .find((button) => button.textContent === text)
+      .find(
+        (button) =>
+          (button.querySelector("[data-role=title]")?.textContent ?? button.textContent) === text,
+      )
       ?.click();
   return { context, host, unmount, sheet, heading, options, pick };
 }
@@ -59,11 +62,9 @@ describe("setup surface", () => {
 
     expect(heading().textContent).toBe("Quanto bene vedi lo schermo?");
     expect(heading().lang).toBe("it");
-    expect(options().map((button) => button.textContent)).toEqual([
-      "Vedo bene lo schermo",
-      "Vedo forme e colori",
-      "Vedo a malapena lo schermo",
-    ]);
+    expect(
+      options().map((button) => button.querySelector("[data-role=title]")?.textContent),
+    ).toEqual(["Vedo bene lo schermo", "Vedo forme e colori", "Vedo a malapena lo schermo"]);
     expect(context.narration).toEqual([
       "stop",
       "it: Quanto bene vedi lo schermo?",

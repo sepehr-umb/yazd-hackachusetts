@@ -66,6 +66,11 @@ export const strings = {
         minimal: "صفحه را به‌سختی می‌بینم",
       },
       confirmation: "انجام شد. صفحه آماده است.",
+      visionDetail: {
+        full: "دکمه‌ها، زیرنویس و متن",
+        low: "متن درشت‌تر، رنگ‌های پررنگ",
+        minimal: "یک دکمه بزرگ، فقط صدا",
+      },
       holdHint: "برای تغییر تنظیمات، صفحه را دو ثانیه نگه دارید",
       settings: "تنظیمات",
       view: { title: "نما", full: "کامل", low: "کم", minimal: "حداقل" },
@@ -81,6 +86,11 @@ export const strings = {
         minimal: "I barely see the screen",
       },
       confirmation: "Done. The screen is ready.",
+      visionDetail: {
+        full: "Buttons, captions and text",
+        low: "Larger text, strong colors",
+        minimal: "One big button, voice only",
+      },
       holdHint: "Hold the screen for two seconds to change settings",
       settings: "Settings",
       view: { title: "View", full: "Full", low: "Low", minimal: "Minimal" },
@@ -96,6 +106,11 @@ export const strings = {
         minimal: "Apenas veo la pantalla",
       },
       confirmation: "Listo. La pantalla está preparada.",
+      visionDetail: {
+        full: "Botones, subtítulos y texto",
+        low: "Texto grande, colores fuertes",
+        minimal: "Un botón grande, solo voz",
+      },
       holdHint: "Mantén pulsada la pantalla dos segundos para cambiar los ajustes",
       settings: "Ajustes",
       view: { title: "Vista", full: "Completa", low: "Baja", minimal: "Mínima" },
@@ -111,6 +126,11 @@ export const strings = {
         minimal: "Vedo a malapena lo schermo",
       },
       confirmation: "Fatto. Lo schermo è pronto.",
+      visionDetail: {
+        full: "Pulsanti, sottotitoli e testo",
+        low: "Testo grande, colori forti",
+        minimal: "Un grande pulsante, solo voce",
+      },
       holdHint: "Tieni premuto lo schermo per due secondi per cambiare le impostazioni",
       settings: "Impostazioni",
       view: { title: "Vista", full: "Completa", low: "Bassa", minimal: "Minima" },
@@ -119,6 +139,7 @@ export const strings = {
   flip: {
     fa: {
       label: "برای صحبت ضربه بزنید. برای تنظیمات نگه دارید.",
+      tapToTalk: "برای صحبت ضربه بزنید",
       hint: "برای تغییر تنظیمات نگه دارید",
       status: {
         idle: "آماده",
@@ -130,6 +151,7 @@ export const strings = {
     },
     en: {
       label: "Tap to talk. Hold for settings.",
+      tapToTalk: "Tap to talk",
       hint: "Hold to change settings",
       status: {
         idle: "Ready",
@@ -141,6 +163,7 @@ export const strings = {
     },
     es: {
       label: "Toca para hablar. Mantén pulsado para los ajustes.",
+      tapToTalk: "Toca para hablar",
       hint: "Mantén pulsado para cambiar los ajustes",
       status: {
         idle: "En espera",
@@ -152,6 +175,7 @@ export const strings = {
     },
     it: {
       label: "Tocca per parlare. Tieni premuto per le impostazioni.",
+      tapToTalk: "Tocca per parlare",
       hint: "Tieni premuto per cambiare le impostazioni",
       status: {
         idle: "Pronto",

@@ -19,12 +19,11 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 1.5);
+  gap: 12px;
   min-block-size: 100dvh;
   max-inline-size: 1100px;
   margin-inline: auto;
-  padding-block: max(var(--gap), var(--safe-top))
-    calc(var(--target) + var(--gap) * 2 + var(--safe-bottom));
+  padding-block: var(--safe-top) calc(var(--gap) + var(--safe-bottom));
   padding-inline: max(var(--gap), var(--safe-inline));
 }
 
@@ -49,6 +48,14 @@ button {
 :focus-visible {
   outline: 4px solid var(--accent-deep);
   outline-offset: 4px;
+}
+
+h1,
+h2,
+h3,
+legend {
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 p {

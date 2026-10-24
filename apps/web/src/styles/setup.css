@@ -4,7 +4,8 @@
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 1.5);
+  justify-content: safe center;
+  gap: 24px;
   block-size: 100dvh;
   padding-block: max(24px, var(--safe-top)) max(24px, var(--safe-bottom));
   padding-inline: max(var(--gap), var(--safe-inline));
@@ -13,14 +14,28 @@
   color: var(--flip-idle-ink);
 }
 
+[data-surface="setup"] [data-role="orb"] {
+  flex: none;
+  align-self: center;
+  inline-size: 120px;
+  block-size: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff6b8, var(--flip-listening) 55%, #e8b04b);
+  box-shadow: 0 0 48px 8px color-mix(in srgb, var(--flip-listening) 35%, transparent);
+}
+
 [data-surface="setup"] [hidden] {
   display: none;
 }
 
 [data-surface="setup"] h2 {
-  margin: 0;
-  font-size: 34px;
+  max-inline-size: 24ch;
+  margin: 0 auto;
+  font-size: 28px;
+  font-weight: 600;
   line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
 [data-surface="setup"] h2:focus {
@@ -30,27 +45,57 @@
 [data-surface="setup"] [data-role="options"] {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: 24px;
 }
 
 [data-surface="setup"] button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 16px;
   inline-size: 100%;
   min-block-size: 96px;
-  padding: var(--gap) 24px;
+  padding: 12px 24px;
   border: none;
   border-radius: var(--radius-button);
   background: var(--flip-listening);
   color: var(--flip-listening-ink);
-  font-size: 30px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 600;
   line-height: 1.2;
-  text-align: center;
-  overflow-wrap: anywhere;
+  text-align: start;
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="setup"] button::after {
+  content: "›";
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: 40px;
+  line-height: 1;
+}
+
+[data-surface="setup"] button:dir(rtl)::after {
+  content: "‹";
+}
+
+[data-surface="setup"] [data-role="title"] {
+  grid-column: 1;
+  overflow-wrap: anywhere;
+}
+
+[data-surface="setup"] [data-role="detail"] {
+  grid-column: 1;
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.7;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 [data-surface="setup"] button:active {
