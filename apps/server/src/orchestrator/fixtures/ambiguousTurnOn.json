@@ -1,0 +1,27 @@
+{
+  "transcript": "روشنش کن",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "clarifier" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_clarify_1",
+          "name": "ask_for_clarification",
+          "input": { "question": "کدام را روشن کنم؟ چراغ یا تلویزیون؟" }
+        }
+      ]
+    }
+  ]
+}

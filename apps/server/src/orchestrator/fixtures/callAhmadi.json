@@ -1,0 +1,27 @@
+{
+  "transcript": "به احمدی زنگ بزن",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "comms" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_call_1",
+          "name": "call_contact",
+          "input": { "contact": "احمدی" }
+        }
+      ]
+    }
+  ]
+}

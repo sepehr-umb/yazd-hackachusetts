@@ -1,0 +1,16 @@
+{
+  "transcript": "هوا فردا چطور است؟",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "weather" }
+        }
+      ]
+    }
+  ]
+}
