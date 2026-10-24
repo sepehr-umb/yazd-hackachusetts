@@ -1,10 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { Character } from "../characters/character";
-import { orbCharacter } from "../characters/orbCharacter";
-import { createTestContext } from "../testing/testContext";
 import { createCompanionSurface } from "./companionSurface";
+import { mountCompanion as mounted } from "./companionHarness";
 
-const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
 const loud = { bins: new Uint8Array(64).fill(255), hzPerBin: 100 };
 
 beforeEach(() => {
@@ -15,53 +12,6 @@ afterEach(() => {
   vi.useRealTimers();
   document.body.replaceChildren();
 });
-
-function mounted(characters: Character[] = [orbCharacter]) {
-  const context = createTestContext();
-  const host = document.createElement("section");
-  document.body.append(host);
-  let pending: ((timestampMs: number) => void) | undefined;
-  let clock = 0;
-  const unmount = createCompanionSurface({
-    config,
-    characters,
-    requestFrame: (callback) => {
-      pending = callback;
-      return 1;
-    },
-    cancelFrame: () => {
-      pending = undefined;
-    },
-  }).mount(host, context);
-  const button = host.querySelector("button") as HTMLButtonElement;
-  const status = host.querySelector("[role=status]") as HTMLElement;
-  const orb = () => host.querySelector<HTMLElement>("[data-part=orb]") as HTMLElement;
-  const cssVar = (name: string) => Number(orb().style.getPropertyValue(name));
-  const runFrames = (count: number) => {
-    for (let index = 0; index < count; index += 1) {
-      const callback = pending;
-      pending = undefined;
-      clock += 1000 / 60;
-      callback?.(clock);
-    }
-  };
-  const click = async () => {
-    button.click();
-    await vi.advanceTimersByTimeAsync(0);
-  };
-  return {
-    context,
-    host,
-    unmount,
-    button,
-    status,
-    orb,
-    cssVar,
-    runFrames,
-    click,
-    pending: () => pending,
-  };
-}
 
 describe("companion surface", () => {
   it("has the id the settings object uses to toggle it", () => {
@@ -169,42 +119,5 @@ describe("companion surface", () => {
     expect(context.listenerCount()).toBe(0);
     expect(context.mic.stops).toBe(1);
     expect(host.children).toHaveLength(0);
-  });
-
-  it("names the companion from the profile, visibly and in its label, and follows changes", () => {
-    const { context, host, button } = mounted();
-    const name = host.querySelector("[data-role=name]") as HTMLElement;
-
-    expect(name.textContent).toBe("yazd");
-    expect(name.dir).toBe("auto");
-    context.profile.update({ name: "ماهی" });
-
-    expect(name.textContent).toBe("ماهی");
-    expect(button.getAttribute("aria-label")).toBe("Tap to talk to ماهی");
-  });
-
-  it("mounts the character the profile names and swaps it live", () => {
-    const log: string[] = [];
-    const fake = (id: string): Character => ({
-      id,
-      label: id,
-      mount(host) {
-        const mark = document.createElement("span");
-        mark.dataset.character = id;
-        host.append(mark);
-        log.push(`mount ${id}`);
-        return () => {
-          mark.remove();
-          log.push(`unmount ${id}`);
-        };
-      },
-    });
-    const { context, button } = mounted([fake("orb"), fake("face")]);
-
-    context.profile.update({ character: "face" });
-    context.profile.update({ hue: 12 });
-
-    expect(log).toEqual(["mount orb", "unmount orb", "mount face"]);
-    expect(button.querySelector("[data-character]")?.getAttribute("data-character")).toBe("face");
   });
 });

@@ -21,19 +21,21 @@ describe("surface registry", () => {
       "companion",
       "captions",
       "textInput",
+      "personalize",
       "face",
       "voice",
       "activityPanel",
     ]);
   });
 
-  it("turns on the shortcuts, companion, captions and text input and leaves the older surfaces off", () => {
+  it("turns on the shortcuts, companion, captions, text input and personalize and leaves the older surfaces off", () => {
     expect(defaultSettings).toEqual({
       surfaces: {
         shortcuts: true,
         companion: true,
         captions: true,
         textInput: true,
+        personalize: true,
         face: false,
         voice: false,
         activityPanel: false,
@@ -44,6 +46,7 @@ describe("surface registry", () => {
       "companion",
       "captions",
       "textInput",
+      "personalize",
     ]);
   });
 
@@ -53,6 +56,7 @@ describe("surface registry", () => {
       "companion",
       "captions",
       "textInput",
+      "personalize",
       "voice",
       "activityPanel",
     ]);

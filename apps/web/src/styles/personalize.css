@@ -1,0 +1,145 @@
+[data-surface="personalize"] [data-role="opener"] {
+  position: fixed;
+  inset-block-end: var(--gap);
+  inset-inline-end: var(--gap);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  inline-size: var(--target);
+  block-size: var(--target);
+  border: none;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="personalize"] [data-role="opener"] svg {
+  inline-size: 40px;
+  block-size: 40px;
+}
+
+[data-surface="personalize"] [data-role="backdrop"] {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  background: rgb(43 37 32 / 0.35);
+  animation: fade-in var(--dur-state) var(--ease);
+}
+
+[data-surface="personalize"] [role="dialog"] {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+  max-block-size: 90dvh;
+  max-inline-size: 720px;
+  margin-inline: auto;
+  padding: calc(var(--gap) * 1.5);
+  overflow-y: auto;
+  border-start-start-radius: var(--radius-card);
+  border-start-end-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: 0 -8px 40px rgb(43 37 32 / 0.18);
+  animation: fade-in var(--dur-state) var(--ease);
+}
+
+[data-surface="personalize"] [hidden] {
+  display: none;
+}
+
+[data-surface="personalize"] h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+[data-surface="personalize"] fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+[data-surface="personalize"] legend,
+[data-surface="personalize"] label {
+  display: block;
+  margin-block-end: 8px;
+  font-weight: 700;
+}
+
+[data-surface="personalize"] input {
+  inline-size: 100%;
+  min-block-size: var(--target);
+  padding-inline: 24px;
+  border: 2px solid var(--ink-muted);
+  border-radius: var(--radius-button);
+  background: var(--bg);
+}
+
+[data-surface="personalize"] [data-role="options"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+[data-surface="personalize"] [data-role="options"]:has([data-role="swatch"]) {
+  grid-template-columns: repeat(auto-fill, minmax(var(--target), 1fr));
+}
+
+[data-surface="personalize"] [role="dialog"] button {
+  min-inline-size: var(--target);
+  min-block-size: var(--target);
+  padding: 8px 12px;
+  border: 3px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--bg);
+  overflow-wrap: anywhere;
+  transition:
+    transform var(--dur-press) var(--ease),
+    border-color var(--dur-state) var(--ease);
+}
+
+[data-surface="personalize"] [role="dialog"] button[aria-pressed="true"] {
+  border-color: var(--accent-deep);
+  font-weight: 700;
+}
+
+[data-surface="personalize"] [role="dialog"] button[aria-pressed="true"]::after {
+  content: " ✓";
+}
+
+[data-surface="personalize"] [role="dialog"] [data-role="swatch"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 52px 4px 8px;
+  font-size: 16px;
+  overflow-wrap: normal;
+  background:
+    radial-gradient(circle at 50% 30px, hsl(var(--hue) 86% 65%) 20px, transparent 21px), var(--bg);
+}
+
+[data-surface="personalize"] [data-role="done"] {
+  background: var(--accent);
+  font-weight: 700;
+}
+
+[data-surface="personalize"] button:active {
+  transform: scale(0.96);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="personalize"] button:active {
+    transform: none;
+  }
+}

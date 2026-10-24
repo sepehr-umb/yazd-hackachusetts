@@ -2,6 +2,7 @@ import { activityPanelSurface } from "../activity/activityPanel";
 import { captionsSurface } from "../captions/captionsSurface";
 import { companionSurface } from "../companion/companionSurface";
 import { faceSurface } from "../face/faceSurface";
+import { personalizeSurface } from "../personalize/personalizeSurface";
 import { shortcutsSurface } from "../shortcuts/shortcutsSurface";
 import { textInputSurface } from "../textInput/textInput";
 import { voiceSurface } from "../voice/voiceSurface";
@@ -12,6 +13,7 @@ export const surfaceRegistry: Surface[] = [
   companionSurface,
   captionsSurface,
   textInputSurface,
+  personalizeSurface,
   faceSurface,
   voiceSurface,
   activityPanelSurface,
