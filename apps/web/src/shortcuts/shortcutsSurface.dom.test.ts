@@ -32,10 +32,8 @@ function mounted(language = "fa") {
   const context = createTestContext();
   const host = document.createElement("section");
   document.body.append(host);
-  const unmount = createShortcutsSurface({ shortcuts: data, language: () => language }).mount(
-    host,
-    context,
-  );
+  context.profile.update({ language });
+  const unmount = createShortcutsSurface({ shortcuts: data }).mount(host, context);
   const buttons = [...host.querySelectorAll("button")];
   return { context, host, unmount, buttons };
 }
@@ -83,7 +81,7 @@ describe("shortcuts surface", () => {
     expect(context.submitted).toEqual(["به مامان زنگ بزن"]);
   });
 
-  it("submits the phrase of the language it is told to display", async () => {
+  it("submits the phrase of the profile's language", async () => {
     const { context, buttons } = mounted("en");
 
     buttons[0]?.click();
@@ -128,5 +126,24 @@ describe("shortcuts surface", () => {
     unmount();
 
     expect(host.children).toHaveLength(0);
+  });
+
+  it("relabels at once when the profile language changes, and sends that language's phrase", async () => {
+    const { context, host } = mounted();
+
+    context.profile.update({ language: "en" });
+    const button = host.querySelector("button") as HTMLButtonElement;
+    button.click();
+    await settle();
+
+    expect(button.querySelector("[data-role=label]")?.textContent).toBe("Mom");
+    expect(button.querySelector("[data-role=sublabel]")?.textContent).toBe("مامان");
+    expect(context.submitted).toEqual(["Call Mom"]);
+  });
+
+  it("falls back to the first language in the data when the profile's is missing", () => {
+    const { buttons } = mounted("de");
+
+    expect(buttons[0]?.querySelector("[data-role=label]")?.textContent).toBe("مامان");
   });
 });

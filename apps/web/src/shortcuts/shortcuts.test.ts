@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DISPLAY_LANGUAGE, shortcuts } from "./shortcuts";
+import { shortcuts } from "./shortcuts";
 
 describe("shortcut data", () => {
   it("seeds the six shortcuts in order", () => {
@@ -34,9 +34,5 @@ describe("shortcut data", () => {
 
   it("names no messaging brand", () => {
     expect(JSON.stringify(shortcuts)).not.toMatch(/whatsapp|telegram|signal|skype|viber/i);
-  });
-
-  it("displays Farsi in this phase", () => {
-    expect(DISPLAY_LANGUAGE).toBe("fa");
   });
 });

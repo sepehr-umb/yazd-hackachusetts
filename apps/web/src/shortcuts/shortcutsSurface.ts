@@ -1,10 +1,10 @@
 import { strings } from "@mahmood/strings";
 import type { Surface } from "../surfaces/surface";
 import { iconFor } from "./shortcutIcons";
-import { DISPLAY_LANGUAGE, shortcuts as seededShortcuts } from "./shortcuts";
+import { shortcuts as seededShortcuts } from "./shortcuts";
 import type { Shortcut } from "./shortcuts";
 
-export type ShortcutsSurfaceDeps = { shortcuts?: Shortcut[]; language?: () => string };
+export type ShortcutsSurfaceDeps = { shortcuts?: Shortcut[] };
 
 function textSpan(document: Document, role: string, language: string, text: string) {
   const span = document.createElement("span");
@@ -13,6 +13,10 @@ function textSpan(document: Document, role: string, language: string, text: stri
   span.dir = "auto";
   span.textContent = text;
   return span;
+}
+
+function shownLanguage(shortcut: Shortcut, wanted: string) {
+  return wanted in shortcut.text ? wanted : (Object.keys(shortcut.text)[0] ?? wanted);
 }
 
 function shortcutButton(document: Document, shortcut: Shortcut, language: string) {
@@ -31,7 +35,6 @@ function shortcutButton(document: Document, shortcut: Shortcut, language: string
 
 export function createShortcutsSurface({
   shortcuts = seededShortcuts,
-  language = () => DISPLAY_LANGUAGE,
 }: ShortcutsSurfaceDeps = {}): Surface {
   return {
     id: "shortcuts",
@@ -59,17 +62,30 @@ export function createShortcutsSurface({
         setBusy(false);
       };
 
-      const shown = language();
-      for (const shortcut of shortcuts) {
-        const phrase = shortcut.text[shown]?.phrase;
-        if (phrase === undefined) continue;
-        const button = shortcutButton(document, shortcut, shown);
-        button.addEventListener("click", () => void press(button, phrase));
-        grid.append(button);
-      }
-      setBusy(false);
+      let renderedLanguage: string | undefined;
+      const render = () => {
+        const wanted = context.profile.get().language;
+        if (wanted === renderedLanguage) return;
+        renderedLanguage = wanted;
+        grid.replaceChildren();
+        for (const shortcut of shortcuts) {
+          const language = shownLanguage(shortcut, wanted);
+          const phrase = shortcut.text[language]?.phrase;
+          if (phrase === undefined) continue;
+          const button = shortcutButton(document, shortcut, language);
+          button.addEventListener("click", () => void press(button, phrase));
+          grid.append(button);
+        }
+        setBusy(busy);
+      };
 
-      return () => grid.remove();
+      const unsubscribe = context.profile.subscribe(render);
+      render();
+
+      return () => {
+        unsubscribe();
+        grid.remove();
+      };
     },
   };
 }
