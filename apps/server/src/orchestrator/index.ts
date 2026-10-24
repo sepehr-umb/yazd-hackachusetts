@@ -1,5 +1,9 @@
 export { createOrchestrator } from "./orchestrator";
-export type { Orchestrator, OrchestratorDeps } from "./orchestrator";
+export type { HandleOptions, Orchestrator, OrchestratorDeps } from "./orchestrator";
+export { conversationSeed } from "./conversationSeed";
+export type { ConversationHistory } from "./conversationSeed";
+export { offersChoices } from "./offersChoices";
+export { withFallbackLanguage } from "./languageRule";
 export type { EventBus } from "./eventBus";
 export type { LlmClient, LlmRequest, LlmResponse } from "./llmClient";
 export type { OrchestratorFailure, OrchestratorResult, SubAgentName } from "./result";

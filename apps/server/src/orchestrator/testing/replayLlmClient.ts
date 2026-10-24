@@ -1,6 +1,10 @@
 import type { LlmClient, LlmRequest, LlmResponse } from "../llmClient";
 
-export type RecordedConversation = { transcript: string; responses: LlmResponse[] };
+export type RecordedConversation = {
+  transcript: string;
+  followUp?: string;
+  responses: LlmResponse[];
+};
 
 export type ReplayLlmClient = LlmClient & { requests: LlmRequest[] };
 

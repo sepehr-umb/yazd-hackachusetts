@@ -23,18 +23,21 @@ const microphone = createMicrophone({
   createRecorder: (stream) => new MediaRecorder(stream),
 });
 
+const profileStore = createProfileStore(browserStorage(() => localStorage));
+const getLanguage = () => profileStore.get().language;
+
 mountSurfaces({
   registry: surfaceRegistry,
   settings: defaultSettings,
   root,
   context: {
     events,
-    requests: createRequestClient(),
-    recordings: createRecordingClient(),
+    requests: createRequestClient({ getLanguage }),
+    recordings: createRecordingClient({ getLanguage }),
     microphone,
     chime: (kind) => playChime(audioContext, kind),
     speech,
-    profile: createProfileStore(browserStorage(() => localStorage)),
+    profile: profileStore,
     settings,
   },
 });

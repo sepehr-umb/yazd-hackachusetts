@@ -2,9 +2,12 @@ import { strings } from "@mahmood/strings";
 import Fastify from "fastify";
 import { WebSocketServer } from "ws";
 import type { FastifyInstance } from "fastify";
+import type { Clock } from "./clock/clock";
+import { createConversation } from "./conversation/conversation";
 import type { EventHub } from "./events/eventHub";
 import { createReplier } from "./failure/replier";
 import type { LlmClient, Orchestrator } from "./orchestrator";
+import { readLanguage, readLanguageHeader, readText } from "./readRequestBody";
 import { createSpeaker } from "./speech/speaker";
 import { createSpeechStore } from "./speech/speechStore";
 import type { SpeechStore } from "./speech/speechStore";
@@ -24,14 +27,10 @@ export type ServerDeps = {
   idleAfterMs?: number;
   staticDir?: string;
   apologyLlm?: LlmClient;
+  clock?: Clock;
 };
 
 const MAX_RECORDING_BYTES = 10 * 1024 * 1024;
-
-function readText(body: unknown): string | undefined {
-  const text = (body as { text?: unknown } | null)?.text;
-  return typeof text === "string" && text.trim() !== "" ? text.trim() : undefined;
-}
 
 export function createServer({
   orchestrator,
@@ -43,11 +42,13 @@ export function createServer({
   idleAfterMs,
   staticDir,
   apologyLlm,
+  clock = { now: () => new Date() },
 }: ServerDeps): FastifyInstance {
   const app = Fastify();
   const speaker = createSpeaker({ tts, store: speech, bus: hub });
   const captioner = createCaptioner({ translator, bus: hub });
   const replier = createReplier({ llm: apologyLlm });
+  const conversation = createConversation({ orchestrator, clock });
   let idleTimer: ReturnType<typeof setTimeout> | undefined;
   const sockets = new WebSocketServer({ server: app.server, path: "/events" });
 
@@ -68,14 +69,14 @@ export function createServer({
     (_request, body, done) => done(null, body),
   );
 
-  const runPipeline = async (text: string) => {
+  const runPipeline = async (text: string, language?: string) => {
     clearTimeout(idleTimer);
     hub.emit({ type: "transcript", text });
     const [, result] = await Promise.all([
       captioner.announce("user", text),
-      orchestrator.handle(text),
+      conversation.handle(text, language),
     ]);
-    const replyText = await replier.reply(result, text);
+    const replyText = await replier.reply(result, text, language);
     await Promise.all([
       captioner.announce("assistant", replyText),
       speaker.speak(replyText).catch((error: unknown) => {
@@ -95,7 +96,7 @@ export function createServer({
     if (text === undefined) {
       return reply.code(400).send({ error: 'Body must be { "text": a non-empty string }' });
     }
-    return runPipeline(text);
+    return runPipeline(text, readLanguage(request.body));
   });
 
   app.post("/audio", async (request, reply) => {
@@ -103,17 +104,17 @@ export function createServer({
     if (!Buffer.isBuffer(data) || data.length === 0) {
       return reply.code(400).send({ error: strings.audio.emptyRecording });
     }
+    const language = readLanguageHeader(request.headers);
     let text: string;
     try {
-      text = (
-        await stt.transcribe({ data, mimeType: request.headers["content-type"] ?? "" })
-      ).trim();
+      const recording = { data, mimeType: request.headers["content-type"] ?? "" };
+      text = (await stt.transcribe(recording, { language })).trim();
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       return reply.code(502).send({ error: strings.audio.transcriptionFailed(message) });
     }
     if (text === "") return reply.code(422).send({ error: strings.audio.nothingHeard });
-    return runPipeline(text);
+    return runPipeline(text, language);
   });
 
   app.get<{ Params: { id: string } }>("/speech/:id", async (request, reply) => {

@@ -30,6 +30,41 @@ describe("createRequestClient", () => {
     expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ text: "به مامان زنگ بزن" });
   });
 
+  it("adds the language to the body when getLanguage returns one", async () => {
+    const result: RequestResult = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch({ body: result });
+    const client = createRequestClient({ fetch: fetchImpl, getLanguage: () => "fa" });
+
+    await client.submit("..");
+
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ text: "..", language: "fa" });
+  });
+
+  it("sends only the text when getLanguage is missing or returns undefined", async () => {
+    const result: RequestResult = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch({ body: result });
+
+    await createRequestClient({ fetch: fetchImpl }).submit("hi");
+    await createRequestClient({ fetch: fetchImpl, getLanguage: () => undefined }).submit("hi");
+
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ text: "hi" });
+    expect(JSON.parse(String(calls[1]?.init.body))).toEqual({ text: "hi" });
+  });
+
+  it("reads getLanguage on each submit", async () => {
+    const result: RequestResult = { status: "succeeded", agent: "comms", reply: "ok" };
+    const { fetchImpl, calls } = fakeFetch({ body: result });
+    let language: string | undefined = "fa";
+    const client = createRequestClient({ fetch: fetchImpl, getLanguage: () => language });
+
+    await client.submit("one");
+    language = "it";
+    await client.submit("two");
+
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ text: "one", language: "fa" });
+    expect(JSON.parse(String(calls[1]?.init.body))).toEqual({ text: "two", language: "it" });
+  });
+
   it("throws the server's error message when the request is rejected", async () => {
     const { fetchImpl } = fakeFetch({ status: 400, body: { error: "Body must be text" } });
     const client = createRequestClient({ fetch: fetchImpl });

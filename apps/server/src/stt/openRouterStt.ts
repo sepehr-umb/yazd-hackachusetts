@@ -32,13 +32,14 @@ export function createOpenRouterStt({
   baseUrl = OPENROUTER_BASE_URL,
 }: OpenRouterSttConfig): Stt {
   return {
-    async transcribe({ data, mimeType }) {
+    async transcribe({ data, mimeType }, options) {
       const response = await fetchImpl(`${baseUrl}/audio/transcriptions`, {
         method: "POST",
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
         body: JSON.stringify({
           model,
           input_audio: { data: data.toString("base64"), format: formatOf(mimeType) },
+          ...(options?.language ? { language: options.language } : {}),
         }),
       });
       if (!response.ok) {

@@ -6,6 +6,8 @@ import { createStubTools } from "../orchestrator/stubTools";
 import { createRecordingEventBus } from "../orchestrator/testing/recordingEventBus";
 import { createReplayLlmClient } from "../orchestrator/testing/replayLlmClient";
 import type { RecordedConversation } from "../orchestrator/testing/replayLlmClient";
+import { replayConversations } from "../llm/replayConversations";
+import { createTranscriptReplayLlmClient } from "../llm/transcriptReplayLlmClient";
 import { withContactResolution } from "./withContactResolution";
 
 const conversation = callAhmadi as RecordedConversation;
@@ -22,6 +24,34 @@ async function replay() {
   const result = await orchestrator.handle(conversation.transcript);
   return { result, bus, calls: stubs.calls };
 }
+
+async function replayFollowUp() {
+  const stubs = createStubTools();
+  const orchestrator = createOrchestrator({
+    llm: createTranscriptReplayLlmClient(replayConversations),
+    tools: withContactResolution(stubs.tools, fixtureContacts),
+    bus: createRecordingEventBus(),
+  });
+  const first = await orchestrator.handle("به احمدی زنگ بزن");
+  const result = await orchestrator.handle("حسین", {
+    history: { request: "به احمدی زنگ بزن", question },
+  });
+  return { first, result, calls: stubs.calls };
+}
+
+describe("call Ahmadi follow-up replay", () => {
+  it("asks first, then calls Hossein Ahmadi once the answer arrives with its history", async () => {
+    const { first, result, calls } = await replayFollowUp();
+
+    expect(first).toEqual({ status: "succeeded", agent: "comms", reply: question });
+    expect(result).toEqual({
+      status: "succeeded",
+      agent: "comms",
+      reply: "دارم به حسین احمدی زنگ می‌زنم",
+    });
+    expect(calls).toEqual([{ tool: "call_contact", input: { contact: "حسین احمدی" } }]);
+  });
+});
 
 describe("call Ahmadi demo replay", () => {
   it("ends succeeded with a question that names both options", async () => {

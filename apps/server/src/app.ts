@@ -39,5 +39,6 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
     translator: selectTranslator(env, options),
     idleAfterMs: options.idleAfterMs,
     staticDir,
+    clock,
   });
 }

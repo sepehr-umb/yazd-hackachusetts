@@ -6,7 +6,7 @@ import { spokenText } from "../speech/spokenText";
 import { askModelForApology } from "./askModelForApology";
 
 export type Replier = {
-  reply(result: RequestResult, requestText: string): Promise<string>;
+  reply(result: RequestResult, requestText: string, preferredLanguage?: string): Promise<string>;
 };
 
 export type ReplierOptions = { llm?: LlmClient; timeoutMs?: number };
@@ -21,17 +21,20 @@ async function replyToFailure(
   failure: RequestFailure,
   requestText: string,
   { llm, timeoutMs }: ReplierOptions,
+  preferredLanguage?: string,
 ): Promise<string> {
-  const fallback = friendlyApology(failure, requestText);
+  const fallback = friendlyApology(failure, requestText, preferredLanguage);
   if (!llm) return fallback;
-  const text = await askModelForApology(llm, requestText, timeoutMs);
+  const text = await askModelForApology(llm, requestText, timeoutMs, preferredLanguage);
   return text !== undefined && isClean(text, failure) ? text : fallback;
 }
 
 export function createReplier(options: ReplierOptions = {}): Replier {
   return {
-    async reply(result, requestText) {
-      if (result.status === "failed") return replyToFailure(result.failure, requestText, options);
+    async reply(result, requestText, preferredLanguage) {
+      if (result.status === "failed") {
+        return replyToFailure(result.failure, requestText, options, preferredLanguage);
+      }
       return spokenText(result);
     },
   };

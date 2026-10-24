@@ -14,4 +14,5 @@ export { captionSizes, defaultSettings, settingSchemas } from "./settings";
 export type { CaptionSize, SettingName, SettingValue, Settings } from "./settings";
 export { isSettingName, isSettingValue } from "./isSetting";
 export { isRequestResult } from "./isRequestResult";
+export { isLanguageCode, languageHeader } from "./requests";
 export type { RequestFailure, RequestResult, SubAgentName, TypedRequest } from "./requests";

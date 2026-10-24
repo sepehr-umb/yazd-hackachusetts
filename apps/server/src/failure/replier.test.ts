@@ -100,6 +100,32 @@ describe("createReplier", () => {
     );
   });
 
+  it("sends the preferred language to the model prompt", async () => {
+    const systems: string[] = [];
+    const llm: LlmClient = {
+      complete: async (request) => {
+        systems.push(request.system);
+        return { content: [{ type: "text", text: "Mi dispiace." }], stopReason: "end_turn" };
+      },
+    };
+    await createReplier({ llm }).reply(failed, "..", "fa");
+    expect(systems[0]).toContain("reply in fa.");
+  });
+
+  it.each([
+    ["..", "fa"],
+    ["؟", "ar"],
+    ["..", "it"],
+  ])("uses the preferred language for the fixed apology of letterless %s (%s)", async (text, code) => {
+    const { llm } = fakeLlm(() => Promise.reject(new Error("down")));
+    expect(await createReplier({ llm }).reply(failed, text, code)).toBe(
+      friendlyApology(failure, text, code),
+    );
+    expect(await createReplier({}).reply(failed, text, code)).toBe(
+      friendlyApology(failure, text, code),
+    );
+  });
+
   it("never returns empty text or a tool name for any model output", async () => {
     await fc.assert(
       fc.asyncProperty(

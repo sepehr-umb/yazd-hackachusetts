@@ -50,6 +50,28 @@ describe("friendlyApology", () => {
     }
   });
 
+  it.each(reasons.flatMap((reason) => languages.map((language) => [reason, language] as const)))(
+    "uses the preferred language for letterless text: %s %s",
+    (reason, language) => {
+      const failure = failureFor(reason, toolNames[0]);
+      expect(friendlyApology(failure, "..", language)).toBe(apologies[reason][language]);
+      expect(friendlyApology(failure, "؟", language)).toBe(apologies[reason][language]);
+    },
+  );
+
+  it("uses detection for letterless text when the preference is unsupported or absent", () => {
+    const failure: RequestFailure = { reason: "llm_error", message: "down" };
+    expect(friendlyApology(failure, "..", "fr")).toBe(apologies.llm_error.en);
+    expect(friendlyApology(failure, "..")).toBe(apologies.llm_error.en);
+    expect(friendlyApology(failure, "..", undefined)).toBe(apologies.llm_error.en);
+  });
+
+  it("ignores the preferred language when the text has letters", () => {
+    const failure: RequestFailure = { reason: "llm_error", message: "down" };
+    expect(friendlyApology(failure, "hello", "fa")).toBe(apologies.llm_error.en);
+    expect(friendlyApology(failure, "به احمدی زنگ بزن", "en")).toBe(apologies.llm_error.fa);
+  });
+
   it("never leaks a tool name or failure text", () => {
     fc.assert(
       fc.property(

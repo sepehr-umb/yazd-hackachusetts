@@ -3,9 +3,11 @@ import type { EventBus } from "./eventBus";
 import type { LlmClient, LlmMessage, LlmToolResultBlock } from "./llmClient";
 import { agentDefinitions } from "./agents";
 import { executeTool } from "./executeTool";
+import { offersChoices } from "./offersChoices";
 import { readQuestion } from "./readQuestion";
 import type { SubAgentName, OrchestratorResult } from "./result";
 import type { ToolSet } from "./tool";
+import { withFallbackLanguage } from "./languageRule";
 import { toolSchemas } from "./toolSchemas";
 import { validateToolInput } from "./validateToolInput";
 
@@ -13,20 +15,26 @@ export const MAX_TOOL_TURNS = 5;
 
 type SubAgentDeps = { llm: LlmClient; tools: ToolSet; bus: EventBus };
 
+export type SubAgentOptions = { language?: string; onQuestion?: () => void };
+
 export async function runSubAgent(
   deps: SubAgentDeps,
   agent: SubAgentName,
-  transcript: string,
+  seed: string | LlmMessage[],
+  options: SubAgentOptions = {},
 ): Promise<OrchestratorResult> {
   const definition = agentDefinitions[agent];
   const schemas = definition.tools.map((name) => toolSchemas[name]);
-  const messages: LlmMessage[] = [{ role: "user", content: transcript }];
+  const system = withFallbackLanguage(definition.system, options.language);
+  const messages: LlmMessage[] =
+    typeof seed === "string" ? [{ role: "user", content: seed }] : [...seed];
 
   let toolTurns = 0;
+  let lastOfferedChoices = false;
 
   for (;;) {
     const response = await deps.llm.complete({
-      system: definition.system,
+      system,
       messages,
       tools: schemas,
     });
@@ -37,6 +45,7 @@ export async function runSubAgent(
       const reply = response.content
         .map((block) => (block.type === "text" ? block.text : ""))
         .join("");
+      if (lastOfferedChoices) options.onQuestion?.();
       return { status: "succeeded", agent, reply };
     }
 
@@ -78,9 +87,11 @@ export async function runSubAgent(
         const question = readQuestion(result.output);
         if (question === undefined) return fail("No question returned");
         deps.bus.emit({ type: "tool_call", tool: toolName, status: "succeeded" });
+        options.onQuestion?.();
         return { status: "clarification", agent: "clarifier", question };
       }
       deps.bus.emit({ type: "tool_call", tool: toolName, status: "succeeded" });
+      lastOfferedChoices = offersChoices(result.output);
       results.push({
         type: "tool_result",
         toolUseId: toolUse.id,

@@ -39,6 +39,17 @@ describe("askModelForApology", () => {
     expect(requests[0]?.system).not.toMatch(/english|farsi|persian|arabic|italian/i);
   });
 
+  it("appends the fallback sentence with the code when a preferred language is given", async () => {
+    const plain = recordingLlm(textResponse("ok"));
+    await askModelForApology(plain.llm, "..");
+    const preferred = recordingLlm(textResponse("ok"));
+    await askModelForApology(preferred.llm, "..", APOLOGY_TIMEOUT_MS, "fa");
+    expect(preferred.requests[0]?.system).toBe(
+      `${plain.requests[0]?.system} Reply in the language the user spoke. If you cannot tell which language that is, reply in fa.`,
+    );
+    expect(plain.requests[0]?.system).not.toContain("reply in fa");
+  });
+
   it("returns undefined when the client throws", async () => {
     const { llm } = recordingLlm(new Error("boom"));
     expect(await askModelForApology(llm, "x")).toBeUndefined();

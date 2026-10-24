@@ -1,5 +1,6 @@
 import ambiguousTurnOn from "../orchestrator/fixtures/ambiguousTurnOn.json";
 import callAhmadi from "../orchestrator/fixtures/callAhmadi.json";
+import callAhmadiHossein from "../orchestrator/fixtures/callAhmadiHossein.json";
 import callMom from "../orchestrator/fixtures/callMom.json";
 import clock from "../orchestrator/fixtures/clock.json";
 import lightOn from "../orchestrator/fixtures/lightOn.json";
@@ -12,6 +13,7 @@ import type { RecordedConversation } from "../orchestrator/testing/replayLlmClie
 export const replayConversations = [
   callMom,
   callAhmadi,
+  callAhmadiHossein,
   lightOn,
   pauseTv,
   ambiguousTurnOn,

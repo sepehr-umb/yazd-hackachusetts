@@ -58,6 +58,26 @@ describe("createOpenRouterStt", () => {
     expect(JSON.stringify(calls[0]?.body)).not.toContain("language");
   });
 
+  it("sends the language when given", async () => {
+    const { fetchImpl, calls } = fakeFetch(() => new Response(JSON.stringify({ text: "x" })));
+    await createOpenRouterStt({ apiKey: "k", model: "m", fetch: fetchImpl }).transcribe(
+      recording,
+      { language: "fa" },
+    );
+
+    expect(calls[0]?.body.language).toBe("fa");
+  });
+
+  it("omits the language key when options hold none", async () => {
+    const { fetchImpl, calls } = fakeFetch(() => new Response(JSON.stringify({ text: "x" })));
+    await createOpenRouterStt({ apiKey: "k", model: "m", fetch: fetchImpl }).transcribe(
+      recording,
+      {},
+    );
+
+    expect("language" in (calls[0]?.body ?? {})).toBe(false);
+  });
+
   it("throws with the provider message when the request fails", async () => {
     const { fetchImpl } = fakeFetch(
       () => new Response(JSON.stringify({ error: { message: "bad key" } }), { status: 401 }),

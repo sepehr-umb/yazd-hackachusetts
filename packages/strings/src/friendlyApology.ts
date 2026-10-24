@@ -36,6 +36,20 @@ export const apologies: Record<Reason, Record<Language, string>> = {
   },
 };
 
-export function friendlyApology(failure: RequestFailure, requestText: string): string {
-  return apologies[failure.reason][detectLanguage(requestText)];
+const supportedLanguages: readonly string[] = ["fa", "ar", "it", "en"];
+const hasLetter = /\p{L}/u;
+
+function apologyLanguage(requestText: string, preferredLanguage?: string): Language {
+  if (!hasLetter.test(requestText) && preferredLanguage && supportedLanguages.includes(preferredLanguage)) {
+    return preferredLanguage as Language;
+  }
+  return detectLanguage(requestText);
+}
+
+export function friendlyApology(
+  failure: RequestFailure,
+  requestText: string,
+  preferredLanguage?: string,
+): string {
+  return apologies[failure.reason][apologyLanguage(requestText, preferredLanguage)];
 }
