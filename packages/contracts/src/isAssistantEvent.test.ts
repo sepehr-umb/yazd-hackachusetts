@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { captionSpeakers } from "./events";
 import { isAssistantEvent } from "./isAssistantEvent";
 
 describe("isAssistantEvent", () => {
@@ -68,5 +69,31 @@ describe("isAssistantEvent", () => {
 
   it("rejects a tool_call whose tool is not a string", () => {
     expect(isAssistantEvent({ type: "tool_call", tool: 1, status: "started" })).toBe(false);
+  });
+
+  it("lists the caption speakers", () => {
+    expect(captionSpeakers).toEqual(["user", "assistant"]);
+  });
+
+  it.each(["user", "assistant"])("accepts a caption event from the %s", (speaker) => {
+    expect(isAssistantEvent({ type: "caption", speaker, text: "سلام", english: "Hello" })).toBe(
+      true,
+    );
+  });
+
+  it("rejects a caption event with an unknown speaker", () => {
+    expect(
+      isAssistantEvent({ type: "caption", speaker: "robot", text: "سلام", english: "Hello" }),
+    ).toBe(false);
+  });
+
+  it("rejects a caption event whose text is not a string", () => {
+    expect(isAssistantEvent({ type: "caption", speaker: "user", text: 1, english: "Hello" })).toBe(
+      false,
+    );
+  });
+
+  it("rejects a caption event with no english", () => {
+    expect(isAssistantEvent({ type: "caption", speaker: "user", text: "سلام" })).toBe(false);
   });
 });

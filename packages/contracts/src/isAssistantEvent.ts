@@ -1,4 +1,4 @@
-import { agentNames, assistantStates, toolCallStatuses } from "./events";
+import { agentNames, captionSpeakers, assistantStates, toolCallStatuses } from "./events";
 import type { AssistantEvent } from "./events";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -22,6 +22,12 @@ export function isAssistantEvent(value: unknown): value is AssistantEvent {
       return typeof value.tool === "string" && isOneOf(toolCallStatuses, value.status);
     case "speech":
       return typeof value.audioUrl === "string";
+    case "caption":
+      return (
+        isOneOf(captionSpeakers, value.speaker) &&
+        typeof value.text === "string" &&
+        typeof value.english === "string"
+      );
     default:
       return false;
   }
