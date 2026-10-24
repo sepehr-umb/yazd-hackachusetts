@@ -15,8 +15,9 @@ const mountedIds = (surfaces: Record<string, boolean>) => {
 };
 
 describe("surface registry", () => {
-  it("registers the companion layout first and keeps the older surfaces after it", () => {
+  it("registers the shortcuts and companion layout first and keeps the older surfaces after it", () => {
     expect(surfaceRegistry.map((surface) => surface.id)).toEqual([
+      "shortcuts",
       "companion",
       "captions",
       "textInput",
@@ -26,9 +27,10 @@ describe("surface registry", () => {
     ]);
   });
 
-  it("turns on the companion, captions and text input and leaves the older surfaces off", () => {
+  it("turns on the shortcuts, companion, captions and text input and leaves the older surfaces off", () => {
     expect(defaultSettings).toEqual({
       surfaces: {
+        shortcuts: true,
         companion: true,
         captions: true,
         textInput: true,
@@ -37,11 +39,17 @@ describe("surface registry", () => {
         activityPanel: false,
       },
     });
-    expect(mountedIds(defaultSettings.surfaces)).toEqual(["companion", "captions", "textInput"]);
+    expect(mountedIds(defaultSettings.surfaces)).toEqual([
+      "shortcuts",
+      "companion",
+      "captions",
+      "textInput",
+    ]);
   });
 
   it("can still switch the voice and activity panel back on", () => {
     expect(mountedIds({ ...defaultSettings.surfaces, voice: true, activityPanel: true })).toEqual([
+      "shortcuts",
       "companion",
       "captions",
       "textInput",

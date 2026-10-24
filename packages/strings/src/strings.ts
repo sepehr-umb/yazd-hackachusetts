@@ -26,6 +26,9 @@ export const strings = {
     talk: "Tap to talk",
     stop: "Tap to stop",
   },
+  shortcuts: {
+    title: "Shortcuts",
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },

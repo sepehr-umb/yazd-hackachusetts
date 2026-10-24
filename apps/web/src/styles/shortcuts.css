@@ -1,0 +1,85 @@
+[data-surface="shortcuts"] [role="group"] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+@media (min-width: 900px) {
+  [data-surface="shortcuts"] [role="group"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+[data-surface="shortcuts"] button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-inline-size: var(--target);
+  min-block-size: 120px;
+  padding: var(--gap) 12px;
+  border: 3px solid transparent;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition:
+    transform var(--dur-press) var(--ease),
+    background-color var(--dur-state) var(--ease),
+    border-color var(--dur-state) var(--ease),
+    opacity var(--dur-state) var(--ease);
+}
+
+[data-surface="shortcuts"] button:active,
+[data-surface="shortcuts"] button[data-pressed="true"] {
+  transform: scale(0.96);
+}
+
+[data-surface="shortcuts"] button[data-pressed="true"] {
+  border-color: var(--accent-deep);
+  background: var(--accent);
+}
+
+[data-surface="shortcuts"] button[aria-disabled="true"] {
+  cursor: progress;
+}
+
+[data-surface="shortcuts"] button[aria-disabled="true"]:not([data-pressed]) {
+  opacity: 0.55;
+}
+
+[data-surface="shortcuts"] svg {
+  inline-size: 44px;
+  block-size: 44px;
+  color: var(--accent-deep);
+}
+
+[data-surface="shortcuts"] button[data-pressed="true"] svg {
+  color: var(--ink);
+}
+
+[data-surface="shortcuts"] [data-role="label"] {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+[data-surface="shortcuts"] [data-role="sublabel"] {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+
+[data-surface="shortcuts"] button[data-pressed="true"] [data-role="sublabel"] {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="shortcuts"] button:active,
+  [data-surface="shortcuts"] button[data-pressed="true"] {
+    transform: none;
+  }
+}

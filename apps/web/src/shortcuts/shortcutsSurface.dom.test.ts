@@ -1,0 +1,132 @@
+import { afterEach, describe, expect, it } from "vitest";
+import { createTestContext } from "../testing/testContext";
+import type { Shortcut } from "./shortcuts";
+import { createShortcutsSurface } from "./shortcutsSurface";
+
+const data: Shortcut[] = [
+  {
+    id: "callMom",
+    kind: "call",
+    text: {
+      fa: { label: "مامان", phrase: "به مامان زنگ بزن" },
+      en: { label: "Mom", phrase: "Call Mom" },
+    },
+  },
+  {
+    id: "tvPlay",
+    kind: "tv",
+    text: {
+      fa: { label: "پخش", phrase: "تلویزیون را پخش کن" },
+      en: { label: "Play", phrase: "Play TV" },
+    },
+  },
+];
+
+afterEach(() => {
+  document.body.replaceChildren();
+});
+
+const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+function mounted(language = "fa") {
+  const context = createTestContext();
+  const host = document.createElement("section");
+  document.body.append(host);
+  const unmount = createShortcutsSurface({ shortcuts: data, language: () => language }).mount(
+    host,
+    context,
+  );
+  const buttons = [...host.querySelectorAll("button")];
+  return { context, host, unmount, buttons };
+}
+
+describe("shortcuts surface", () => {
+  it("has the id the settings object uses to toggle it", () => {
+    expect(createShortcutsSurface().id).toBe("shortcuts");
+  });
+
+  it("renders one keyboard-reachable button per shortcut, in data order, inside a labelled group", () => {
+    const { host, buttons } = mounted();
+
+    expect(host.querySelector("[role=group]")?.getAttribute("aria-label")).toBe("Shortcuts");
+    expect(buttons.map((button) => button.dataset.shortcut)).toEqual(["callMom", "tvPlay"]);
+    expect(buttons.every((button) => button.type === "button" && button.tabIndex === 0)).toBe(true);
+  });
+
+  it("labels each button in the display language and the other language as sublabel", () => {
+    const { buttons } = mounted();
+    const label = buttons[0]?.querySelector("[data-role=label]") as HTMLElement;
+    const sublabel = buttons[0]?.querySelector("[data-role=sublabel]") as HTMLElement;
+
+    expect(label.textContent).toBe("مامان");
+    expect(label.lang).toBe("fa");
+    expect(label.dir).toBe("auto");
+    expect(sublabel.textContent).toBe("Mom");
+    expect(sublabel.lang).toBe("en");
+    expect(sublabel.dir).toBe("auto");
+  });
+
+  it("draws the icon for each shortcut's kind, hidden from screen readers", () => {
+    const { buttons } = mounted();
+    const icons = buttons.map((button) => button.querySelector("svg"));
+
+    expect(icons.map((icon) => icon?.dataset.icon)).toEqual(["call", "tv"]);
+    expect(icons.every((icon) => icon?.getAttribute("aria-hidden") === "true")).toBe(true);
+  });
+
+  it("submits the phrase exactly as written in the data", async () => {
+    const { context, buttons } = mounted();
+
+    buttons[0]?.click();
+    await settle();
+
+    expect(context.submitted).toEqual(["به مامان زنگ بزن"]);
+  });
+
+  it("submits the phrase of the language it is told to display", async () => {
+    const { context, buttons } = mounted("en");
+
+    buttons[0]?.click();
+    await settle();
+
+    expect(buttons[0]?.querySelector("[data-role=label]")?.textContent).toBe("Mom");
+    expect(context.submitted).toEqual(["Call Mom"]);
+  });
+
+  it("disables the whole grid and marks the pressed button until the result returns", async () => {
+    const { context, buttons } = mounted();
+    const release = context.holdReply();
+
+    buttons[0]?.click();
+    buttons[1]?.click();
+    await settle();
+
+    expect(context.submitted).toHaveLength(1);
+    expect(buttons.every((button) => button.getAttribute("aria-disabled") === "true")).toBe(true);
+    expect(buttons[0]?.dataset.pressed).toBe("true");
+    release({ status: "succeeded", agent: "comms", reply: "ok" });
+    await settle();
+    expect(buttons.every((button) => button.getAttribute("aria-disabled") === "false")).toBe(true);
+    expect(buttons[0]?.dataset.pressed).toBeUndefined();
+  });
+
+  it("frees the grid again when the request fails", async () => {
+    const { context, buttons } = mounted();
+    context.replyWith(new Error("offline"));
+
+    buttons[0]?.click();
+    await settle();
+    buttons[1]?.click();
+    await settle();
+
+    expect(context.submitted).toEqual(["به مامان زنگ بزن", "تلویزیون را پخش کن"]);
+  });
+
+  it("removes the grid when unmounted", () => {
+    const { host, unmount } = mounted();
+
+    unmount();
+
+    expect(host.children).toHaveLength(0);
+  });
+});
