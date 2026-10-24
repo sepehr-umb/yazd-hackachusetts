@@ -26,10 +26,6 @@
   box-shadow: 0 0 48px 8px color-mix(in srgb, var(--flip-listening) 35%, transparent);
 }
 
-[data-surface="setup"] [data-role="orb"]::after {
-  content: none;
-}
-
 [data-surface="setup"] [data-step="welcome"] [data-role="orb"] {
   inline-size: 56vmin;
   block-size: 56vmin;
@@ -94,7 +90,7 @@
   transition: transform var(--dur-press) var(--ease);
 }
 
-[data-surface="setup"] button::after {
+[data-surface="setup"] [data-role="options"] button::after {
   content: "›";
   grid-column: 3;
   grid-row: 1 / span 2;
@@ -102,7 +98,7 @@
   line-height: 1;
 }
 
-[data-surface="setup"] button:dir(rtl)::after {
+[data-surface="setup"] [data-role="options"] button:dir(rtl)::after {
   content: "‹";
 }
 
