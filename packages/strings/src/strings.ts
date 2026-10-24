@@ -24,10 +24,15 @@ export const strings = {
   },
   companion: {
     talk: "Tap to talk",
+    talkTo: (name: string) => `Tap to talk to ${name}`,
     stop: "Tap to stop",
   },
   shortcuts: {
     title: "Shortcuts",
+  },
+  characters: {
+    orb: "Glowing orb",
+    face: "Face",
   },
   request: {
     unexpectedResponse: "Unexpected response from the server",

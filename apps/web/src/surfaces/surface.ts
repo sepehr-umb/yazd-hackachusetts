@@ -1,5 +1,6 @@
 import type { AssistantEventSource } from "../events/assistantEventSource";
 import type { AudioFrame } from "../face/faceAnimator";
+import type { ProfileStore } from "../profile/profileStore";
 import type { RecordingClient } from "../request/recordingClient";
 import type { RequestClient } from "../request/requestClient";
 import type { Chime } from "../voice/chime";
@@ -12,6 +13,7 @@ export type SurfaceContext = {
   microphone: Microphone;
   chime: Chime;
   speech: { frame(): AudioFrame | null };
+  profile: ProfileStore;
 };
 
 export type Unmount = () => void;

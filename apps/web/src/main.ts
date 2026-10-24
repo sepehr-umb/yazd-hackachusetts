@@ -1,5 +1,6 @@
 import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
+import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
 import { createSpeechPlayer } from "./speech/speechPlayer";
@@ -31,6 +32,7 @@ mountSurfaces({
     microphone,
     chime: (kind) => playChime(audioContext, kind),
     speech,
+    profile: createProfileStore(browserStorage(() => localStorage)),
   },
 });
 
