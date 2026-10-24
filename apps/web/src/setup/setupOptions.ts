@@ -1,3 +1,5 @@
+import { strings } from "@mahmood/strings";
+import { languages } from "../profile/languages";
 import type { Language } from "../profile/languages";
 
 export type SetupOption = {
@@ -37,4 +39,12 @@ export function optionButtons(document: Document, options: SetupOption[]): HTMLB
     button.addEventListener("contextmenu", (event) => event.preventDefault());
     return button;
   });
+}
+
+export function languageOptions(onChoose: (language: Language) => void): SetupOption[] {
+  return languages.map((language) => ({
+    text: strings.setup[language].languageName,
+    language,
+    onChoose: () => onChoose(language),
+  }));
 }

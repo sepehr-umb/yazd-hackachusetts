@@ -17,6 +17,7 @@ export function createSetupSheet(document: Document, orbLabel: string): SetupShe
   orb.type = "button";
   orb.dataset.role = "orb";
   orb.setAttribute("aria-label", orbLabel);
+  orb.addEventListener("contextmenu", (event) => event.preventDefault());
   const heading = document.createElement("h2");
   heading.id = "setup-heading";
   heading.tabIndex = -1;

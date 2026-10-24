@@ -11,7 +11,8 @@ import type { VoiceConfig } from "../voice/voiceConfig";
 import { createVoiceSession } from "../voice/voiceSession";
 import { rotateLines } from "./rotatingLine";
 import type { Rotation } from "./rotatingLine";
-import { optionButtons } from "./setupOptions";
+import { didNotCatchLines } from "./didNotCatchLines";
+import { languageOptions, optionButtons } from "./setupOptions";
 import { createSetupSheet } from "./setupSheet";
 import { trackSheetHistory } from "./sheetHistory";
 import { visionOptions } from "./visionOptions";
@@ -90,7 +91,7 @@ export function createSetupSurface({
         transcribe,
         narrator,
         onLanguage: (heard) => {
-          if (!heard) return;
+          if (!heard) return showFallback();
           profile.update({ language: heard });
           showVision(heard, true);
         },
@@ -99,20 +100,23 @@ export function createSetupSurface({
       const showWelcome = () => {
         sheet.dataset.step = "welcome";
         stopRotating();
+        list.replaceChildren();
         rotation = rotateLines(heading, hellos, reducedMotion);
-        const options = languages.map((choice) => ({
-          text: strings.setup[choice].languageName,
-          language: choice,
-          onChoose: () => {
-            flow.cancel();
-            profile.update({ language: choice });
-            showVision(choice, false);
-          },
-        }));
+      };
+      const showFallback = () => {
+        sheet.dataset.step = "fallback";
+        stopRotating();
+        heading.removeAttribute("lang");
+        heading.replaceChildren(...didNotCatchLines(document));
+        const options = languageOptions((choice) => {
+          flow.cancel();
+          profile.update({ language: choice });
+          showVision(choice, false);
+        });
         list.replaceChildren(...optionButtons(document, options));
       };
       orb.addEventListener("click", () => {
-        if (sheet.dataset.step === "welcome") flow.greet();
+        if (sheet.dataset.step !== "vision") flow.greet();
         else flow.answer(language);
       });
       const open = () => {

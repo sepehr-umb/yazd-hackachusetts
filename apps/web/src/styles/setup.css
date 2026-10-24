@@ -47,12 +47,6 @@
   opacity: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [data-surface="setup"] h2 {
-    transition: none;
-  }
-}
-
 [data-surface="setup"] [hidden] {
   display: none;
 }
@@ -142,7 +136,15 @@
   outline-offset: 4px;
 }
 
+[data-surface="setup"] h2 [data-role="line"] {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  [data-surface="setup"] h2 {
+    transition: none;
+  }
+
   [data-surface="setup"] button:active {
     transform: none;
   }

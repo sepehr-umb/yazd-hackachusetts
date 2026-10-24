@@ -62,6 +62,7 @@ export const strings = {
       visionQuestionSpoken:
         "صفحه را چقدر خوب می‌بینید؟ بگویید یک: صفحه را خوب می‌بینم. دو: شکل‌ها و رنگ‌ها را می‌بینم. سه: صفحه را به‌سختی می‌بینم.",
       sayAgain: "متوجه نشدم. یک، دو یا سه بگویید.",
+      didNotCatch: "متوجه نشدم. زبان خود را انتخاب کنید.",
       title: "راه‌اندازی",
       chooseLanguage: "زبان خود را انتخاب کنید",
       visionQuestion: "صفحه را چقدر خوب می‌بینید؟",
@@ -87,6 +88,7 @@ export const strings = {
       visionQuestionSpoken:
         "How well do you see the screen? Say one: I see the screen well. Two: I see shapes and colors. Three: I barely see the screen.",
       sayAgain: "Sorry, I didn't catch that. Say one, two or three.",
+      didNotCatch: "I didn't catch that. Choose your language.",
       title: "Setup",
       chooseLanguage: "Choose your language",
       visionQuestion: "How well do you see the screen?",
@@ -112,6 +114,7 @@ export const strings = {
       visionQuestionSpoken:
         "¿Qué tan bien ves la pantalla? Di uno: veo bien la pantalla. Dos: veo formas y colores. Tres: apenas veo la pantalla.",
       sayAgain: "Perdona, no te he entendido. Di uno, dos o tres.",
+      didNotCatch: "No te he entendido. Elige tu idioma.",
       title: "Configuración",
       chooseLanguage: "Elige tu idioma",
       visionQuestion: "¿Qué tan bien ves la pantalla?",
@@ -137,6 +140,7 @@ export const strings = {
       visionQuestionSpoken:
         "Quanto bene vedi lo schermo? Di' uno: vedo bene lo schermo. Due: vedo forme e colori. Tre: vedo a malapena lo schermo.",
       sayAgain: "Scusa, non ho capito. Di' uno, due o tre.",
+      didNotCatch: "Non ho capito. Scegli la tua lingua.",
       title: "Configurazione",
       chooseLanguage: "Scegli la tua lingua",
       visionQuestion: "Quanto bene vedi lo schermo?",

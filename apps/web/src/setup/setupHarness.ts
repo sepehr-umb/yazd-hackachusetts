@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import type { Language } from "../profile/languages";
 import type { Vision } from "../profile/profile";
 import type { Transcription } from "../request/transcribeClient";
@@ -53,7 +54,21 @@ export function mountSetup({
       .find((button) => titleOf(button) === text)
       ?.click();
   const endSpeech = () => endings.splice(0).forEach((end) => end());
+  const say = async () => {
+    context.mic.level = 0.5;
+    await vi.advanceTimersByTimeAsync(300);
+    context.mic.level = 0;
+    await vi.advanceTimersByTimeAsync(1100);
+  };
+  const fallBack = async () => {
+    answers.push({ text: "", language: undefined });
+    orb().click();
+    await vi.advanceTimersByTimeAsync(0);
+    await say();
+  };
   return {
+    say,
+    fallBack,
     context,
     host,
     unmount,

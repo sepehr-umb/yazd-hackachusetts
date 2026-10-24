@@ -1,8 +1,12 @@
-import { afterEach, describe, expect, it } from "vitest";
-import { createTestContext } from "../testing/testContext";
-import { setupSurface } from "./setupSurface";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { mountSetup } from "./setupHarness";
+
+beforeEach(() => {
+  vi.useFakeTimers();
+});
 
 afterEach(() => {
+  vi.useRealTimers();
   document.body.replaceChildren();
 });
 
@@ -13,16 +17,13 @@ const menuOn = (button: HTMLButtonElement | undefined) => {
 };
 
 describe("setup sheet on a long press", () => {
-  it("shows no system menu on a language button or a vision button", () => {
-    const host = document.createElement("section");
-    document.body.append(host);
-    setupSurface.mount(host, createTestContext());
-    const buttons = () => [
-      ...host.querySelectorAll<HTMLButtonElement>("[role=dialog] [data-role=options] button"),
-    ];
+  it("shows no system menu on the orb, a language button or a vision button", async () => {
+    const { orb, options, fallBack } = mountSetup();
+    expect(menuOn(orb())).toBe(true);
+    await fallBack();
 
-    expect(menuOn(buttons()[0])).toBe(true);
-    buttons()[1]?.click();
-    expect(menuOn(buttons()[2])).toBe(true);
+    expect(menuOn(options()[0])).toBe(true);
+    options()[1]?.click();
+    expect(menuOn(options()[2])).toBe(true);
   });
 });
