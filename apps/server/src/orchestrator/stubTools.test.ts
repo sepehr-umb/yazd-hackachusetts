@@ -11,6 +11,7 @@ const sampleInputs: ToolInputs = {
   ask_for_clarification: { question: "کدام چراغ؟" },
   update_setting: { name: "speechRate", value: 0.8 },
   reset_settings: {},
+  get_time: {},
 };
 
 describe("stub tools", () => {

@@ -19,3 +19,22 @@ describe("settings tool schemas", () => {
     expect(inputSchema.properties).toEqual({});
   });
 });
+
+describe("clock tool schema", () => {
+  it("get_time takes no properties and requires nothing", () => {
+    const schema = toolSchemas.get_time;
+
+    expect(schema.name).toBe("get_time");
+    expect(schema.inputSchema.properties).toEqual({});
+    expect(schema.inputSchema.required ?? []).toEqual([]);
+  });
+
+  it("get_time has a short description mentioning time and day", () => {
+    const { description } = toolSchemas.get_time;
+
+    expect(description.length).toBeGreaterThanOrEqual(1);
+    expect(description.length).toBeLessThanOrEqual(200);
+    expect(description).toMatch(/time/i);
+    expect(description).toMatch(/day/i);
+  });
+});

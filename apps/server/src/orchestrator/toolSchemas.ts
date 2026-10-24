@@ -76,4 +76,9 @@ export const toolSchemas: Record<ToolName, LlmToolSchema> = {
     description: "Restore every assistant setting to its normal default.",
     inputSchema: { type: "object", properties: {} },
   },
+  get_time: {
+    name: "get_time",
+    description: "Return the current time (hour and minute) and the current day of the week.",
+    inputSchema: { type: "object", properties: {} },
+  },
 };

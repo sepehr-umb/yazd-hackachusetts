@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Quality gate after each task",
+      "trigger": "PostTaskExec",
+      "action": {
+        "type": "command",
+        "command": "npm test && npm run lint && npm run typecheck"
+      },
+      "description": "Runs tests, lint and typecheck after every spec task so a broken task is caught immediately.",
+      "timeout": 120,
+      "enabled": true
+    }
+  ]
+}

@@ -2,6 +2,17 @@ import { settingSchemas, type SettingName } from "@mahmood/contracts";
 import { describe, expect, it } from "vitest";
 import { strings } from "./strings";
 
+describe("strings.clock", () => {
+  it("has nonblank values for every key", () => {
+    const values = Object.values(strings.clock);
+    expect(values.length).toBeGreaterThan(0);
+    for (const value of values) {
+      expect(typeof value).toBe("string");
+      expect(value.trim().length).toBeGreaterThanOrEqual(1);
+    }
+  });
+});
+
 describe("strings.settings", () => {
   const settingNames = Object.keys(settingSchemas) as SettingName[];
 

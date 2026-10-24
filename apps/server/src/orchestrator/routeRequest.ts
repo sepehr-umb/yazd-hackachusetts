@@ -17,7 +17,7 @@ const routeTool: LlmToolSchema = {
 };
 
 const routerSystem =
-  "You route spoken requests from an elderly user, in whatever language they speak, to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages. home: lights and other smart home devices. media: the TV, playing, pausing or finding shows and videos. settings: changing how yazd itself behaves, namely speech rate, caption size, contrast, silence wait, or going back to normal settings. clarifier: the request is ambiguous or missing a detail. If a request mixes a settings change with a comms, home or media intent, or you cannot tell whether it is about yazd's own settings, choose clarifier.";
+  "You route spoken requests from an elderly user, in whatever language they speak, to exactly one sub-agent by calling route_to_agent. comms: phone calls and messages. home: lights and other smart home devices. media: the TV, playing, pausing or finding shows and videos. settings: changing how yazd itself behaves, namely speech rate, caption size, contrast, silence wait, or going back to normal settings. clock: questions about the current time or the current day of the week. clarifier: the request is ambiguous or missing a detail. If a request mixes a settings change or a time question with any other intent, or you cannot tell whether it is about yazd's own settings, choose clarifier.";
 
 export async function routeRequest(
   llm: LlmClient,

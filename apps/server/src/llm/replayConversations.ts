@@ -1,6 +1,7 @@
 import ambiguousTurnOn from "../orchestrator/fixtures/ambiguousTurnOn.json";
 import callAhmadi from "../orchestrator/fixtures/callAhmadi.json";
 import callMom from "../orchestrator/fixtures/callMom.json";
+import clock from "../orchestrator/fixtures/clock.json";
 import lightOn from "../orchestrator/fixtures/lightOn.json";
 import pauseTv from "../orchestrator/fixtures/pauseTv.json";
 import resetSettings from "../orchestrator/fixtures/resetSettings.json";
@@ -16,5 +17,6 @@ export const replayConversations = [
   ambiguousTurnOn,
   speakSlower,
   resetSettings,
+  clock,
   unroutable,
 ] as RecordedConversation[];

@@ -39,13 +39,36 @@ describe("routeRequest", () => {
     });
 
     it("names no language", async () => {
-      expect(await routerSystem()).not.toMatch(/farsi/i);
+      const system = await routerSystem();
+
+      expect(system).not.toMatch(/farsi|persian|english|arabic/i);
     });
 
-    it("sends mixed settings and other intents, and unclear settings intents, to the clarifier", async () => {
-      expect(await routerSystem()).toContain(
-        "If a request mixes a settings change with a comms, home or media intent, or you cannot tell whether it is about yazd's own settings, choose clarifier.",
+    it("describes the clock agent on exactly one line", async () => {
+      const system = await routerSystem();
+
+      expect(system.split("clock: questions about the current time or the current day of the week.")).toHaveLength(2);
+      expect(system.match(/\bclock:/g)).toHaveLength(1);
+    });
+
+    it("has exactly one mixed-request clause, covering settings and time questions", async () => {
+      const system = await routerSystem();
+
+      expect(system.match(/choose clarifier/g)).toHaveLength(1);
+      expect(system).toContain(
+        "If a request mixes a settings change or a time question with any other intent, or you cannot tell whether it is about yazd's own settings, choose clarifier.",
       );
     });
+  });
+
+  it("offers clock as a routable agent", async () => {
+    const llm = createReplayLlmClient([{ stopReason: "end_turn", content: [] }]);
+
+    await routeRequest(llm, "what time is it");
+
+    const schema = llm.requests[0]?.tools?.[0]?.inputSchema as {
+      properties: { agent: { enum: string[] } };
+    };
+    expect(schema.properties.agent.enum).toContain("clock");
   });
 });
