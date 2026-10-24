@@ -5,6 +5,7 @@ import { visions } from "../profile/profile";
 import type { Vision } from "../profile/profile";
 import type { Surface } from "../surfaces/surface";
 import { optionButtons } from "./setupOptions";
+import { trackSheetHistory } from "./sheetHistory";
 
 export const setupSurface: Surface = {
   id: "setup",
@@ -30,8 +31,14 @@ export const setupSurface: Surface = {
       heading.textContent = title;
     };
 
+    const history = trackSheetHistory(context.setup.history, () => {
+      if (profile.get().vision) sheet.hidden = true;
+      else history.opened();
+    });
+
     const close = () => {
       sheet.hidden = true;
+      history.closed();
     };
 
     const choose = (language: Language, vision: Vision) => {
@@ -74,6 +81,7 @@ export const setupSurface: Surface = {
     const open = () => {
       showLanguages();
       sheet.hidden = false;
+      history.opened();
       heading.focus();
     };
 
@@ -87,6 +95,7 @@ export const setupSurface: Surface = {
 
     return () => {
       stopOpening();
+      history.stop();
       document.removeEventListener("keydown", onKeyDown);
       sheet.remove();
     };

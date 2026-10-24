@@ -15,6 +15,7 @@ export type TestContext = SurfaceContext & {
   chimes: string[];
   haptics: string[];
   narration: string[];
+  history: { pushes: number; backs: number; pop(): void };
   mic: {
     starts: number;
     stops: number;
@@ -33,6 +34,12 @@ export function createTestContext(): TestContext {
   const chimes: string[] = [];
   const haptics: string[] = [];
   const narration: string[] = [];
+  const popListeners = new Set<() => void>();
+  const history = {
+    pushes: 0,
+    backs: 0,
+    pop: () => popListeners.forEach((listener) => listener()),
+  };
   const mic = {
     starts: 0,
     stops: 0,
@@ -49,13 +56,25 @@ export function createTestContext(): TestContext {
     chimes,
     haptics,
     narration,
+    history,
     mic,
     setSpeechFrame: (frame) => {
       speechFrame = frame;
     },
     speech: { frame: () => speechFrame },
     profile: createProfileStore(new Map()),
-    setup: createSetupControl(),
+    setup: createSetupControl({
+      push: () => {
+        history.pushes += 1;
+      },
+      back: () => {
+        history.backs += 1;
+      },
+      onPop: (listener) => {
+        popListeners.add(listener);
+        return () => popListeners.delete(listener);
+      },
+    }),
     narrator: {
       say: (text, language) => narration.push(`${language}: ${text}`),
       stop: () => narration.push("stop"),

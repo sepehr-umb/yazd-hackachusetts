@@ -49,7 +49,14 @@ mountForProfile({
     }),
     speech,
     profile,
-    setup: createSetupControl(),
+    setup: createSetupControl({
+      push: () => history.pushState({ yazdSetup: true }, ""),
+      back: () => history.back(),
+      onPop: (listener) => {
+        window.addEventListener("popstate", listener);
+        return () => window.removeEventListener("popstate", listener);
+      },
+    }),
     narrator: createNarrator(
       "speechSynthesis" in window
         ? {
