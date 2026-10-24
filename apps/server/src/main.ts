@@ -1,8 +1,12 @@
+import { fileURLToPath } from "node:url";
 import { createApp } from "./app";
 
-const PORT = 8787;
+const DEFAULT_PORT = 8787;
 const IDLE_AFTER_MS = 4000;
 
-const app = createApp(process.env, { idleAfterMs: IDLE_AFTER_MS });
+const port = Number(process.env.PORT) || DEFAULT_PORT;
+const staticDir = fileURLToPath(new URL("../../web/dist", import.meta.url));
 
-await app.listen({ port: PORT, host: "127.0.0.1" });
+const app = createApp(process.env, { idleAfterMs: IDLE_AFTER_MS, staticDir });
+
+await app.listen({ port, host: "0.0.0.0" });
