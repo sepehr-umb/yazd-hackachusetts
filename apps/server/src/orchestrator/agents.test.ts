@@ -37,6 +37,23 @@ describe("settings agent", () => {
     expect(system).toMatch(/question/i);
     expect(system).toMatch(/current value/i);
   });
+
+  it.each([
+    ["bigger", "extra-large"],
+    ["smaller", "small"],
+    ["slower", "0.75"],
+    ["faster", "1.25"],
+    ["longer wait", "2500"],
+  ])("maps a relative %s request to %s", (phrase, value) => {
+    const { system } = agentDefinitions.settings;
+
+    expect(system).toContain(phrase);
+    expect(system).toContain(value);
+  });
+
+  it("moves relative requests from the default toward the extreme", () => {
+    expect(agentDefinitions.settings.system).toMatch(/default.*extreme|extreme.*default/i);
+  });
 });
 
 describe("router prompt and tool descriptions", () => {
