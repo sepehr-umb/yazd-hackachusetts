@@ -16,6 +16,7 @@ export function optionButtons(document: Document, options: SetupOption[]): HTMLB
     button.textContent = text;
     if (onFocus) button.addEventListener("focus", onFocus);
     button.addEventListener("click", onChoose);
+    button.addEventListener("contextmenu", (event) => event.preventDefault());
     return button;
   });
 }
