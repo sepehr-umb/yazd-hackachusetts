@@ -1,5 +1,7 @@
 import { fixtureContacts } from "@mahmood/contacts";
 import type { FastifyInstance } from "fastify";
+import type { Clock } from "./clock/clock";
+import { withClock } from "./clock/withClock";
 import { withContactResolution } from "./contacts/withContactResolution";
 import { createEventHub } from "./events/eventHub";
 import { selectLlmClient } from "./llm/selectLlmClient";
@@ -15,9 +17,13 @@ export type AppOptions = LlmClientOptions & { idleAfterMs?: number };
 
 export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
   const hub = createEventHub();
+  const clock: Clock = { now: () => new Date() };
   const orchestrator = createOrchestrator({
     llm: selectLlmClient(env, options),
-    tools: withSettings(withContactResolution(createStubTools().tools, fixtureContacts), hub),
+    tools: withClock(
+      withSettings(withContactResolution(createStubTools().tools, fixtureContacts), hub),
+      clock,
+    ),
     bus: hub,
   });
   return createServer({

@@ -8,6 +8,7 @@ export const toolNames = [
   "ask_for_clarification",
   "update_setting",
   "reset_settings",
+  "get_time",
 ] as const;
 
 export const mediaActions = [
@@ -32,6 +33,7 @@ export type ToolInputs = {
   ask_for_clarification: { question: string };
   update_setting: { name: SettingName; value: SettingValue };
   reset_settings: Record<string, unknown>;
+  get_time: Record<string, unknown>;
 };
 
 export type ToolResult =

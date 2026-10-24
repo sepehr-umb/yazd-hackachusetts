@@ -1,0 +1,238 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add `get_time` and `clock` to Contracts, with the clock strings group": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450332
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866455281
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866495341
+      }
+    ],
+    "2.1 Add the `clock` entry to `agentDefinitions`": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450359
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866500676
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866532832
+      }
+    ],
+    "3.1 Teach the router about `clock`": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450383
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866536452
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866612199
+      }
+    ],
+    "4.1 Add the `get_time` schema and stub sample input": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450405
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866617314
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866708553
+      }
+    ],
+    "5.1 Create `Clock`, `readMoment`, and `withClock`": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450431
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866713511
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866770296
+      }
+    ],
+    "6.1 Compose `withClock` in `createApp`": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450450
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866775264
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866824885
+      }
+    ],
+    "7.1 Add `clock.json` and register it": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450469
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866830996
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866866152
+      }
+    ],
+    "8.1 Write `clockReplay.test.ts` against the real orchestrator": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450488
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866871736
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866908048
+      }
+    ],
+    "8.2 Write `clockApp.test.ts` through `createApp({})`": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450514
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866913367
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866955506
+      }
+    ],
+    "9.1 Run the full suite and the scope checks": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866450537
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866961065
+      },
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866989738
+      }
+    ],
+    "1. Contracts and strings": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866495367
+      }
+    ],
+    "2. Server: the clock agent": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866532866
+      }
+    ],
+    "3. Server: routing": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866612227
+      }
+    ],
+    "4. Server: tool schema and stub coverage": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866708585
+      }
+    ],
+    "5. Server: clock module": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866770330
+      }
+    ],
+    "6. Server: wire the system clock into the app": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866824913
+      }
+    ],
+    "7. Fixtures: recorded conversation and registration": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866866176
+      }
+    ],
+    "8. Fixtures: end-to-end replay and app tests": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866955532
+      }
+    ],
+    "9. Final verification": [
+      {
+        "executionId": "79662326-7ba3-4f80-9800-4e5d5914d8f6",
+        "chatSessionId": "sess_40c1d667-5cbc-4b08-b7d3-984d699e477e",
+        "timestamp": 1792866989763
+      }
+    ]
+  }
+}
