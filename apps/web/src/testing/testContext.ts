@@ -2,7 +2,6 @@ import type { AssistantEvent, RequestResult } from "@mahmood/contracts";
 import type { AssistantEventListener } from "../events/assistantEventSource";
 import type { AudioFrame } from "../face/faceAnimator";
 import { createProfileStore } from "../profile/profileStore";
-import { createSetupControl } from "../setup/setupControl";
 import { createSettingsStore } from "../settings/settingsStore";
 import type { SurfaceContext } from "../surfaces/surface";
 
@@ -32,9 +31,6 @@ export type TestContext = SurfaceContext & {
   holdReply(): (result: RequestResult) => void;
   recorded: Blob[];
   chimes: string[];
-  haptics: string[];
-  narration: string[];
-  history: { pushes: number; backs: number; pop(): void };
   mic: {
     starts: number;
     stops: number;
@@ -51,14 +47,6 @@ export function createTestContext(): TestContext {
   let held: Promise<RequestResult> | undefined;
   const recorded: Blob[] = [];
   const chimes: string[] = [];
-  const haptics: string[] = [];
-  const narration: string[] = [];
-  const popListeners = new Set<() => void>();
-  const history = {
-    pushes: 0,
-    backs: 0,
-    pop: () => popListeners.forEach((listener) => listener()),
-  };
   const mic = {
     starts: 0,
     stops: 0,
@@ -87,34 +75,13 @@ export function createTestContext(): TestContext {
     submitted,
     recorded,
     chimes,
-    haptics,
-    narration,
-    history,
     mic,
     setSpeechFrame: (frame) => {
       speechFrame = frame;
     },
     speech: { frame: () => speechFrame },
     profile: createProfileStore(new Map()),
-    setup: createSetupControl({
-      push: () => {
-        history.pushes += 1;
-      },
-      back: () => {
-        history.backs += 1;
-      },
-      onPop: (listener) => {
-        popListeners.add(listener);
-        return () => popListeners.delete(listener);
-      },
-    }),
-    narrator: {
-      say: (text, language) => narration.push(`${language}: ${text}`),
-      cancel: () => narration.push("cancel"),
-      canSpeak: () => true,
-    },
     chime: (kind) => chimes.push(kind),
-    haptic: (kind) => haptics.push(kind),
     microphone: {
       async start() {
         if (mic.refusal) throw mic.refusal;

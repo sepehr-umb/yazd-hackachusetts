@@ -4,7 +4,6 @@ import { startFrameLoop } from "../companion/companionLoop";
 import { createOrbRenderer } from "../companion/orbRenderer";
 import type { Profile } from "../profile/profile";
 import type { Character } from "./character";
-import { micGlyph } from "./micGlyph";
 
 function createOrbElement(document: Document) {
   const orb = document.createElement("span");
@@ -15,7 +14,6 @@ function createOrbElement(document: Document) {
     layer.dataset.part = part;
     orb.append(layer);
   }
-  orb.append(micGlyph(document));
   return orb;
 }
 

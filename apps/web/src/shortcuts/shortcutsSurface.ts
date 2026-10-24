@@ -27,6 +27,9 @@ function shortcutButton(document: Document, shortcut: Shortcut, language: string
   button.append(iconFor(document, shortcut.kind));
   const shown = shortcut.text[language];
   if (shown) button.append(textSpan(document, "label", language, shown.label));
+  const other = Object.keys(shortcut.text).find((candidate) => candidate !== language);
+  const otherText = other ? shortcut.text[other] : undefined;
+  if (other && otherText) button.append(textSpan(document, "sublabel", other, otherText.label));
   return button;
 }
 

@@ -7,7 +7,6 @@ export default defineConfig({
     proxy: {
       "/request": serverTarget,
       "/audio": serverTarget,
-      "/transcribe": serverTarget,
       "/speech": serverTarget,
       "/events": { target: serverTarget, ws: true },
     },

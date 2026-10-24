@@ -30,12 +30,4 @@ describe("isToggleKey", () => {
   it("leaves keys alone inside fields and buttons that handle them", () => {
     expect(isToggleKey(key({}, element(true)))).toBe(false);
   });
-
-  it("leaves keys alone inside a dialog such as the setup sheet", () => {
-    const insideDialog = {
-      closest: (selector: string) => (selector.includes('[role="dialog"]') ? {} : null),
-    };
-
-    expect(isToggleKey(key({}, insideDialog))).toBe(false);
-  });
 });

@@ -1,3 +1,9 @@
+[data-surface="companion"] [data-role="name"] {
+  font-size: 26px;
+  font-weight: 700;
+  margin-block-end: calc(var(--gap) * -1);
+}
+
 [data-shape="blob"] > [data-part="core"],
 [data-shape="blob"] > [data-part="ring"] {
   animation: blob-morph calc(var(--dur-breathe) * 3) ease-in-out infinite alternate;
@@ -48,34 +54,4 @@
   [data-shape="blob"] > [data-part="ring"] {
     animation: none;
   }
-}
-
-[data-part="orb"] > [data-part="mic"] {
-  display: grid;
-  place-items: center;
-  color: var(--accent-deep);
-  opacity: 0;
-  transition: opacity var(--dur-state) var(--ease);
-}
-
-[data-part="orb"][data-state="idle"] > [data-part="mic"] {
-  opacity: 0.3;
-}
-
-[data-part="mic"] svg {
-  inline-size: 34%;
-  block-size: 34%;
-}
-
-[data-part="spin"] {
-  inset: -8%;
-  background: conic-gradient(from 0turn, transparent, var(--thinking), transparent 55%);
-  filter: blur(10px);
-  opacity: 0;
-  transform: rotate(calc(var(--spin, 0) * 1turn));
-  transition: opacity var(--dur-state) var(--ease);
-}
-
-[data-state="thinking"] > [data-part="spin"] {
-  opacity: 0.9;
 }

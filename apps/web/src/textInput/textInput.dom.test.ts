@@ -23,15 +23,6 @@ describe("textInputSurface", () => {
     expect(textInputSurface.id).toBe("textInput");
   });
 
-  it("shows the send button as a labelled arrow icon inside the field, with no word", () => {
-    const { button, form } = mounted();
-
-    expect(button.getAttribute("aria-label")).toBe("Send");
-    expect(button.textContent).toBe("");
-    expect(button.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
-    expect(button.parentElement).toBe(form);
-  });
-
   it("sends the trimmed text on submit and clears the box", () => {
     const { context, input, submit } = mounted();
 

@@ -10,9 +10,6 @@ const throwing: KeyValueStorage = {
   set() {
     throw new Error("quota");
   },
-  delete() {
-    throw new Error("blocked");
-  },
 };
 
 describe("profile store", () => {
@@ -23,8 +20,6 @@ describe("profile store", () => {
       shape: "circle",
       character: "face",
       language: "fa",
-      flipIdle: "#000000",
-      flipListening: "#FFE600",
     });
   });
 

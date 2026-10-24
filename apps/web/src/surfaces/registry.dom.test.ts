@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { defaultProfile } from "../profile/profile";
-import type { Vision } from "../profile/profile";
 import { createTestContext } from "../testing/testContext";
 import { mountSurfaces } from "./mountSurfaces";
-import { surfaceRegistry } from "./registry";
-import { settingsFor } from "./settingsFor";
+import { defaultSettings, surfaceRegistry } from "./registry";
 
 const mountedIds = (surfaces: Record<string, boolean>) => {
   const root = document.createElement("div");
@@ -17,12 +14,9 @@ const mountedIds = (surfaces: Record<string, boolean>) => {
   return [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
 };
 
-const layout = (vision: Vision) => settingsFor({ ...defaultProfile, vision }).surfaces;
-
 describe("surface registry", () => {
-  it("registers the full-screen button first and keeps the older surfaces after the new layout", () => {
+  it("registers the shortcuts and companion layout first and keeps the older surfaces after it", () => {
     expect(surfaceRegistry.map((surface) => surface.id)).toEqual([
-      "fullscreen",
       "shortcuts",
       "companion",
       "captions",
@@ -31,27 +25,33 @@ describe("surface registry", () => {
       "face",
       "voice",
       "activityPanel",
-      "setup",
     ]);
   });
 
-  it("mounts today's layout for full vision, in registry order", () => {
-    expect(mountedIds(layout("full"))).toEqual([
+  it("turns on the shortcuts, companion, captions, text input and personalize and leaves the older surfaces off", () => {
+    expect(defaultSettings).toEqual({
+      surfaces: {
+        shortcuts: true,
+        companion: true,
+        captions: true,
+        textInput: true,
+        personalize: true,
+        face: false,
+        voice: false,
+        activityPanel: false,
+      },
+    });
+    expect(mountedIds(defaultSettings.surfaces)).toEqual([
       "shortcuts",
       "companion",
       "captions",
       "textInput",
       "personalize",
-      "setup",
     ]);
   });
 
-  it("mounts only the full-screen button and setup for minimal vision", () => {
-    expect(mountedIds(layout("minimal"))).toEqual(["fullscreen", "setup"]);
-  });
-
   it("can still switch the voice and activity panel back on", () => {
-    expect(mountedIds({ ...layout("full"), voice: true, activityPanel: true })).toEqual([
+    expect(mountedIds({ ...defaultSettings.surfaces, voice: true, activityPanel: true })).toEqual([
       "shortcuts",
       "companion",
       "captions",
@@ -59,7 +59,6 @@ describe("surface registry", () => {
       "personalize",
       "voice",
       "activityPanel",
-      "setup",
     ]);
   });
 });

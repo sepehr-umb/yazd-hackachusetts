@@ -19,12 +19,12 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: calc(var(--gap) * 1.5);
   min-block-size: 100dvh;
   max-inline-size: 1100px;
   margin-inline: auto;
-  padding-block: var(--safe-top) calc(var(--gap) + var(--safe-bottom));
-  padding-inline: max(var(--gap), var(--safe-inline));
+  padding: var(--gap);
+  padding-block-end: calc(var(--target) + var(--gap) * 2);
 }
 
 button,
@@ -33,29 +33,14 @@ input {
   color: inherit;
 }
 
-button,
-input,
-summary,
-label {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible {
   outline: 4px solid var(--accent-deep);
   outline-offset: 4px;
-}
-
-h1,
-h2,
-h3,
-legend {
-  font-weight: 600;
-  letter-spacing: -0.01em;
 }
 
 p {

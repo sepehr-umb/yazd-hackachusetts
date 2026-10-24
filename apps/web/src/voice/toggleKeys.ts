@@ -1,5 +1,5 @@
 const TOGGLE_KEYS = [" ", "Enter"];
-const OWN_KEY_HANDLERS = 'input, textarea, select, button, a, [contenteditable], [role="dialog"]';
+const OWN_KEY_HANDLERS = "input, textarea, select, button, a, [contenteditable]";
 
 export function isToggleKey(event: KeyboardEvent): boolean {
   if (!TOGGLE_KEYS.includes(event.key)) return false;

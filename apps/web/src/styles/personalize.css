@@ -1,3 +1,25 @@
+[data-surface="personalize"] [data-role="opener"] {
+  position: fixed;
+  inset-block-end: var(--gap);
+  inset-inline-end: var(--gap);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  inline-size: var(--target);
+  block-size: var(--target);
+  border: none;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="personalize"] [data-role="opener"] svg {
+  inline-size: 40px;
+  block-size: 40px;
+}
+
 [data-surface="personalize"] [data-role="backdrop"] {
   position: fixed;
   inset: 0;
@@ -45,7 +67,7 @@
 [data-surface="personalize"] label {
   display: block;
   margin-block-end: 8px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 [data-surface="personalize"] input {
@@ -82,7 +104,7 @@
 
 [data-surface="personalize"] [role="dialog"] button[aria-pressed="true"] {
   border-color: var(--accent-deep);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 [data-surface="personalize"] [role="dialog"] button[aria-pressed="true"]::after {
@@ -103,7 +125,7 @@
 
 [data-surface="personalize"] [data-role="done"] {
   background: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 [data-surface="personalize"] button:active {
