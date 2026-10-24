@@ -27,9 +27,6 @@ export const strings = {
   },
   captions: {
     translationUnavailable: "Translation unavailable",
-    youSaid: "You said",
-    assistantSaid: "Assistant said",
-    english: "English",
   },
   activity: {
     title: "Activity",
@@ -38,5 +35,8 @@ export const strings = {
     agent: (agent: string) => `Agent: ${agent}`,
     toolCall: (tool: string, status: string) => `Tool ${tool}: ${status}`,
     speech: (audioUrl: string) => `Speech: ${audioUrl}`,
+    userCaption: (text: string, english: string) => `You said: ${text} · English: ${english}`,
+    assistantCaption: (text: string, english: string) =>
+      `Assistant said: ${text} · English: ${english}`,
   },
 };

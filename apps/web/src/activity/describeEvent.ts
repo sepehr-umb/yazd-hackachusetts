@@ -23,5 +23,13 @@ export function describeEvent(event: AssistantEvent): EventDescription {
       };
     case "speech":
       return { text: strings.activity.speech(event.audioUrl), tone: "neutral" };
+    case "caption":
+      return {
+        text:
+          event.speaker === "user"
+            ? strings.activity.userCaption(event.text, event.english)
+            : strings.activity.assistantCaption(event.text, event.english),
+        tone: "neutral",
+      };
   }
 }
