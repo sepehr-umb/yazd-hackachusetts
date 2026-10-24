@@ -6,6 +6,8 @@ import type { Clock } from "./clock/clock";
 import { createConversation } from "./conversation/conversation";
 import type { EventHub } from "./events/eventHub";
 import { createReplier } from "./failure/replier";
+import { createStubTranscriber } from "./language/transcriber";
+import type { Transcriber } from "./language/transcriber";
 import type { LlmClient, Orchestrator } from "./orchestrator";
 import { readLanguage, readLanguageHeader, readText } from "./readRequestBody";
 import { createSpeaker } from "./speech/speaker";
@@ -23,6 +25,7 @@ export type ServerDeps = {
   stt: Stt;
   tts: Tts;
   translator: Translator;
+  transcriber?: Transcriber;
   speech?: SpeechStore;
   idleAfterMs?: number;
   staticDir?: string;
@@ -38,6 +41,7 @@ export function createServer({
   stt,
   tts,
   translator,
+  transcriber = createStubTranscriber(),
   speech = createSpeechStore(),
   idleAfterMs,
   staticDir,
@@ -115,6 +119,22 @@ export function createServer({
     }
     if (text === "") return reply.code(422).send({ error: strings.audio.nothingHeard });
     return runPipeline(text, language);
+  });
+
+  app.post("/transcribe", async (request, reply) => {
+    const data = request.body;
+    if (!Buffer.isBuffer(data) || data.length === 0) {
+      return reply.code(400).send({ error: strings.audio.emptyRecording });
+    }
+    try {
+      const recording = { data, mimeType: request.headers["content-type"] ?? "" };
+      return await transcriber.transcribe(recording, {
+        language: readLanguageHeader(request.headers),
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return reply.code(502).send({ error: strings.audio.transcriptionFailed(message) });
+    }
   });
 
   app.get<{ Params: { id: string } }>("/speech/:id", async (request, reply) => {

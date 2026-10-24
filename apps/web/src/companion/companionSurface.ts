@@ -2,6 +2,8 @@ import type { AssistantState } from "@mahmood/contracts";
 import { strings } from "@mahmood/strings";
 import type { Character } from "../characters/character";
 import { characterFor, characterRegistry } from "../characters/registry";
+import { prefersReducedMotion } from "../flip/reducedMotion";
+import { onPressOrHold } from "../input/longPress";
 import type { Surface, Unmount } from "../surfaces/surface";
 import { onToggleKey } from "../voice/toggleKeys";
 import { voiceConfig } from "../voice/voiceConfig";
@@ -9,15 +11,18 @@ import type { VoiceConfig } from "../voice/voiceConfig";
 import { createVoiceSession } from "../voice/voiceSession";
 import type { FrameScheduler } from "./companionLoop";
 import { companionState } from "./companionState";
+import { mountLowVision } from "./lowVision";
 
 export type CompanionSurfaceDeps = Partial<FrameScheduler> & {
   config?: VoiceConfig;
   characters?: Character[];
+  reducedMotion?: () => boolean;
 };
 
 export function createCompanionSurface({
   config = voiceConfig,
   characters = characterRegistry,
+  reducedMotion = prefersReducedMotion,
   requestFrame = (callback) => requestAnimationFrame(callback),
   cancelFrame = (handle) => cancelAnimationFrame(handle),
 }: CompanionSurfaceDeps = {}): Surface {
@@ -28,13 +33,14 @@ export function createCompanionSurface({
       const { profile } = context;
       const button = document.createElement("button");
       button.type = "button";
-      const name = document.createElement("p");
-      name.dataset.role = "name";
-      name.dir = "auto";
+      const hint = document.createElement("p");
+      hint.dataset.role = "hint";
+      hint.dir = "auto";
+      hint.setAttribute("aria-hidden", "true");
       const status = document.createElement("p");
       status.setAttribute("role", "status");
       status.dir = "auto";
-      host.append(button, name, status);
+      host.append(button, hint, status);
 
       let streamState: AssistantState = "idle";
       const unsubscribeEvents = context.events.subscribe((event) => {
@@ -60,7 +66,15 @@ export function createCompanionSurface({
         button.setAttribute("aria-label", label);
         button.dataset.phase = phase;
         button.setAttribute("aria-disabled", String(phase === "sending"));
-        name.textContent = profile.get().name;
+        const { language } = profile.get();
+        const copy = strings.flip[language];
+        hint.lang = language;
+        hint.textContent =
+          phase === "recording"
+            ? copy.status.listening
+            : phase === "sending"
+              ? copy.status.thinking
+              : copy.tapToTalk;
       };
 
       const env = {
@@ -86,18 +100,35 @@ export function createCompanionSurface({
       });
       showCharacter();
 
-      button.addEventListener("click", session.toggle);
+      const low = profile.get().vision === "low";
+      const stopPress = onPressOrHold(button, {
+        onPress: session.toggle,
+        onHold: low ? context.setup.open : undefined,
+      });
+      const unmountLow = low
+        ? mountLowVision({
+            host,
+            button,
+            session,
+            profile,
+            reducedMotion,
+            requestFrame,
+            cancelFrame,
+          })
+        : () => {};
       const stopKeys = onToggleKey(document, session.toggle);
       render();
 
       return () => {
+        unmountLow();
+        stopPress();
         unmountCharacter();
         unsubscribeProfile();
         session.dispose();
         stopKeys();
         unsubscribeEvents();
         button.remove();
-        name.remove();
+        hint.remove();
         status.remove();
       };
     },

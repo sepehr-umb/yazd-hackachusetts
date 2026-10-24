@@ -7,28 +7,51 @@
 
 [data-surface="textInput"] form {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
+  block-size: var(--field);
+  padding-inline: 20px 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+[data-surface="textInput"] form:has(input:focus-visible) {
+  outline: 4px solid var(--accent-deep);
+  outline-offset: 4px;
 }
 
 [data-surface="textInput"] input {
   flex: 1;
   min-inline-size: 0;
-  min-block-size: var(--target);
-  padding-inline: 24px;
-  border: 2px solid var(--ink-muted);
-  border-radius: var(--radius-button);
-  background: var(--surface);
+  block-size: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+}
+
+[data-surface="textInput"] input:focus-visible {
+  outline: none;
 }
 
 [data-surface="textInput"] button {
-  min-inline-size: var(--target);
-  min-block-size: var(--target);
-  padding-inline: 24px;
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--icon-button);
+  block-size: var(--icon-button);
+  padding: 0;
   border: none;
-  border-radius: var(--radius-button);
+  border-radius: 50%;
   background: var(--accent);
-  font-weight: 700;
+  color: var(--ink);
   transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="textInput"] button svg {
+  inline-size: 24px;
+  block-size: 24px;
 }
 
 [data-surface="textInput"] button:active {
@@ -41,8 +64,11 @@
 
 [data-surface="textInput"] p {
   margin-block-start: 8px;
-  margin-inline: 24px;
-  min-block-size: 1.4em;
+  margin-inline: 20px;
+}
+
+[data-surface="textInput"] p:empty {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -16,6 +16,14 @@ describe("orb character", () => {
     expect(orbCharacter.label).toBe("Glowing orb");
   });
 
+  it("holds a microphone glyph, hidden from screen readers", () => {
+    const { orb } = mounted();
+    const mic = orb.querySelector("[data-part=mic]");
+
+    expect(mic?.getAttribute("aria-hidden")).toBe("true");
+    expect(mic?.querySelector("svg path")).not.toBeNull();
+  });
+
   it("draws in the profile's hue and shape", () => {
     const { orb } = mounted();
 

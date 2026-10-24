@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import type { Language } from "../profile/languages";
 import { createTestContext } from "../testing/testContext";
 import type { Shortcut } from "./shortcuts";
 import { createShortcutsSurface } from "./shortcutsSurface";
@@ -28,7 +29,7 @@ afterEach(() => {
 
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-function mounted(language = "fa") {
+function mounted(language: Language = "fa") {
   const context = createTestContext();
   const host = document.createElement("section");
   document.body.append(host);
@@ -51,17 +52,17 @@ describe("shortcuts surface", () => {
     expect(buttons.every((button) => button.type === "button" && button.tabIndex === 0)).toBe(true);
   });
 
-  it("labels each button in the display language and the other language as sublabel", () => {
+  it("captions each button with one line only: the label in the profile's language", () => {
     const { buttons } = mounted();
-    const label = buttons[0]?.querySelector("[data-role=label]") as HTMLElement;
-    const sublabel = buttons[0]?.querySelector("[data-role=sublabel]") as HTMLElement;
+    const captions = buttons[0]?.querySelectorAll("span") ?? [];
+    const label = captions[0] as HTMLElement;
 
+    expect(captions).toHaveLength(1);
+    expect(label.dataset.role).toBe("label");
     expect(label.textContent).toBe("مامان");
     expect(label.lang).toBe("fa");
     expect(label.dir).toBe("auto");
-    expect(sublabel.textContent).toBe("Mom");
-    expect(sublabel.lang).toBe("en");
-    expect(sublabel.dir).toBe("auto");
+    expect(buttons[0]?.querySelector("[data-role=sublabel]")).toBeNull();
   });
 
   it("draws the icon for each shortcut's kind, hidden from screen readers", () => {
@@ -70,6 +71,8 @@ describe("shortcuts surface", () => {
 
     expect(icons.map((icon) => icon?.dataset.icon)).toEqual(["call", "tv"]);
     expect(icons.every((icon) => icon?.getAttribute("aria-hidden") === "true")).toBe(true);
+    expect(icons.every((icon) => icon?.getAttribute("fill") === "currentColor")).toBe(true);
+    expect(icons.every((icon) => !icon?.hasAttribute("stroke"))).toBe(true);
   });
 
   it("submits the phrase exactly as written in the data", async () => {
@@ -137,12 +140,12 @@ describe("shortcuts surface", () => {
     await settle();
 
     expect(button.querySelector("[data-role=label]")?.textContent).toBe("Mom");
-    expect(button.querySelector("[data-role=sublabel]")?.textContent).toBe("مامان");
+    expect(button.querySelector("[data-role=sublabel]")).toBeNull();
     expect(context.submitted).toEqual(["Call Mom"]);
   });
 
   it("falls back to the first language in the data when the profile's is missing", () => {
-    const { buttons } = mounted("de");
+    const { buttons } = mounted("es");
 
     expect(buttons[0]?.querySelector("[data-role=label]")?.textContent).toBe("مامان");
   });

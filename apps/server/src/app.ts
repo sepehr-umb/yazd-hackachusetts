@@ -8,6 +8,7 @@ import { createEventHub } from "./events/eventHub";
 import { selectLlmClient } from "./llm/selectLlmClient";
 import type { Env, LlmClientOptions } from "./llm/selectLlmClient";
 import { createOrchestrator, createStubTools } from "./orchestrator";
+import { selectTranscriber } from "./language/selectTranscriber";
 import { createServer } from "./server";
 import { withSettings } from "./settings/withSettings";
 import { selectStt } from "./stt/selectStt";
@@ -29,12 +30,16 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
     bus: hub,
   });
   const staticDir =
-    options.staticDir !== undefined && existsSync(options.staticDir) ? options.staticDir : undefined;
+    options.staticDir !== undefined && existsSync(options.staticDir)
+      ? options.staticDir
+      : undefined;
+  const stt = selectStt(env, options);
   return createServer({
     orchestrator,
     hub,
     apologyLlm: llm,
-    stt: selectStt(env, options),
+    stt,
+    transcriber: selectTranscriber(env, stt, options),
     tts: selectTts(env, options),
     translator: selectTranslator(env, options),
     idleAfterMs: options.idleAfterMs,

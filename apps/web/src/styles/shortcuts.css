@@ -1,7 +1,7 @@
 [data-surface="shortcuts"] [role="group"] {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--gap);
+  gap: 12px;
 }
 
 @media (min-width: 900px) {
@@ -11,34 +11,49 @@
 }
 
 [data-surface="shortcuts"] button {
+  --tile: var(--surface);
+  --tile-pressed: var(--surface);
+  --tile-icon: var(--accent-deep);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-inline-size: var(--target);
-  min-block-size: 120px;
-  padding: var(--gap) 12px;
-  border: 3px solid transparent;
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-  text-align: center;
+  gap: 12px;
+  min-inline-size: 0;
+  block-size: 88px;
+  padding-inline: 16px;
+  border: none;
+  border-radius: var(--radius-tile);
+  background: var(--tile);
+  box-shadow: var(--shadow-tile);
+  color: var(--ink);
+  text-align: start;
   transition:
     transform var(--dur-press) var(--ease),
     background-color var(--dur-state) var(--ease),
-    border-color var(--dur-state) var(--ease),
     opacity var(--dur-state) var(--ease);
+}
+
+[data-surface="shortcuts"] button[data-kind="call"] {
+  --tile: var(--tile-call);
+  --tile-pressed: var(--tile-call-pressed);
+  --tile-icon: var(--tile-call-icon);
+}
+
+[data-surface="shortcuts"] button[data-kind="light"] {
+  --tile: var(--tile-light);
+  --tile-pressed: var(--tile-light-pressed);
+  --tile-icon: var(--tile-light-icon);
+}
+
+[data-surface="shortcuts"] button[data-kind="tv"] {
+  --tile: var(--tile-tv);
+  --tile-pressed: var(--tile-tv-pressed);
+  --tile-icon: var(--tile-tv-icon);
 }
 
 [data-surface="shortcuts"] button:active,
 [data-surface="shortcuts"] button[data-pressed="true"] {
   transform: scale(0.96);
-}
-
-[data-surface="shortcuts"] button[data-pressed="true"] {
-  border-color: var(--accent-deep);
-  background: var(--accent);
+  background: var(--tile-pressed);
 }
 
 [data-surface="shortcuts"] button[aria-disabled="true"] {
@@ -50,31 +65,21 @@
 }
 
 [data-surface="shortcuts"] svg {
-  inline-size: 44px;
-  block-size: 44px;
-  color: var(--accent-deep);
-}
-
-[data-surface="shortcuts"] button[data-pressed="true"] svg {
-  color: var(--ink);
+  flex: none;
+  inline-size: 32px;
+  block-size: 32px;
+  color: var(--tile-icon);
 }
 
 [data-surface="shortcuts"] [data-role="label"] {
-  font-size: 30px;
-  font-weight: 700;
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  font-weight: 600;
   line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-
-[data-surface="shortcuts"] [data-role="sublabel"] {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--ink-muted);
-  overflow-wrap: anywhere;
-}
-
-[data-surface="shortcuts"] button[data-pressed="true"] [data-role="sublabel"] {
-  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {

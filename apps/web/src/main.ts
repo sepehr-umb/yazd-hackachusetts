@@ -1,18 +1,29 @@
 import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
+import { createHaptics } from "./haptics/haptics";
+import { applyProfile } from "./profile/applyProfile";
+import { applyResetParam } from "./profile/resetParam";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
 import { createSettingsStore } from "./settings/settingsStore";
+import { createNarrator } from "./setup/narrator";
+import { createSetupControl } from "./setup/setupControl";
+import { applyVisionParam } from "./setup/visionParam";
 import { createSpeechPlayer } from "./speech/speechPlayer";
-import { mountSurfaces } from "./surfaces/mountSurfaces";
-import { defaultSettings, surfaceRegistry } from "./surfaces/registry";
+import { mountForProfile } from "./surfaces/mountForProfile";
+import { surfaceRegistry } from "./surfaces/registry";
+import { settingsFor } from "./surfaces/settingsFor";
 import { playChime } from "./voice/chime";
 import { createMicrophone } from "./voice/microphone";
 
 const root = document.querySelector<HTMLElement>("#app");
 if (!root) throw new Error("Page markup is missing #app");
 
+type ViteMeta = ImportMeta & { env: { DEV: boolean } };
+
+const debug =
+  (import.meta as ViteMeta).env.DEV || new URLSearchParams(location.search).has("debug");
 const audioContext = new AudioContext();
 const events = createLiveEventSource({ url: eventsUrl(location) });
 const settings = createSettingsStore({ events, storage: localStorage });
@@ -22,13 +33,17 @@ const microphone = createMicrophone({
   getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints),
   createRecorder: (stream) => new MediaRecorder(stream),
 });
+const profile = createProfileStore(browserStorage(() => localStorage));
+applyResetParam(location.href, profile, (url) => history.replaceState(history.state, "", url));
+applyVisionParam(location.href, profile, (url) => history.replaceState(history.state, "", url));
+applyProfile(document, profile.get());
+profile.subscribe((next) => applyProfile(document, next));
 
-const profileStore = createProfileStore(browserStorage(() => localStorage));
-const getLanguage = () => profileStore.get().language;
+const getLanguage = () => profile.get().language;
 
-mountSurfaces({
+mountForProfile({
   registry: surfaceRegistry,
-  settings: defaultSettings,
+  settingsFor: (current) => settingsFor(current, { debug }),
   root,
   context: {
     events,
@@ -36,10 +51,38 @@ mountSurfaces({
     recordings: createRecordingClient({ getLanguage }),
     microphone,
     chime: (kind) => playChime(audioContext, kind),
+    haptic: createHaptics({
+      document,
+      vibrate:
+        typeof navigator.vibrate === "function"
+          ? (pattern) => navigator.vibrate(pattern)
+          : undefined,
+      supportsSwitch: "switch" in HTMLInputElement.prototype,
+    }),
     speech,
-    profile: profileStore,
+    profile,
     settings,
+    setup: createSetupControl({
+      push: () => history.pushState({ yazdSetup: true }, ""),
+      back: () => history.back(),
+      onPop: (listener) => {
+        window.addEventListener("popstate", listener);
+        return () => window.removeEventListener("popstate", listener);
+      },
+    }),
+    narrator: createNarrator(
+      "speechSynthesis" in window
+        ? {
+            synth: window.speechSynthesis,
+            createUtterance: (text) => new SpeechSynthesisUtterance(text),
+          }
+        : {},
+    ),
   },
 });
 
 events.start();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+}
