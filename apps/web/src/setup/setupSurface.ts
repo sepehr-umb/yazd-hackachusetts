@@ -9,14 +9,13 @@ import type { Surface } from "../surfaces/surface";
 import { voiceConfig } from "../voice/voiceConfig";
 import type { VoiceConfig } from "../voice/voiceConfig";
 import { createVoiceSession } from "../voice/voiceSession";
-import { rotateLines } from "./rotatingLine";
-import type { Rotation } from "./rotatingLine";
 import { didNotCatchLines } from "./didNotCatchLines";
 import { languageOptions, optionButtons } from "./setupOptions";
 import { createSetupSheet } from "./setupSheet";
 import { trackSheetHistory } from "./sheetHistory";
 import { visionOptions } from "./visionOptions";
 import { createVoiceFlow } from "./voiceFlow";
+import { createWelcome } from "./welcomeScreen";
 
 export type SetupSurfaceDeps = {
   transcribe?: TranscribeClient;
@@ -24,10 +23,7 @@ export type SetupSurfaceDeps = {
   reducedMotion?: () => boolean;
 };
 
-const hellos = languages.map((language) => ({
-  text: strings.setup[language].sayHello,
-  lang: language,
-}));
+const orbLabel = languages.map((language) => strings.setup[language].sayHello).join(" · ");
 
 export function createSetupSurface({
   transcribe = createTranscribeClient(),
@@ -39,16 +35,15 @@ export function createSetupSurface({
     mount(host, context) {
       const document = host.ownerDocument;
       const { profile, narrator } = context;
-      const { sheet, orb, heading, list, show } = createSetupSheet(
-        document,
-        hellos.map(({ text }) => text).join(" · "),
-      );
+      const { sheet, orb, heading, list, show, setStep } = createSetupSheet(document, orbLabel);
+      const welcome = createWelcome(document, {
+        narrator,
+        haptic: context.haptic,
+        reducedMotion,
+        onGreet: () => flow.greet(),
+      });
+      sheet.prepend(welcome.element);
       host.append(sheet);
-      let rotation: Rotation | undefined;
-      const stopRotating = () => {
-        rotation?.stop();
-        rotation = undefined;
-      };
       const session = createVoiceSession({
         context,
         config,
@@ -59,12 +54,12 @@ export function createSetupSurface({
       const history = trackSheetHistory(context.setup.history, () => {
         if (!profile.get().vision) return history.opened();
         flow.cancel();
-        stopRotating();
+        welcome.hide();
         sheet.hidden = true;
       });
       const close = () => {
         flow.cancel();
-        stopRotating();
+        welcome.hide();
         sheet.hidden = true;
         history.closed();
       };
@@ -75,8 +70,8 @@ export function createSetupSurface({
       };
       const showVision = (chosen: Language, heard: boolean) => {
         const copy = strings.setup[chosen];
-        stopRotating();
-        sheet.dataset.step = "vision";
+        welcome.hide();
+        setStep("vision");
         show(chosen, copy.visionQuestion);
         const options = visionOptions(chosen, narrator, (vision) => choose(chosen, vision));
         list.replaceChildren(...optionButtons(document, options));
@@ -96,14 +91,14 @@ export function createSetupSurface({
         onVision: choose,
       });
       const showWelcome = () => {
-        sheet.dataset.step = "welcome";
-        stopRotating();
+        setStep("welcome");
         list.replaceChildren();
-        rotation = rotateLines(heading, hellos, reducedMotion);
+        show(profile.get().language, strings.setup[profile.get().language].sayHello);
+        welcome.show();
       };
       const showFallback = () => {
-        sheet.dataset.step = "fallback";
-        stopRotating();
+        welcome.hide();
+        setStep("fallback");
         heading.removeAttribute("lang");
         heading.replaceChildren(...didNotCatchLines(document));
         const options = languageOptions((choice) => {
@@ -124,7 +119,7 @@ export function createSetupSurface({
         else showWelcome();
         sheet.hidden = false;
         history.opened();
-        heading.focus();
+        (vision ? heading : welcome.element).focus();
       };
       const onKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Escape" && profile.get().vision && !sheet.hidden) close();
@@ -134,7 +129,7 @@ export function createSetupSurface({
       if (!profile.get().vision) open();
       return () => {
         stopOpening();
-        stopRotating();
+        welcome.hide();
         flow.cancel();
         session.dispose();
         history.stop();

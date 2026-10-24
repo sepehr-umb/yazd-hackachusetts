@@ -51,10 +51,10 @@ describe("narrator", () => {
     expect(fake.spoken).toEqual([{ text: "Elige tu idioma", lang: "es-ES", voice: null }]);
   });
 
-  it("stops whatever is being said", () => {
+  it("cancels whatever is being said", () => {
     const fake = fakeSynth([]);
 
-    createNarrator(fake).stop();
+    createNarrator(fake).cancel();
 
     expect(fake.cancels()).toBe(1);
   });
@@ -77,7 +77,7 @@ describe("narrator", () => {
         createUtterance: (text) => ({ text, lang: "", voice: null }),
       }).say("Hello", "en"),
     ).not.toThrow();
-    expect(() => createNarrator({ synth: broken }).stop()).not.toThrow();
+    expect(() => createNarrator({ synth: broken }).cancel()).not.toThrow();
   });
 
   it("tells the caller when the utterance ends or fails", () => {
@@ -102,5 +102,29 @@ describe("narrator", () => {
     createNarrator({}).say("Hello", "en", () => ended.push("no synth"));
 
     expect(ended).toEqual(["no voice", "no synth"]);
+  });
+
+  it("says which languages it can speak: one with a matching voice, or any before voices are listed", () => {
+    const listed = createNarrator(fakeSynth([{ lang: "it-IT", name: "Alice" }]));
+    const unlisted = createNarrator(fakeSynth([]));
+
+    expect([listed.canSpeak("it"), listed.canSpeak("fa")]).toEqual([true, false]);
+    expect(unlisted.canSpeak("fa")).toBe(true);
+  });
+
+  it("can speak nothing without speech synthesis or when listing voices fails", () => {
+    const failing = {
+      synth: {
+        speak: () => {},
+        cancel: () => {},
+        getVoices: (): never => {
+          throw new Error("not allowed");
+        },
+      },
+      createUtterance: (text: string) => ({ text, lang: "", voice: null }),
+    };
+
+    expect(createNarrator({}).canSpeak("en")).toBe(false);
+    expect(createNarrator(failing).canSpeak("en")).toBe(false);
   });
 });

@@ -1,0 +1,41 @@
+[data-surface="setup"] [data-role="welcome"] {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  inline-size: 100vw;
+  block-size: 100dvh;
+  padding-block: max(24px, var(--safe-top)) max(24px, var(--safe-bottom));
+  padding-inline: max(var(--gap), var(--safe-inline));
+  border-radius: 0;
+  background: var(--flip-idle);
+  color: var(--flip-idle-ink);
+  font-size: 28px;
+  text-align: center;
+}
+
+[data-surface="setup"] [data-role="welcome"]:focus-visible {
+  outline-offset: -12px;
+}
+
+[data-surface="setup"] [data-role="welcome"] [data-role="orb"] {
+  inline-size: 56vmin;
+  block-size: 56vmin;
+}
+
+[data-surface="setup"] [data-role="sentence"] {
+  transition: opacity 300ms var(--ease);
+}
+
+[data-surface="setup"] [data-role="sentence"][data-fading="true"] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="setup"] [data-role="sentence"] {
+    transition: none;
+  }
+}

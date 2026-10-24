@@ -77,7 +77,8 @@ export function createTestContext(): TestContext {
     }),
     narrator: {
       say: (text, language) => narration.push(`${language}: ${text}`),
-      stop: () => narration.push("stop"),
+      cancel: () => narration.push("cancel"),
+      canSpeak: () => true,
     },
     chime: (kind) => chimes.push(kind),
     haptic: (kind) => haptics.push(kind),

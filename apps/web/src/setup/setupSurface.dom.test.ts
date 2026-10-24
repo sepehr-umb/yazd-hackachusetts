@@ -55,7 +55,7 @@ describe("setup surface", () => {
 
     options()[1]?.focus();
 
-    expect(spoken).toEqual(["stop", "es: Veo formas y colores"]);
+    expect(spoken).toEqual(["cancel", "es: Veo formas y colores"]);
   });
 
   it("writes language and vision, confirms aloud and closes on a choice", async () => {
@@ -67,7 +67,7 @@ describe("setup surface", () => {
     pick("Vedo a malapena lo schermo");
 
     expect(context.profile.get()).toMatchObject({ language: "it", vision: "minimal" });
-    expect(spoken).toEqual(["stop", "it: Fatto. Lo schermo è pronto."]);
+    expect(spoken).toEqual(["cancel", "it: Fatto. Lo schermo è pronto."]);
     expect(sheet.hidden).toBe(true);
   });
 

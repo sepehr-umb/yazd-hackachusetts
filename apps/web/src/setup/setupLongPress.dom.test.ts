@@ -17,8 +17,9 @@ const menuOn = (button: HTMLButtonElement | undefined) => {
 };
 
 describe("setup sheet on a long press", () => {
-  it("shows no system menu on the orb, a language button or a vision button", async () => {
-    const { orb, options, fallBack } = mountSetup();
+  it("shows no system menu on the welcome, the orb, a language button or a vision button", async () => {
+    const { orb, welcome, options, fallBack } = mountSetup();
+    expect(menuOn(welcome())).toBe(true);
     expect(menuOn(orb())).toBe(true);
     await fallBack();
 

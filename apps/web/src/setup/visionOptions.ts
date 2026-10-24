@@ -17,7 +17,7 @@ export function visionOptions(
     number: String(index + 1),
     language,
     onFocus: () => {
-      narrator.stop();
+      narrator.cancel();
       narrator.say(copy.vision[vision], language);
     },
     onChoose: () => choose(vision),

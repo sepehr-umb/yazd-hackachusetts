@@ -74,7 +74,7 @@ export function createVoiceFlow({
     cancel() {
       turn += 1;
       session.cancel();
-      narrator.stop();
+      narrator.cancel();
     },
   };
 }

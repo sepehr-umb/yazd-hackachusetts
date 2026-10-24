@@ -16,7 +16,8 @@ export type SynthLike = {
 
 export type Narrator = {
   say(text: string, language: Language, onEnd?: () => void): void;
-  stop(): void;
+  cancel(): void;
+  canSpeak(language: Language): boolean;
 };
 
 export type NarratorDeps = {
@@ -52,7 +53,15 @@ export function createNarrator({ synth, createUtterance }: NarratorDeps): Narrat
         onEnd?.();
       }
     },
-    stop() {
+    canSpeak(language) {
+      try {
+        if (!synth || !createUtterance) return false;
+        return voiceFor(synth, language).found;
+      } catch {
+        return false;
+      }
+    },
+    cancel() {
       try {
         synth?.cancel();
       } catch {

@@ -15,19 +15,18 @@ afterEach(() => {
 const hello = (index: number) => strings.setup[languages[index % 4] ?? "fa"].sayHello;
 
 describe("setup welcome", () => {
-  it("greets a new profile with the yellow orb as the first control, labelled in every language", () => {
-    const { sheet, orb } = mountSetup();
+  it("greets a new profile with the welcome button as the first control, labelled in every language", () => {
+    const { sheet, welcome } = mountSetup();
 
     expect(sheet.hidden).toBe(false);
-    expect(sheet.firstElementChild).toBe(orb());
-    expect(orb().type).toBe("button");
+    expect(sheet.firstElementChild).toBe(welcome());
     for (const language of languages) {
-      expect(orb().getAttribute("aria-label")).toContain(strings.setup[language].sayHello);
+      expect(welcome().getAttribute("aria-label")).toContain(strings.setup[language].sayHello);
     }
   });
 
   it("asks to say hello in Farsi first, in its own language and direction", () => {
-    const { heading } = mountSetup();
+    const { sentence: heading } = mountSetup();
 
     expect(heading().textContent).toBe("دکمه را فشار بده و بگو «سلام»");
     expect(heading().lang).toBe("fa");
@@ -35,7 +34,7 @@ describe("setup welcome", () => {
   });
 
   it("changes the sentence every 3 s with a 300 ms crossfade, through all four languages", () => {
-    const { heading } = mountSetup();
+    const { sentence: heading } = mountSetup();
 
     vi.advanceTimersByTime(3000);
     expect(heading().dataset.fading).toBe("true");
@@ -49,7 +48,7 @@ describe("setup welcome", () => {
   });
 
   it("changes instantly, with no fade, when motion is reduced", () => {
-    const { heading } = mountSetup({ reduced: true });
+    const { sentence: heading } = mountSetup({ reduced: true });
 
     vi.advanceTimersByTime(3000);
 
@@ -58,7 +57,7 @@ describe("setup welcome", () => {
   });
 
   it("stops rotating when unmounted", () => {
-    const { heading, unmount } = mountSetup();
+    const { sentence: heading, unmount } = mountSetup();
     const before = heading().textContent;
 
     unmount();

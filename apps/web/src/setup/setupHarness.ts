@@ -7,10 +7,9 @@ import { createSetupSurface } from "./setupSurface";
 
 const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
 
-export function mountSetup({
-  vision,
-  reduced = false,
-}: { vision?: Vision; reduced?: boolean } = {}) {
+export type SetupHarnessOptions = { vision?: Vision; reduced?: boolean; voices?: Language[] };
+
+export function mountSetup({ vision, reduced = false, voices }: SetupHarnessOptions = {}) {
   const context = createTestContext();
   if (vision) context.profile.update({ vision });
   const spoken: string[] = [];
@@ -20,9 +19,10 @@ export function mountSetup({
       spoken.push(`${language}: ${text}`);
       if (onEnd) endings.push(onEnd);
     },
-    stop() {
-      spoken.push("stop");
+    cancel() {
+      spoken.push("cancel");
     },
+    canSpeak: (language: Language) => voices === undefined || voices.includes(language),
   };
   const answers: Array<Transcription | Error> = [];
   const heard: Blob[] = [];
@@ -43,6 +43,14 @@ export function mountSetup({
   const sheet = host.querySelector("[role=dialog]") as HTMLElement;
   const orb = () =>
     sheet.querySelector<HTMLButtonElement>("button[data-role=orb]") as HTMLButtonElement;
+  const welcome = () =>
+    sheet.querySelector<HTMLButtonElement>("button[data-role=welcome]") as HTMLButtonElement;
+  const sentence = () =>
+    welcome().querySelector<HTMLElement>("[data-role=sentence]") as HTMLElement;
+  const tap = async () => {
+    welcome().click();
+    await vi.advanceTimersByTimeAsync(0);
+  };
   const heading = () => sheet.querySelector("h2") as HTMLElement;
   const options = () => [
     ...sheet.querySelectorAll<HTMLButtonElement>("[data-role=options] button"),
@@ -62,13 +70,16 @@ export function mountSetup({
   };
   const fallBack = async () => {
     answers.push({ text: "", language: undefined });
-    orb().click();
-    await vi.advanceTimersByTimeAsync(0);
+    await tap();
+    await tap();
     await say();
   };
   return {
     say,
     fallBack,
+    welcome,
+    sentence,
+    tap,
     context,
     host,
     unmount,

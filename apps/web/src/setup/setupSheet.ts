@@ -6,6 +6,7 @@ export type SetupSheet = {
   heading: HTMLHeadingElement;
   list: HTMLDivElement;
   show(language: Language, title: string): void;
+  setStep(step: "welcome" | "vision" | "fallback"): void;
 };
 
 export function createSetupSheet(document: Document, orbLabel: string): SetupSheet {
@@ -34,6 +35,10 @@ export function createSetupSheet(document: Document, orbLabel: string): SetupShe
     show(language, title) {
       heading.lang = language;
       heading.textContent = title;
+    },
+    setStep(step) {
+      sheet.dataset.step = step;
+      for (const part of [orb, heading, list]) part.hidden = step === "welcome";
     },
   };
 }
