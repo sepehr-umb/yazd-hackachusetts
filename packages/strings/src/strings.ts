@@ -22,6 +22,10 @@ export const strings = {
     thinking: "Thinking",
     nothingHeard: "Nothing was heard",
   },
+  companion: {
+    talk: "Tap to talk",
+    stop: "Tap to stop",
+  },
   request: {
     unexpectedResponse: "Unexpected response from the server",
   },

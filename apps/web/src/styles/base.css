@@ -1,0 +1,59 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-block-size: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, sans-serif;
+  font-size: 22px;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+  min-block-size: 100dvh;
+  max-inline-size: 1100px;
+  margin-inline: auto;
+  padding: var(--gap);
+  padding-block-end: calc(var(--gap) * 2);
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 4px solid var(--accent-deep);
+  outline-offset: 4px;
+}
+
+p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+[role="status"][data-tone="error"]::before {
+  content: "";
+  display: inline-block;
+  inline-size: 0.6em;
+  block-size: 0.6em;
+  margin-inline-end: 0.4em;
+  border-radius: 50%;
+  background: var(--error);
+}

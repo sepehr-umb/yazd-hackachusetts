@@ -3,51 +3,50 @@ import { createTestContext } from "../testing/testContext";
 import { mountSurfaces } from "./mountSurfaces";
 import { defaultSettings, surfaceRegistry } from "./registry";
 
+const mountedIds = (surfaces: Record<string, boolean>) => {
+  const root = document.createElement("div");
+  mountSurfaces({
+    registry: surfaceRegistry,
+    settings: { surfaces },
+    root,
+    context: createTestContext(),
+  });
+  return [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
+};
+
 describe("surface registry", () => {
-  it("registers the face, captions, activity panel, text input and voice, all enabled by default", () => {
+  it("registers the companion layout first and keeps the older surfaces after it", () => {
     expect(surfaceRegistry.map((surface) => surface.id)).toEqual([
-      "face",
+      "companion",
       "captions",
-      "activityPanel",
       "textInput",
+      "face",
       "voice",
+      "activityPanel",
     ]);
+  });
+
+  it("turns on the companion, captions and text input and leaves the older surfaces off", () => {
     expect(defaultSettings).toEqual({
       surfaces: {
-        face: true,
+        companion: true,
         captions: true,
-        activityPanel: true,
         textInput: true,
-        voice: true,
+        face: false,
+        voice: false,
+        activityPanel: false,
       },
     });
+    expect(mountedIds(defaultSettings.surfaces)).toEqual(["companion", "captions", "textInput"]);
   });
 
-  it("renders only the surfaces the settings leave on", () => {
-    const root = document.createElement("div");
-
-    mountSurfaces({
-      registry: surfaceRegistry,
-      settings: { surfaces: { ...defaultSettings.surfaces, face: false, textInput: false } },
-      root,
-      context: createTestContext(),
-    });
-
-    const mounted = [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
-    expect(mounted).toEqual(["captions", "activityPanel", "voice"]);
-  });
-
-  it("leaves out the voice surface when the settings turn it off", () => {
-    const root = document.createElement("div");
-
-    mountSurfaces({
-      registry: surfaceRegistry,
-      settings: { surfaces: { ...defaultSettings.surfaces, face: false, voice: false } },
-      root,
-      context: createTestContext(),
-    });
-
-    const mounted = [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
-    expect(mounted).toEqual(["captions", "activityPanel", "textInput"]);
+  it("can still switch the voice and activity panel back on", () => {
+    expect(mountedIds({ ...defaultSettings.surfaces, voice: true, activityPanel: true })).toEqual([
+      "companion",
+      "captions",
+      "textInput",
+      "voice",
+      "activityPanel",
+    ]);
   });
 });

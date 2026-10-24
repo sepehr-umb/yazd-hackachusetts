@@ -1,0 +1,23 @@
+:root {
+  --bg: #fbf6ee;
+  --surface: #fffdf9;
+  --ink: #2b2520;
+  --ink-muted: #5a4e45;
+  --accent: #f2a65a;
+  --accent-deep: #d9734a;
+  --listening: #e8b04b;
+  --thinking: #c9a66b;
+  --error: #c8553d;
+  --ok: #6e9f6b;
+  --radius-card: 24px;
+  --radius-button: 28px;
+  --gap: 16px;
+  --dur-press: 180ms;
+  --dur-state: 400ms;
+  --dur-breathe: 4s;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --target: 88px;
+  --hue: 30;
+  --shadow-soft: 0 6px 24px rgb(43 37 32 / 0.08);
+  color-scheme: light;
+}

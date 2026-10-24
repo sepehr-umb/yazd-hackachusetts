@@ -1,0 +1,105 @@
+[data-surface="companion"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 1.5);
+  padding-block: calc(var(--gap) * 2) var(--gap);
+}
+
+[data-surface="companion"] > button {
+  position: relative;
+  inline-size: clamp(160px, 44vmin, 380px);
+  block-size: clamp(160px, 44vmin, 380px);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="companion"] > button:active {
+  transform: scale(0.96);
+}
+
+[data-surface="companion"] > button[aria-disabled="true"] {
+  cursor: progress;
+}
+
+[data-part="orb"] {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: scale(var(--scale, 1));
+}
+
+[data-part="orb"] > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 50%;
+}
+
+[data-part="core"] {
+  background: radial-gradient(
+    circle at 35% 30%,
+    hsl(var(--hue) 95% 85%),
+    hsl(var(--hue) 86% 65%) 55%,
+    hsl(calc(var(--hue) - 10) 70% 56%)
+  );
+  box-shadow:
+    0 0 calc(24px + 64px * var(--glow, 0.35)) calc(4px + 18px * var(--glow, 0.35))
+      hsl(var(--hue) 90% 70% / calc(0.25 + 0.35 * var(--glow, 0.35))),
+    inset 0 -10px 30px hsl(calc(var(--hue) - 10) 70% 45% / 0.35);
+}
+
+[data-part="core"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--error);
+  opacity: var(--tint, 0);
+}
+
+[data-part="ring"] {
+  border: 6px solid var(--listening);
+  opacity: 0;
+  transform: scale(calc(1 + 0.45 * var(--ring, 0)));
+}
+
+[data-state="listening"] > [data-part="ring"] {
+  opacity: calc(1 - var(--ring, 0));
+}
+
+[data-part="spin"] {
+  inset: -8%;
+  background: conic-gradient(from 0turn, transparent, var(--thinking), transparent 55%);
+  filter: blur(10px);
+  opacity: 0;
+  transform: rotate(calc(var(--spin, 0) * 1turn));
+  transition: opacity var(--dur-state) var(--ease);
+}
+
+[data-state="thinking"] > [data-part="spin"] {
+  opacity: 0.9;
+}
+
+[data-surface="companion"] > [role="status"] {
+  min-block-size: 1.4em;
+  max-inline-size: 30ch;
+  font-size: 24px;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-part="orb"],
+  [data-part="spin"],
+  [data-surface="companion"] > button:active {
+    transform: none;
+  }
+
+  [data-state="listening"] > [data-part="ring"] {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,57 @@
+[data-surface="face"] canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+}
+
+[data-surface="voice"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-surface="voice"] button {
+  inline-size: 128px;
+  block-size: 128px;
+  border-radius: 50%;
+  border: 6px solid var(--accent-deep);
+  background: var(--accent);
+}
+
+[data-surface="voice"] button[data-phase="recording"] {
+  background: var(--listening);
+}
+
+[data-surface="voice"] button:disabled {
+  opacity: 0.6;
+}
+
+[data-surface="activityPanel"] {
+  padding: var(--gap);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+[data-surface="activityPanel"] h2 {
+  margin: 0 0 8px;
+  font-size: 1em;
+}
+
+[data-surface="activityPanel"] ul {
+  max-block-size: 40vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+[data-surface="activityPanel"] li {
+  padding-block: 4px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}

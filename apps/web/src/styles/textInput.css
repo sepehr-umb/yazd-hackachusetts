@@ -1,0 +1,52 @@
+[data-surface="textInput"] {
+  margin-block-start: auto;
+  inline-size: 100%;
+  max-inline-size: 720px;
+  margin-inline: auto;
+}
+
+[data-surface="textInput"] form {
+  display: flex;
+  gap: 12px;
+}
+
+[data-surface="textInput"] input {
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: var(--target);
+  padding-inline: 24px;
+  border: 2px solid var(--ink-muted);
+  border-radius: var(--radius-button);
+  background: var(--surface);
+}
+
+[data-surface="textInput"] button {
+  min-inline-size: var(--target);
+  min-block-size: var(--target);
+  padding-inline: 24px;
+  border: none;
+  border-radius: var(--radius-button);
+  background: var(--accent);
+  font-weight: 700;
+  transition: transform var(--dur-press) var(--ease);
+}
+
+[data-surface="textInput"] button:active {
+  transform: scale(0.96);
+}
+
+[data-surface="textInput"] :disabled {
+  opacity: 0.6;
+}
+
+[data-surface="textInput"] p {
+  margin-block-start: 8px;
+  margin-inline: 24px;
+  min-block-size: 1.4em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="textInput"] button:active {
+    transform: none;
+  }
+}
