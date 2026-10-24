@@ -19,7 +19,7 @@ hardcode a color, radius or duration elsewhere.
 | `--bg` | `#FBF6EE` | page background |
 | `--surface` | `#FFFDF9` | tiles, sheets, fields |
 | `--ink` | `#2B2520` | all text |
-| `--ink-muted` | `#5A4E45` | sublabels (darkened from `#6B5E54`, which is 5.8:1 on `--bg`) |
+| `--ink-muted` | `#5A4E45` | hints and secondary text (darkened from `#6B5E54`, which is 5.8:1 on `--bg`) |
 | `--accent` | `#F2A65A` | companion, primary fills |
 | `--accent-deep` | `#D9734A` | focus ring, pressed borders |
 | `--listening` | `#E8B04B` | listening ring |
@@ -46,8 +46,8 @@ hardcode a color, radius or duration elsewhere.
 `system-ui`. Base 22px. Weight 600 for every emphasis, never 700; the only exception is the full-screen
 status word at minimal vision (800). Headings and legends take `letter-spacing: -0.01em`.
 
-- Header name 20px/600. Shortcut label 22px/600 `--ink`, one line with ellipsis; sublabel 18px/500
-  `--ink-muted`, from 768px only.
+- Header name 20px/600. Shortcut label 22px/600 `--ink`, one line with ellipsis, in the profile's
+  language only: one caption per tile at every width.
 - Companion hint 18px `--ink-muted`. Status line 24px.
 - Captions: original 36px/600, English 28px (one size larger at low vision: 48 / 36).
 - Setup sheet: question 28px/600, option title 24px/600, description 18px at 70% opacity.
