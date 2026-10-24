@@ -11,7 +11,7 @@ export type VoicePhase = "idle" | "starting" | "recording" | "sending";
 export type VoiceNotice = EventDescription;
 
 export type VoiceSessionDeps = {
-  context: Pick<SurfaceContext, "microphone" | "chime" | "recordings">;
+  context: Pick<SurfaceContext, "microphone" | "chime" | "haptic" | "recordings">;
   config?: VoiceConfig;
   onPhase?: (phase: VoicePhase) => void;
   onNotice?: (notice: VoiceNotice) => void;
@@ -58,6 +58,7 @@ export function createVoiceSession({
     enter("sending");
     const blob = await active.stop();
     context.chime("stop");
+    context.haptic("stop");
     return blob;
   };
 
@@ -102,6 +103,7 @@ export function createVoiceSession({
       return;
     }
     context.chime("start");
+    context.haptic("start");
     enter("recording");
     onNotice({ text: strings.voice.listening, tone: "neutral" });
     listen();

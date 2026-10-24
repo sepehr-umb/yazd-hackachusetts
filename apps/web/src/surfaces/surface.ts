@@ -1,5 +1,6 @@
 import type { AssistantEventSource } from "../events/assistantEventSource";
 import type { AudioFrame } from "../face/faceAnimator";
+import type { Haptic } from "../haptics/haptics";
 import type { ProfileStore } from "../profile/profileStore";
 import type { RecordingClient } from "../request/recordingClient";
 import type { RequestClient } from "../request/requestClient";
@@ -12,6 +13,7 @@ export type SurfaceContext = {
   recordings: RecordingClient;
   microphone: Microphone;
   chime: Chime;
+  haptic: Haptic;
   speech: { frame(): AudioFrame | null };
   profile: ProfileStore;
 };

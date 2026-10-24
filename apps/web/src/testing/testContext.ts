@@ -12,6 +12,7 @@ export type TestContext = SurfaceContext & {
   holdReply(): (result: RequestResult) => void;
   recorded: Blob[];
   chimes: string[];
+  haptics: string[];
   mic: {
     starts: number;
     stops: number;
@@ -28,6 +29,7 @@ export function createTestContext(): TestContext {
   let held: Promise<RequestResult> | undefined;
   const recorded: Blob[] = [];
   const chimes: string[] = [];
+  const haptics: string[] = [];
   const mic = {
     starts: 0,
     stops: 0,
@@ -42,6 +44,7 @@ export function createTestContext(): TestContext {
     submitted,
     recorded,
     chimes,
+    haptics,
     mic,
     setSpeechFrame: (frame) => {
       speechFrame = frame;
@@ -49,6 +52,7 @@ export function createTestContext(): TestContext {
     speech: { frame: () => speechFrame },
     profile: createProfileStore(new Map()),
     chime: (kind) => chimes.push(kind),
+    haptic: (kind) => haptics.push(kind),
     microphone: {
       async start() {
         if (mic.refusal) throw mic.refusal;
