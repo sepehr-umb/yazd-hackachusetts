@@ -2,6 +2,8 @@ import type { AssistantState } from "@mahmood/contracts";
 import { strings } from "@mahmood/strings";
 import type { Character } from "../characters/character";
 import { characterFor, characterRegistry } from "../characters/registry";
+import { prefersReducedMotion } from "../flip/reducedMotion";
+import { onPressOrHold } from "../input/longPress";
 import type { Surface, Unmount } from "../surfaces/surface";
 import { onToggleKey } from "../voice/toggleKeys";
 import { voiceConfig } from "../voice/voiceConfig";
@@ -9,15 +11,18 @@ import type { VoiceConfig } from "../voice/voiceConfig";
 import { createVoiceSession } from "../voice/voiceSession";
 import type { FrameScheduler } from "./companionLoop";
 import { companionState } from "./companionState";
+import { mountLowVision } from "./lowVision";
 
 export type CompanionSurfaceDeps = Partial<FrameScheduler> & {
   config?: VoiceConfig;
   characters?: Character[];
+  reducedMotion?: () => boolean;
 };
 
 export function createCompanionSurface({
   config = voiceConfig,
   characters = characterRegistry,
+  reducedMotion = prefersReducedMotion,
   requestFrame = (callback) => requestAnimationFrame(callback),
   cancelFrame = (handle) => cancelAnimationFrame(handle),
 }: CompanionSurfaceDeps = {}): Surface {
@@ -86,11 +91,28 @@ export function createCompanionSurface({
       });
       showCharacter();
 
-      button.addEventListener("click", session.toggle);
+      const low = profile.get().vision === "low";
+      const stopPress = onPressOrHold(button, {
+        onPress: session.toggle,
+        onHold: low ? context.setup.open : undefined,
+      });
+      const unmountLow = low
+        ? mountLowVision({
+            host,
+            button,
+            session,
+            profile,
+            reducedMotion,
+            requestFrame,
+            cancelFrame,
+          })
+        : () => {};
       const stopKeys = onToggleKey(document, session.toggle);
       render();
 
       return () => {
+        unmountLow();
+        stopPress();
         unmountCharacter();
         unsubscribeProfile();
         session.dispose();

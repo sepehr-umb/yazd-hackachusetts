@@ -1,26 +1,30 @@
 import { vi } from "vitest";
 import type { Character } from "../characters/character";
+import type { Vision } from "../profile/profile";
 import { orbCharacter } from "../characters/orbCharacter";
 import { createTestContext } from "../testing/testContext";
 import { createCompanionSurface } from "./companionSurface";
 
 const config = { silenceThreshold: 0.1, silenceTimeoutMs: 1000, noSpeechTimeoutMs: 8000 };
 
-export function mountCompanion(characters: Character[] = [orbCharacter]) {
+export function mountCompanion(characters: Character[] = [orbCharacter], vision?: Vision) {
   const context = createTestContext();
+  if (vision) context.profile.update({ vision });
   const host = document.createElement("section");
   document.body.append(host);
-  let pending: ((timestampMs: number) => void) | undefined;
+  const queue = new Map<number, (timestampMs: number) => void>();
+  let nextHandle = 0;
   let clock = 0;
   const unmount = createCompanionSurface({
     config,
     characters,
     requestFrame: (callback) => {
-      pending = callback;
-      return 1;
+      nextHandle += 1;
+      queue.set(nextHandle, callback);
+      return nextHandle;
     },
-    cancelFrame: () => {
-      pending = undefined;
+    cancelFrame: (handle) => {
+      queue.delete(handle);
     },
   }).mount(host, context);
   const button = host.querySelector("button") as HTMLButtonElement;
@@ -29,10 +33,10 @@ export function mountCompanion(characters: Character[] = [orbCharacter]) {
   const cssVar = (name: string) => Number(orb().style.getPropertyValue(name));
   const runFrames = (count: number) => {
     for (let index = 0; index < count; index += 1) {
-      const callback = pending;
-      pending = undefined;
+      const callbacks = [...queue.values()];
+      queue.clear();
       clock += 1000 / 60;
-      callback?.(clock);
+      callbacks.forEach((callback) => callback(clock));
     }
   };
   const click = async () => {
@@ -49,6 +53,6 @@ export function mountCompanion(characters: Character[] = [orbCharacter]) {
     cssVar,
     runFrames,
     click,
-    pending: () => pending,
+    pending: () => (queue.size > 0 ? [...queue.values()][0] : undefined),
   };
 }

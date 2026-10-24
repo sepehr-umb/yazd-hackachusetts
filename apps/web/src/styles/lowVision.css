@@ -1,0 +1,46 @@
+:root[data-vision="low"] [data-surface="captions"] [data-role="original"] {
+  font-size: 48px;
+}
+
+:root[data-vision="low"] [data-surface="captions"] [data-role="english"] {
+  font-size: 36px;
+  color: var(--ink);
+}
+
+[data-surface="companion"] > button[data-flip] {
+  border-radius: 50%;
+  background: var(--flip-color);
+  box-shadow: 0 0 0 6px var(--ink);
+}
+
+[data-flip] [data-part="core"] {
+  background: var(--flip-color);
+  box-shadow: none;
+}
+
+[data-flip] [data-part="core"]::after {
+  display: none;
+}
+
+[data-flip] [data-part="ring"],
+[data-flip] [data-part="spin"] {
+  display: none;
+}
+
+[data-flip] [data-part="orb"] {
+  transform: none;
+}
+
+[data-flip] canvas[data-part="face"] {
+  inset: 10%;
+  inline-size: 80%;
+  block-size: 80%;
+  box-shadow: none;
+}
+
+[data-surface="companion"] [data-role="hint"] {
+  margin-block-start: calc(var(--gap) * -0.5);
+  font-size: 22px;
+  color: var(--ink-muted);
+  text-align: center;
+}
