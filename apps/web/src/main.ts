@@ -1,11 +1,15 @@
 import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
+import { createHaptics } from "./haptics/haptics";
+import { applyProfile } from "./profile/applyProfile";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
+import { createSetupControl } from "./setup/setupControl";
 import { createSpeechPlayer } from "./speech/speechPlayer";
-import { mountSurfaces } from "./surfaces/mountSurfaces";
-import { defaultSettings, surfaceRegistry } from "./surfaces/registry";
+import { mountForProfile } from "./surfaces/mountForProfile";
+import { surfaceRegistry } from "./surfaces/registry";
+import { settingsFor } from "./surfaces/settingsFor";
 import { playChime } from "./voice/chime";
 import { createMicrophone } from "./voice/microphone";
 
@@ -20,10 +24,13 @@ const microphone = createMicrophone({
   getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints),
   createRecorder: (stream) => new MediaRecorder(stream),
 });
+const profile = createProfileStore(browserStorage(() => localStorage));
+applyProfile(document, profile.get());
+profile.subscribe((next) => applyProfile(document, next));
 
-mountSurfaces({
+mountForProfile({
   registry: surfaceRegistry,
-  settings: defaultSettings,
+  settingsFor,
   root,
   context: {
     events,
@@ -31,8 +38,17 @@ mountSurfaces({
     recordings: createRecordingClient(),
     microphone,
     chime: (kind) => playChime(audioContext, kind),
+    haptic: createHaptics({
+      document,
+      vibrate:
+        typeof navigator.vibrate === "function"
+          ? (pattern) => navigator.vibrate(pattern)
+          : undefined,
+      supportsSwitch: "switch" in HTMLInputElement.prototype,
+    }),
     speech,
-    profile: createProfileStore(browserStorage(() => localStorage)),
+    profile,
+    setup: createSetupControl(),
   },
 });
 

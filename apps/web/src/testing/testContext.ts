@@ -2,6 +2,7 @@ import type { AssistantEvent, RequestResult } from "@mahmood/contracts";
 import type { AssistantEventListener } from "../events/assistantEventSource";
 import type { AudioFrame } from "../face/faceAnimator";
 import { createProfileStore } from "../profile/profileStore";
+import { createSetupControl } from "../setup/setupControl";
 import type { SurfaceContext } from "../surfaces/surface";
 
 export type TestContext = SurfaceContext & {
@@ -51,6 +52,7 @@ export function createTestContext(): TestContext {
     },
     speech: { frame: () => speechFrame },
     profile: createProfileStore(new Map()),
+    setup: createSetupControl(),
     chime: (kind) => chimes.push(kind),
     haptic: (kind) => haptics.push(kind),
     microphone: {

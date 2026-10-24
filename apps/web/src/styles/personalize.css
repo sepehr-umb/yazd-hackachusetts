@@ -1,7 +1,7 @@
 [data-surface="personalize"] [data-role="opener"] {
   position: fixed;
-  inset-block-end: var(--gap);
-  inset-inline-end: var(--gap);
+  inset-block-end: calc(var(--gap) + var(--safe-bottom));
+  inset-inline-end: max(var(--gap), var(--safe-inline));
   z-index: 2;
   display: grid;
   place-items: center;
