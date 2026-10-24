@@ -69,6 +69,10 @@ export function createSheet(document: Document, { profile, characters, languages
     languages.map((code) => ({ value: code, label: strings.setup[code].languageName, lang: code })),
     (value) => pick({ language: value }),
   );
+  const setup = document.createElement("button");
+  setup.type = "button";
+  setup.dataset.role = "setup";
+  setup.textContent = strings.personalize.setup;
   const done = document.createElement("button");
   done.type = "button";
   done.dataset.role = "done";
@@ -80,6 +84,7 @@ export function createSheet(document: Document, { profile, characters, languages
     shape.element,
     character.element,
     language.element,
+    setup,
     done,
   );
 
@@ -91,5 +96,5 @@ export function createSheet(document: Document, { profile, characters, languages
     language.select(current.language);
   };
 
-  return { element: sheet, done, firstControl: name.input, sync };
+  return { element: sheet, done, setup, firstControl: name.input, sync };
 }

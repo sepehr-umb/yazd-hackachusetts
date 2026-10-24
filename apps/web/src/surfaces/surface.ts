@@ -4,6 +4,7 @@ import type { Haptic } from "../haptics/haptics";
 import type { ProfileStore } from "../profile/profileStore";
 import type { RecordingClient } from "../request/recordingClient";
 import type { RequestClient } from "../request/requestClient";
+import type { Narrator } from "../setup/narrator";
 import type { SetupControl } from "../setup/setupControl";
 import type { Chime } from "../voice/chime";
 import type { Microphone } from "../voice/microphone";
@@ -18,6 +19,7 @@ export type SurfaceContext = {
   speech: { frame(): AudioFrame | null };
   profile: ProfileStore;
   setup: SetupControl;
+  narrator: Narrator;
 };
 
 export type Unmount = () => void;

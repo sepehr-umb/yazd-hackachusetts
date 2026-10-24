@@ -14,6 +14,7 @@ export type TestContext = SurfaceContext & {
   recorded: Blob[];
   chimes: string[];
   haptics: string[];
+  narration: string[];
   mic: {
     starts: number;
     stops: number;
@@ -31,6 +32,7 @@ export function createTestContext(): TestContext {
   const recorded: Blob[] = [];
   const chimes: string[] = [];
   const haptics: string[] = [];
+  const narration: string[] = [];
   const mic = {
     starts: 0,
     stops: 0,
@@ -46,6 +48,7 @@ export function createTestContext(): TestContext {
     recorded,
     chimes,
     haptics,
+    narration,
     mic,
     setSpeechFrame: (frame) => {
       speechFrame = frame;
@@ -53,6 +56,10 @@ export function createTestContext(): TestContext {
     speech: { frame: () => speechFrame },
     profile: createProfileStore(new Map()),
     setup: createSetupControl(),
+    narrator: {
+      say: (text, language) => narration.push(`${language}: ${text}`),
+      stop: () => narration.push("stop"),
+    },
     chime: (kind) => chimes.push(kind),
     haptic: (kind) => haptics.push(kind),
     microphone: {

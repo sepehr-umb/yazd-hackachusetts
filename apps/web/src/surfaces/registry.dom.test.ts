@@ -31,6 +31,7 @@ describe("surface registry", () => {
       "face",
       "voice",
       "activityPanel",
+      "setup",
     ]);
   });
 
@@ -41,11 +42,12 @@ describe("surface registry", () => {
       "captions",
       "textInput",
       "personalize",
+      "setup",
     ]);
   });
 
-  it("mounts only the full-screen button for minimal vision", () => {
-    expect(mountedIds(layout("minimal"))).toEqual(["fullscreen"]);
+  it("mounts only the full-screen button and setup for minimal vision", () => {
+    expect(mountedIds(layout("minimal"))).toEqual(["fullscreen", "setup"]);
   });
 
   it("can still switch the voice and activity panel back on", () => {
@@ -57,6 +59,7 @@ describe("surface registry", () => {
       "personalize",
       "voice",
       "activityPanel",
+      "setup",
     ]);
   });
 });

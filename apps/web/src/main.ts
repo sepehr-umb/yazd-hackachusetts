@@ -5,6 +5,7 @@ import { applyProfile } from "./profile/applyProfile";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
+import { createNarrator } from "./setup/narrator";
 import { createSetupControl } from "./setup/setupControl";
 import { createSpeechPlayer } from "./speech/speechPlayer";
 import { mountForProfile } from "./surfaces/mountForProfile";
@@ -49,6 +50,14 @@ mountForProfile({
     speech,
     profile,
     setup: createSetupControl(),
+    narrator: createNarrator(
+      "speechSynthesis" in window
+        ? {
+            synth: window.speechSynthesis,
+            createUtterance: (text) => new SpeechSynthesisUtterance(text),
+          }
+        : {},
+    ),
   },
 });
 

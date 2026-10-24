@@ -54,6 +54,10 @@ export function createPersonalizeSurface({
       opener.addEventListener("click", open);
       backdrop.addEventListener("click", close);
       sheet.done.addEventListener("click", close);
+      sheet.setup.addEventListener("click", () => {
+        close();
+        context.setup.open();
+      });
       document.addEventListener("keydown", onKeyDown);
       const unsubscribe = context.profile.subscribe(sheet.sync);
       setOpen(false);

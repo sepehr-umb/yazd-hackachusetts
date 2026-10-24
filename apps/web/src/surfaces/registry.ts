@@ -4,6 +4,7 @@ import { companionSurface } from "../companion/companionSurface";
 import { faceSurface } from "../face/faceSurface";
 import { fullscreenSurface } from "../fullscreen/fullscreenSurface";
 import { personalizeSurface } from "../personalize/personalizeSurface";
+import { setupSurface } from "../setup/setupSurface";
 import { shortcutsSurface } from "../shortcuts/shortcutsSurface";
 import { textInputSurface } from "../textInput/textInput";
 import { voiceSurface } from "../voice/voiceSurface";
@@ -19,4 +20,5 @@ export const surfaceRegistry: Surface[] = [
   faceSurface,
   voiceSurface,
   activityPanelSurface,
+  setupSurface,
 ];
