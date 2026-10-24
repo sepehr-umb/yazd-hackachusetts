@@ -1,0 +1,1 @@
+- 12:05 Spec mode used parallel requirement-detailer sub-agents, 13 requirements. Over-specified: invented time limits, word counts, edge cases nobody demos. We cut them, restored a preserve-pitch requirement, and added demo fixtures. Lesson: spec review is where scope gets controlled.

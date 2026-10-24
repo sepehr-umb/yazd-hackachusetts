@@ -30,7 +30,7 @@ describe("isAssistantEvent", () => {
     },
   );
 
-  it.each(["orchestrator", "comms", "home", "media", "clarifier"])(
+  it.each(["orchestrator", "comms", "home", "media", "clarifier", "settings"])(
     "accepts the %s agent",
     (agent) => {
       expect(isAssistantEvent({ type: "agent", agent })).toBe(true);

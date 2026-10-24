@@ -1,5 +1,5 @@
 export const assistantStates = ["idle", "listening", "thinking", "speaking", "error"] as const;
-export const agentNames = ["orchestrator", "comms", "home", "media", "clarifier"] as const;
+export const agentNames = ["orchestrator", "comms", "home", "media", "clarifier", "settings"] as const;
 export const toolCallStatuses = ["started", "succeeded", "failed"] as const;
 
 export const captionSpeakers = ["user", "assistant"] as const;
