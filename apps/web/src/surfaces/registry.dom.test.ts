@@ -4,15 +4,22 @@ import { mountSurfaces } from "./mountSurfaces";
 import { defaultSettings, surfaceRegistry } from "./registry";
 
 describe("surface registry", () => {
-  it("registers the face, activity panel, text input and voice, all enabled by default", () => {
+  it("registers the face, captions, activity panel, text input and voice, all enabled by default", () => {
     expect(surfaceRegistry.map((surface) => surface.id)).toEqual([
       "face",
+      "captions",
       "activityPanel",
       "textInput",
       "voice",
     ]);
     expect(defaultSettings).toEqual({
-      surfaces: { face: true, activityPanel: true, textInput: true, voice: true },
+      surfaces: {
+        face: true,
+        captions: true,
+        activityPanel: true,
+        textInput: true,
+        voice: true,
+      },
     });
   });
 
@@ -27,7 +34,7 @@ describe("surface registry", () => {
     });
 
     const mounted = [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
-    expect(mounted).toEqual(["activityPanel", "voice"]);
+    expect(mounted).toEqual(["captions", "activityPanel", "voice"]);
   });
 
   it("leaves out the voice surface when the settings turn it off", () => {
@@ -41,6 +48,6 @@ describe("surface registry", () => {
     });
 
     const mounted = [...root.querySelectorAll("section")].map((section) => section.dataset.surface);
-    expect(mounted).toEqual(["activityPanel", "textInput"]);
+    expect(mounted).toEqual(["captions", "activityPanel", "textInput"]);
   });
 });
