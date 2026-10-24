@@ -37,27 +37,62 @@
       [data-surface="captions"] [data-speaker] {
         padding: 12px 20px;
         border-radius: 16px;
-        background: #000;
-        border: 3px solid #ffd28a;
-        color: #fff;
-      }
-      [data-surface="captions"] [data-speaker="assistant"] {
-        border-color: #8fe3a2;
+        border: 3px solid;
       }
       [data-surface="captions"] p {
         margin: 0;
         overflow-wrap: anywhere;
       }
       [data-surface="captions"] [data-role="original"] {
-        font-size: 36px;
         font-weight: 700;
         line-height: 1.4;
       }
       [data-surface="captions"] [data-role="english"] {
         margin-top: 8px;
-        font-size: 28px;
         line-height: 1.3;
+      }
+      [data-surface="captions"][data-caption-size="small"] [data-role="original"] {
+        font-size: 24px;
+      }
+      [data-surface="captions"][data-caption-size="small"] [data-role="english"] {
+        font-size: 18px;
+      }
+      [data-surface="captions"][data-caption-size="medium"] [data-role="original"] {
+        font-size: 30px;
+      }
+      [data-surface="captions"][data-caption-size="medium"] [data-role="english"] {
+        font-size: 22px;
+      }
+      [data-surface="captions"][data-caption-size="large"] [data-role="original"] {
+        font-size: 36px;
+      }
+      [data-surface="captions"][data-caption-size="large"] [data-role="english"] {
+        font-size: 28px;
+      }
+      [data-surface="captions"][data-caption-size="extra-large"] [data-role="original"] {
+        font-size: 48px;
+      }
+      [data-surface="captions"][data-caption-size="extra-large"] [data-role="english"] {
+        font-size: 36px;
+      }
+      [data-surface="captions"][data-contrast="high"] [data-speaker] {
+        background: #000;
+        border-color: #ffd28a;
+        color: #fff;
+      }
+      [data-surface="captions"][data-contrast="high"] [data-speaker="assistant"] {
+        border-color: #8fe3a2;
+      }
+      [data-surface="captions"][data-contrast="high"] [data-role="english"] {
         color: #ffe6a8;
+      }
+      [data-surface="captions"][data-contrast="normal"] [data-speaker] {
+        background: rgba(26, 33, 69, 0.85);
+        border-color: #5c6aa8;
+        color: #e8ecff;
+      }
+      [data-surface="captions"][data-contrast="normal"] [data-role="english"] {
+        color: #b8c2f0;
       }
       [data-surface="activityPanel"] {
         position: fixed;

@@ -1,4 +1,4 @@
-import type { CaptionSpeaker } from "@mahmood/contracts";
+import type { CaptionSpeaker, Settings } from "@mahmood/contracts";
 import type { Surface } from "../surfaces/surface";
 
 function createBlock(document: Document, speaker: CaptionSpeaker) {
@@ -20,6 +20,13 @@ export const captionsSurface: Surface = {
     const document = host.ownerDocument;
     const blocks = new Map<CaptionSpeaker, ReturnType<typeof createBlock>>();
 
+    const applySettings = ({ captionSize, highContrast }: Settings) => {
+      host.dataset.captionSize = captionSize;
+      host.dataset.contrast = highContrast ? "high" : "normal";
+    };
+    applySettings(context.settings.get());
+    const unsubscribeSettings = context.settings.subscribe(applySettings);
+
     const unsubscribe = context.events.subscribe((event) => {
       if (event.type !== "caption") return;
       let entry = blocks.get(event.speaker);
@@ -34,6 +41,9 @@ export const captionsSurface: Surface = {
 
     return () => {
       unsubscribe();
+      unsubscribeSettings();
+      delete host.dataset.captionSize;
+      delete host.dataset.contrast;
       for (const { block } of blocks.values()) block.remove();
       blocks.clear();
     };

@@ -1,4 +1,4 @@
-import { mediaActions } from "@mahmood/contracts";
+import { mediaActions, settingSchemas } from "@mahmood/contracts";
 import type { ToolName } from "@mahmood/contracts";
 import type { LlmToolSchema } from "./llmClient";
 
@@ -57,5 +57,23 @@ export const toolSchemas: Record<ToolName, LlmToolSchema> = {
       properties: { question: { type: "string" } },
       required: ["question"],
     },
+  },
+  update_setting: {
+    name: "update_setting",
+    description:
+      "Set one assistant setting to an absolute value. speechRate: number from 0.5 to 1.5. captionSize: small, medium, large or extra-large. highContrast: true or false. silenceWaitMs: integer from 800 to 4000.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        name: { type: "string", enum: Object.keys(settingSchemas) },
+        value: { description: "The new absolute value for the setting" },
+      },
+      required: ["name", "value"],
+    },
+  },
+  reset_settings: {
+    name: "reset_settings",
+    description: "Restore every assistant setting to its normal default.",
+    inputSchema: { type: "object", properties: {} },
   },
 };

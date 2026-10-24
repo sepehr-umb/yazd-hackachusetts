@@ -101,7 +101,10 @@ export function createVoiceSurface({ config = voiceConfig }: VoiceSurfaceDeps = 
         phase = "recording";
         render();
         show(strings.voice.listening, "neutral");
-        const detector = createSilenceDetector(config, Date.now());
+        const detector = createSilenceDetector(
+          { ...config, silenceTimeoutMs: context.settings.get().silenceWaitMs },
+          Date.now(),
+        );
         poll = setInterval(() => {
           if (!recording) return;
           const outcome = detector.update(recording.level(), Date.now());

@@ -2,6 +2,7 @@ import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
 import { createRecordingClient } from "./request/recordingClient";
 import { createRequestClient } from "./request/requestClient";
+import { createSettingsStore } from "./settings/settingsStore";
 import { createSpeechPlayer } from "./speech/speechPlayer";
 import { mountSurfaces } from "./surfaces/mountSurfaces";
 import { defaultSettings, surfaceRegistry } from "./surfaces/registry";
@@ -13,7 +14,8 @@ if (!root) throw new Error("Page markup is missing #app");
 
 const audioContext = new AudioContext();
 const events = createLiveEventSource({ url: eventsUrl(location) });
-const speech = createSpeechPlayer({ events, context: audioContext });
+const settings = createSettingsStore({ events, storage: localStorage });
+const speech = createSpeechPlayer({ events, context: audioContext, settings });
 const microphone = createMicrophone({
   context: audioContext,
   getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints),
@@ -31,6 +33,7 @@ mountSurfaces({
     microphone,
     chime: (kind) => playChime(audioContext, kind),
     speech,
+    settings,
   },
 });
 

@@ -1,0 +1,31 @@
+{
+  "transcript": "آهسته‌تر صحبت کن",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "settings" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_setting_1",
+          "name": "update_setting",
+          "input": { "name": "speechRate", "value": 0.8 }
+        }
+      ]
+    },
+    {
+      "stopReason": "end_turn",
+      "content": [{ "type": "text", "text": "حالا آهسته‌تر صحبت می‌کنم" }]
+    }
+  ]
+}

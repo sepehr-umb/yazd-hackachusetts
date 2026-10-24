@@ -1,7 +1,26 @@
 import type { AssistantEvent, RequestResult } from "@mahmood/contracts";
 import type { AssistantEventListener } from "../events/assistantEventSource";
 import type { AudioFrame } from "../face/faceAnimator";
+import { createSettingsStore } from "../settings/settingsStore";
 import type { SurfaceContext } from "../surfaces/surface";
+
+function createMemoryStorage(): Storage {
+  const values = new Map<string, string>();
+  return {
+    get length() {
+      return values.size;
+    },
+    clear: () => values.clear(),
+    getItem: (key) => values.get(key) ?? null,
+    key: (index) => [...values.keys()][index] ?? null,
+    removeItem: (key) => {
+      values.delete(key);
+    },
+    setItem: (key, value) => {
+      values.set(key, value);
+    },
+  };
+}
 
 export type TestContext = SurfaceContext & {
   emit(event: AssistantEvent): void;
@@ -37,7 +56,21 @@ export function createTestContext(): TestContext {
     },
   };
   let speechFrame: AudioFrame | null = null;
+  const storeListeners = new Set<AssistantEventListener>();
+  const events = {
+    subscribe(listener: AssistantEventListener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+  };
+  const storeEvents = {
+    subscribe(listener: AssistantEventListener) {
+      storeListeners.add(listener);
+      return () => storeListeners.delete(listener);
+    },
+  };
   return {
+    settings: createSettingsStore({ events: storeEvents, storage: createMemoryStorage() }),
     submitted,
     recorded,
     chimes,
@@ -68,12 +101,7 @@ export function createTestContext(): TestContext {
         return reply;
       },
     },
-    events: {
-      subscribe(listener) {
-        listeners.add(listener);
-        return () => listeners.delete(listener);
-      },
-    },
+    events,
     requests: {
       async submit(text) {
         submitted.push(text);
@@ -82,7 +110,10 @@ export function createTestContext(): TestContext {
         return reply;
       },
     },
-    emit: (event) => listeners.forEach((listener) => listener(event)),
+    emit: (event) => {
+      storeListeners.forEach((listener) => listener(event));
+      listeners.forEach((listener) => listener(event));
+    },
     listenerCount: () => listeners.size,
     replyWith: (next) => {
       reply = next;

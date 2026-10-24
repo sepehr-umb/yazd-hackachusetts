@@ -1,0 +1,31 @@
+{
+  "transcript": "برگرد به حالت عادی",
+  "responses": [
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_route_1",
+          "name": "route_to_agent",
+          "input": { "agent": "settings" }
+        }
+      ]
+    },
+    {
+      "stopReason": "tool_use",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_reset_1",
+          "name": "reset_settings",
+          "input": {}
+        }
+      ]
+    },
+    {
+      "stopReason": "end_turn",
+      "content": [{ "type": "text", "text": "همه چیز به حالت عادی برگشت" }]
+    }
+  ]
+}
