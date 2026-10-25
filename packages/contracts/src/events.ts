@@ -1,3 +1,4 @@
+import type { DeviceActionEvent } from "./device";
 import type { SettingName, Settings } from "./settings";
 
 export const assistantStates = ["idle", "listening", "thinking", "speaking", "error"] as const;
@@ -36,4 +37,5 @@ export type AssistantEvent =
   | { type: "speech"; audioUrl: string }
   | { type: "caption"; speaker: CaptionSpeaker; text: string; english: string }
   | SettingChangedEvent
-  | SettingsResetEvent;
+  | SettingsResetEvent
+  | DeviceActionEvent;

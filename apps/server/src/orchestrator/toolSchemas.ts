@@ -1,4 +1,4 @@
-import { mediaActions, settingSchemas } from "@mahmood/contracts";
+import { callMethods, mediaActions, settingSchemas } from "@mahmood/contracts";
 import type { ToolName } from "@mahmood/contracts";
 import type { LlmToolSchema } from "./llmClient";
 
@@ -8,7 +8,14 @@ export const toolSchemas: Record<ToolName, LlmToolSchema> = {
     description: "Place a phone call to a contact from the user's address book.",
     inputSchema: {
       type: "object",
-      properties: { contact: { type: "string", description: "Contact name as the user said it" } },
+      properties: {
+        contact: { type: "string", description: "Contact name as the user said it" },
+        via: {
+          type: "string",
+          enum: [...callMethods],
+          description: "whatsapp by default; phone only when the user asks for a regular call",
+        },
+      },
       required: ["contact"],
     },
   },

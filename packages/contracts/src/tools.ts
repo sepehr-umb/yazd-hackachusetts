@@ -1,3 +1,4 @@
+import type { CallMethod } from "./device";
 import type { SettingName, SettingValue } from "./settings";
 
 export const toolNames = [
@@ -26,7 +27,7 @@ export type ToolName = (typeof toolNames)[number];
 export type MediaAction = (typeof mediaActions)[number];
 
 export type ToolInputs = {
-  call_contact: { contact: string };
+  call_contact: { contact: string; via?: CallMethod };
   send_message: { contact: string; text: string };
   set_light: { room: string; on: boolean; brightness?: number };
   media_control: { action: MediaAction; query?: string };

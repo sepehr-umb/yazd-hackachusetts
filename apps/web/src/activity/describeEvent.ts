@@ -48,5 +48,7 @@ export function describeEvent(event: AssistantEvent): EventDescription {
       };
     case "settings_reset":
       return { text: strings.settings.reset, tone: "neutral" };
+    case "device_action":
+      return { text: strings.activity.deviceAction(event.action, event.contact), tone: "success" };
   }
 }

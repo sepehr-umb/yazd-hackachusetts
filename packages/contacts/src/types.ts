@@ -2,6 +2,7 @@ export type Contact = {
   id: string;
   name: string;
   aliases?: string[];
+  phone?: string;
 };
 
 export type ContactCandidate = {

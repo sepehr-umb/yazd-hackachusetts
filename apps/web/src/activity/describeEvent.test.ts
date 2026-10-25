@@ -62,4 +62,15 @@ describe("describeEvent", () => {
       tone: "neutral",
     });
   });
+
+  it("describes a device action using the strings package", () => {
+    expect(
+      describeEvent({
+        type: "device_action",
+        action: "whatsapp_call",
+        contact: "Mom",
+        phone: "+16175550100",
+      }),
+    ).toEqual({ text: strings.activity.deviceAction("whatsapp_call", "Mom"), tone: "success" });
+  });
 });

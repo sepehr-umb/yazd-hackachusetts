@@ -12,6 +12,10 @@ const documentedVariables = [
   "HA_TOKEN",
   "JELLYFIN_URL",
   "JELLYFIN_TOKEN",
+  "CONTACTS_FILE",
+  "GOVEE_API_KEY",
+  "GOVEE_SKU",
+  "GOVEE_DEVICE",
 ];
 
 function readEnvExample(): Record<string, string> {

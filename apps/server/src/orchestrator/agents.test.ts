@@ -111,3 +111,10 @@ describe("router prompt and tool descriptions", () => {
     expect([routerSystem, ...descriptions].join("\n")).not.toMatch(/farsi/i);
   });
 });
+
+describe("comms call method", () => {
+  it("defaults calls to WhatsApp and names the phone method", () => {
+    expect(agentDefinitions.comms.system).toMatch(/WhatsApp/);
+    expect(agentDefinitions.comms.system).toMatch(/via phone/);
+  });
+});

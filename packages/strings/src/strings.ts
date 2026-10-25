@@ -72,6 +72,7 @@ export const strings = {
     userCaption: (text: string, english: string) => `You said: ${text} · English: ${english}`,
     assistantCaption: (text: string, english: string) =>
       `Assistant said: ${text} · English: ${english}`,
+    deviceAction: (action: string, contact: string) => `Phone: ${action} to ${contact}`,
   },
   settings: {
     names: {

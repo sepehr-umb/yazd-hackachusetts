@@ -10,7 +10,7 @@ const withRule = (system: string, ...rules: string[]) =>
 const definitions: Record<SubAgentName, AgentDefinition> = {
   comms: {
     system:
-      "You handle phone calls and text messages for an elderly user. Use the tools to act on the request. After the tool succeeds, confirm in one short sentence in the user's language, the language the user spoke.",
+      "You handle phone calls and text messages for an elderly user. Use the tools to act on the request. Calls and messages go through WhatsApp. Call via phone only when the user asks for a regular phone call. After the tool succeeds, confirm in one short sentence in the user's language, the language the user spoke.",
     tools: ["call_contact", "send_message"],
   },
   home: {

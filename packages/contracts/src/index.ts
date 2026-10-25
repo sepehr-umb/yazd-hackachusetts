@@ -16,3 +16,5 @@ export { isSettingName, isSettingValue } from "./isSetting";
 export { isRequestResult } from "./isRequestResult";
 export { isLanguageCode, languageHeader } from "./requests";
 export type { RequestFailure, RequestResult, SubAgentName, TypedRequest } from "./requests";
+export { callMethods, deviceActions } from "./device";
+export type { CallMethod, DeviceAction, DeviceActionEvent } from "./device";

@@ -38,3 +38,13 @@ describe("clock tool schema", () => {
     expect(description).toMatch(/day/i);
   });
 });
+
+describe("call tool schema", () => {
+  it("call_contact takes an optional call method from the contracts", () => {
+    const { inputSchema } = toolSchemas.call_contact;
+    const properties = inputSchema.properties as Record<string, Record<string, unknown>>;
+
+    expect(properties.via?.enum).toEqual(["whatsapp", "phone"]);
+    expect(inputSchema.required).toEqual(["contact"]);
+  });
+});

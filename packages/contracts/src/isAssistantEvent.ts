@@ -1,3 +1,4 @@
+import { deviceActions } from "./device";
 import { agentNames, captionSpeakers, assistantStates, toolCallStatuses } from "./events";
 import type { AssistantEvent } from "./events";
 import { isSettingName, isSettingValue } from "./isSetting";
@@ -8,6 +9,16 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isOneOf(options: readonly string[], value: unknown): boolean {
   return typeof value === "string" && options.includes(value);
+}
+
+function isFilled(value: unknown): boolean {
+  return typeof value === "string" && value !== "";
+}
+
+function isDeviceAction(value: Record<string, unknown>): boolean {
+  const hasTarget =
+    isOneOf(deviceActions, value.action) && isFilled(value.phone) && typeof value.contact === "string";
+  return hasTarget && (value.action !== "whatsapp_message" || typeof value.text === "string");
 }
 
 export function isAssistantEvent(value: unknown): value is AssistantEvent {
@@ -33,6 +44,8 @@ export function isAssistantEvent(value: unknown): value is AssistantEvent {
       return isSettingName(value.name) && isSettingValue(value.name, value.value);
     case "settings_reset":
       return true;
+    case "device_action":
+      return isDeviceAction(value);
     default:
       return false;
   }
