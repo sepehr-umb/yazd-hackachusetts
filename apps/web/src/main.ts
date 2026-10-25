@@ -1,3 +1,5 @@
+import { startDeviceBridge } from "./device/deviceBridge";
+import { nativeDevice } from "./device/nativeDevice";
 import { eventsUrl } from "./events/eventsUrl";
 import { createLiveEventSource } from "./events/liveEventSource";
 import { browserStorage, createProfileStore } from "./profile/profileStore";
@@ -41,5 +43,8 @@ mountSurfaces({
     settings,
   },
 });
+
+const device = nativeDevice();
+if (device) startDeviceBridge({ events, device, onError: (error) => console.warn(error) });
 
 events.start();

@@ -9,6 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@capacitor/core": "^8.5.3",
     "@mahmood/contracts": "*",
     "@mahmood/strings": "*"
   },
