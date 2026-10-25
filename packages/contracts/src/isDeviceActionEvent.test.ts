@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { isAssistantEvent } from "./isAssistantEvent";
 
-const call = { type: "device_action", action: "whatsapp_call", contact: "مامان", phone: "+16175550100" };
+const call = {
+  type: "device_action",
+  action: "whatsapp_call",
+  contact: "مامان",
+  phone: "+16175550100",
+};
 
 describe("device action events", () => {
   it.each(["whatsapp_call", "phone_call"])("accepts a %s", (action) => {

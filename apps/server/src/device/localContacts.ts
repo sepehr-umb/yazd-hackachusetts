@@ -28,10 +28,7 @@ export function parseContacts(value: unknown): Contact[] {
   return value.map(toContact);
 }
 
-export function loadLocalContacts(
-  env: Env,
-  read: (path: string) => string,
-): Contact[] | undefined {
+export function loadLocalContacts(env: Env, read: (path: string) => string): Contact[] | undefined {
   const path = env.CONTACTS_FILE?.trim();
   if (!path) return undefined;
   return parseContacts(JSON.parse(read(path)));

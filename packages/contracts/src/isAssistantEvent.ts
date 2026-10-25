@@ -17,7 +17,9 @@ function isFilled(value: unknown): boolean {
 
 function isDeviceAction(value: Record<string, unknown>): boolean {
   const hasTarget =
-    isOneOf(deviceActions, value.action) && isFilled(value.phone) && typeof value.contact === "string";
+    isOneOf(deviceActions, value.action) &&
+    isFilled(value.phone) &&
+    typeof value.contact === "string";
   return hasTarget && (value.action !== "whatsapp_message" || typeof value.text === "string");
 }
 

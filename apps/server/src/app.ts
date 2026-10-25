@@ -37,14 +37,13 @@ export function createApp(env: Env, options: AppOptions = {}): FastifyInstance {
   const llm = selectLlmClient(env, options);
   const orchestrator = createOrchestrator({
     llm,
-    tools: withClock(
-      withSettings(withContactResolution(devices, contacts), hub),
-      clock,
-    ),
+    tools: withClock(withSettings(withContactResolution(devices, contacts), hub), clock),
     bus: hub,
   });
   const staticDir =
-    options.staticDir !== undefined && existsSync(options.staticDir) ? options.staticDir : undefined;
+    options.staticDir !== undefined && existsSync(options.staticDir)
+      ? options.staticDir
+      : undefined;
   return createServer({
     orchestrator,
     hub,

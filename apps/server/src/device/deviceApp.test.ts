@@ -18,7 +18,10 @@ afterEach(async () => {
 
 function contactsFile(): string {
   const path = join(mkdtempSync(join(tmpdir(), "yazd-")), "contacts.json");
-  writeFileSync(path, JSON.stringify([{ name: "فاطمه", aliases: ["مامان"], phone: "+16175550100" }]));
+  writeFileSync(
+    path,
+    JSON.stringify([{ name: "فاطمه", aliases: ["مامان"], phone: "+16175550100" }]),
+  );
   return path;
 }
 
