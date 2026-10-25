@@ -20,7 +20,7 @@ Hackachusetts 2026, Healthcare & Biotech track.
 - **Replies in your language.** Every reply is spoken, with English captions for helpers.
 - **Shortcut tiles.** Large tiles for the most common requests, labeled in the user's language.
 
-In this build, calls, messages, lights and TV run through stub tools: yazd understands the request, picks the action and confirms it out loud, but places no real call and controls no real device. Real integrations plug in behind the same tool interface.
+By default, calls, messages, lights and TV run through stub tools, so nothing fires by accident. The Android app places real WhatsApp and phone calls, and a Govee lamp switches for real when configured. See [docs/android.md](docs/android.md).
 
 ## Run it
 
